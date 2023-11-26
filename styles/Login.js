@@ -1,0 +1,27 @@
+const {StyleSheet} = require('react-native');
+
+const Loginstyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    gap: 20,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  logo: {
+    // flex: 1,
+    marginTop: 50,
+    height: 200,
+  },
+  formInput: {
+    flex: 1,
+    gap: 10,
+
+    // backgroundColor: 'red',
+  },
+  formActions: {
+    alignItems: 'center',
+  },
+});
+export {Loginstyles};

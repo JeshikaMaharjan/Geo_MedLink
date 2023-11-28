@@ -8,6 +8,7 @@ const Loginstyles = StyleSheet.create({
     gap: 20,
     marginLeft: 20,
     marginRight: 20,
+    paddingTop: 290,
   },
   logo: {
     // flex: 1,
@@ -22,6 +23,10 @@ const Loginstyles = StyleSheet.create({
   },
   formActions: {
     alignItems: 'center',
+  },
+  backgroundImage: {
+    height: '100%',
+    flex: 1,
   },
 });
 export {Loginstyles};

@@ -1,4 +1,4 @@
-import {Image, ImageBackground, View} from 'react-native';
+import {ImageBackground, View} from 'react-native';
 import {useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
 import {Loginstyles as styles} from '../styles/Login';
@@ -12,20 +12,8 @@ export default function Login({navigation}) {
     <ImageBackground
       source={require('../assets/Background.jpeg')}
       resizeMode="cover"
-      style={{
-        height: '100%',
-        flex: 1,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: -1,
-      }}>
+      style={styles.backgroundImage}>
       <View style={styles.container}>
-        <View style={styles.logo}>
-          {/* <Image source={require('../assets/logo.png')} /> */}
-        </View>
         <View>
           <Text variant="headlineLarge">GeoMedLink</Text>
           <Text variant="titleSmall">
@@ -57,7 +45,7 @@ export default function Login({navigation}) {
                 style={{width: 180}}
                 mode="elevated"
                 onPress={() => {
-                  pass;
+                  navigate('Registration');
                 }}>
                 Register
               </Button>

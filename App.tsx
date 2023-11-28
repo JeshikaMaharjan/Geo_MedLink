@@ -10,6 +10,7 @@ import {theme} from './styles/Theme';
 import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Dashboard from './components/Dashboard';
+import Registration from './components/Register';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -39,6 +40,7 @@ function App() {
                   name="ForgotPassword"
                   component={ForgotPassword}
                 />
+                <Stack.Screen name="Registration" component={Registration} />
               </Stack.Group>
             ) : (
               <Stack.Group>

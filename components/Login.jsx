@@ -2,12 +2,25 @@ import {ImageBackground, View} from 'react-native';
 import {useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
 import {Loginstyles as styles} from '../styles/Login';
+import axios from 'axios';
 
 export default function Login({navigation}) {
   const navigate = navigation.navigate;
-
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const baseURL = '192.168.1.71:3000';
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+  async function postData() {
+    const data = {
+      userName: username,
+      password: password,
+    };
+    try {
+      const res = await axios.post(`http://${baseURL}/api/login`, data);
+      console.log(res);
+    } catch (error) {
+      console.log(error?.response?.data);
+    }
+  }
   return (
     <ImageBackground
       source={require('../assets/Background.jpeg')}
@@ -22,9 +35,9 @@ export default function Login({navigation}) {
         </View>
         <View style={styles.formInput}>
           <TextInput
-            label="Email"
-            value={email}
-            onChangeText={email => setEmail(email)}
+            label="Username"
+            value={username}
+            onChangeText={username => setUsername(username)}
           />
           <TextInput
             label="Password"
@@ -37,7 +50,7 @@ export default function Login({navigation}) {
                 mode="elevated"
                 style={{width: 180}}
                 onPress={() => {
-                  pass;
+                  postData();
                 }}>
                 Log In
               </Button>

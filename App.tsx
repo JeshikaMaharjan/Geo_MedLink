@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator();
 function App() {
   const paperTheme = {...MD3LightTheme, colors: theme.light};
 
-  const isNotSignedIn = false;
+  const isNotSignedIn = true;
   // Dashboard acces garna change isNotSignedIn to false
   return (
     <PaperProvider theme={paperTheme}>

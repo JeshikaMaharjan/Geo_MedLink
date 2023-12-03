@@ -7,7 +7,7 @@ import OrgRegistration from './OrgRegistration';
 
 function Registration({navigation}) {
   const navigate = navigation.navigate;
-  const [active, setActive] = useState('org');
+  const [active, setActive] = useState('user');
 
   return (
     <ImageBackground
@@ -40,7 +40,7 @@ function Registration({navigation}) {
                   : styles.titleNoHighlight
               }
               onPress={() => {
-                setActive('org');
+                setActive('organization');
               }}>
               ORGANIZATION
             </Text>

@@ -1,11 +1,12 @@
-import {useState} from 'react';
-import {View, TextInput} from 'react-native';
-import {Button, RadioButton, Text} from 'react-native-paper';
+import {useContext, useState} from 'react';
+import {View, Image} from 'react-native';
+import {Button, RadioButton, Text, TextInput} from 'react-native-paper';
 import axios from 'axios';
+import {GlobalContext} from '../context/GlobalStates';
+import {UserRegisterstyles} from '../styles/UserRegistration';
 
 export default function ModalView() {
-  const baseURL = '192.168.1.71:3000';
-
+  const [{baseURL}] = useContext(GlobalContext);
   const [bloodGroup, setBloodGroup] = useState('');
   const [NMC, setNMC] = useState('');
   const [degree, setDegree] = useState('');
@@ -14,38 +15,45 @@ export default function ModalView() {
   return (
     <View>
       {ModalNumber == 0 && (
-        <View>
+        <View style={UserRegisterstyles.modalInnerContainer}>
+          <Image
+            source={require('../assets/done.png')}
+            style={{width: 70, height: 70}}
+          />
           <Text>Registered Successfully.</Text>
-          <Text
+          <Button
+            mode="elevated"
             onPress={() => {
               setModalNumber(1);
             }}>
             Next
-          </Text>
+          </Button>
         </View>
       )}
       {ModalNumber == 1 && (
-        <View>
+        <View style={UserRegisterstyles.modalInnerContainer}>
           <Text>Do you want to be a Donor?</Text>
 
-          <Text
+          <Button
+            mode="elevated"
             onPress={() => {
               setModalNumber(2);
             }}>
             Yes
-          </Text>
+          </Button>
 
-          <Text
+          <Button
+            mode="elevated"
             onPress={() => {
               setModalNumber(3);
             }}>
             Skip
-          </Text>
+          </Button>
         </View>
       )}
 
       {ModalNumber == 2 && (
-        <View>
+        <View style={UserRegisterstyles.modalInnerContainer}>
           <Text>Select Blood Group</Text>
 
           <View>
@@ -65,6 +73,7 @@ export default function ModalView() {
             </RadioButton.Group>
           </View>
           <Button
+            mode="elevated"
             onPress={() => {
               axios
                 // .put(`http://${baseURL}/api/donor/activate/${userName}`, {
@@ -86,49 +95,52 @@ export default function ModalView() {
       )}
 
       {ModalNumber == 3 && (
-        <View>
+        <View style={UserRegisterstyles.modalInnerContainer}>
           <Text>Do you want to register as Doctor?</Text>
 
-          <Text
+          <Button
+            mode="elevated"
             onPress={() => {
               setModalNumber(4);
             }}>
             Yes
-          </Text>
+          </Button>
 
-          <Text
+          <Button
+            mode="elevated"
             onPress={() => {
               setModalNumber(0);
               setModalVisible(false);
               navigation.navigate('Registration');
             }}>
             Skip
-          </Text>
+          </Button>
         </View>
       )}
 
       {ModalNumber == 4 && (
-        <View>
+        <View style={UserRegisterstyles.modalInnerContainer}>
           <Text>Enter valid NMC Number</Text>
           <TextInput
             mode="outlined"
             value={NMC}
+            style={{width: 150}}
             onChangeText={text => {
               setNMC(text);
             }}
-            label="NMC number"
           />
           <Text>Enter Degree</Text>
           <TextInput
             mode="outlined"
+            style={{width: 150}}
             value={degree}
             onChangeText={text => {
               setDegree(text);
             }}
-            label="Degree"
           />
 
-          <Text
+          <Button
+            mode="elevated"
             onPress={() => {
               axios
                 .post(`http://${baseURL}/api/register/doctor`, {
@@ -146,7 +158,7 @@ export default function ModalView() {
               //   navigation.navigate('Registration');
             }}>
             Done
-          </Text>
+          </Button>
         </View>
       )}
     </View>

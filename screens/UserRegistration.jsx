@@ -1,4 +1,4 @@
-import {View, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {View, ScrollView, KeyboardAvoidingView, Image} from 'react-native';
 import {useContext, useState} from 'react';
 import {
   Button,
@@ -7,6 +7,8 @@ import {
   Modal,
   Portal,
   RadioButton,
+  Card,
+  HelperText,
 } from 'react-native-paper';
 import {UserRegisterstyles} from '../styles/UserRegistration';
 import ModalView from './ModalView';
@@ -23,7 +25,7 @@ function UserRegistration({navigation}) {
   const [address, setAddress] = useState(null);
   const [email, setEmail] = useState(null);
   const [phoneNumber, setPhone] = useState(null);
-  // const [gender, setGender] = useState(null);
+  const [gender, setGender] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isError, setisError] = useState(false);
   const [error, setError] = useState();
@@ -109,7 +111,7 @@ function UserRegistration({navigation}) {
           <TextInput
             dense="true"
             mode="outlined"
-            label="Firstname"
+            label="Firstname*"
             value={firstName}
             onChangeText={text => {
               setFirstName(text);
@@ -131,7 +133,7 @@ function UserRegistration({navigation}) {
           <TextInput
             mode="outlined"
             dense="true"
-            label="Lastname"
+            label="Lastname*"
             value={lastName}
             onChangeText={text => {
               setLastName(text);
@@ -143,7 +145,7 @@ function UserRegistration({navigation}) {
           <TextInput
             mode="outlined"
             dense="true"
-            label="Username"
+            label="Username*"
             value={userName}
             onChangeText={text => {
               setUserName(text);
@@ -154,42 +156,55 @@ function UserRegistration({navigation}) {
           <TextInput
             mode="outlined"
             dense="true"
-            label="Password"
+            label="Email Address*"
+            value={email}
+            onChangeText={text => {
+              setEmail(text);
+            }}
+            placeholder="example@gmail.com"
+          />
+          <HelperText type="info" visible={true}>
+            Please match the email format as shown. Enter valid email.
+          </HelperText>
+        </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Password*"
             value={password}
             onChangeText={text => {
               setPassword(text);
             }}
+            placeholder="Set your password"
           />
+          <HelperText type="info" visible={true}>
+            Password must contain one uppercase, one lowercase and min length is
+            8.
+          </HelperText>
         </View>
-        {/* <View>
-            <Text>Gender</Text>
-            <RadioButton.Group
-              onValueChange={value => {
-                setGender(value);
-              }}
-              value={gender}>
-              <RadioButton.Item label="Male" value="male" />
-              <RadioButton.Item label="Female" value="female" />
-            </RadioButton.Group>
-            {console.log(gender)}
-          </View> */}
+
+        {/* <Text variant="bodyLarge">Gender</Text>
+        <Card
+          mode="outlined"
+          style={{
+            backgroundColor: 'white',
+          }}>
+          <RadioButton.Group
+            onValueChange={value => {
+              setGender(value);
+            }}
+            value={gender}>
+            <RadioButton.Item label="Male" value="male" />
+            <RadioButton.Item label="Female" value="female" />
+          </RadioButton.Group>
+        </Card> */}
 
         <View>
           <TextInput
             mode="outlined"
             dense="true"
-            label="Email Address"
-            value={email}
-            onChangeText={text => {
-              setEmail(text);
-            }}
-          />
-        </View>
-        <View>
-          <TextInput
-            mode="outlined"
-            dense="true"
-            label="Current Address"
+            label="Current Address*"
             value={address}
             onChangeText={text => {
               setAddress(text);
@@ -208,11 +223,6 @@ function UserRegistration({navigation}) {
           />
         </View>
 
-        {/* {isError && (
-            <View style={styles.error}>
-              <Text style={styles.errmsg}>{error}</Text>
-            </View>
-          )} */}
         <Button
           mode="elevated"
           style={{width: 200, alignSelf: 'center'}}
@@ -230,9 +240,15 @@ function UserRegistration({navigation}) {
           contentContainerStyle={UserRegisterstyles.modalContainer}>
           <View>
             {isError ? (
-              <View>
-                <Text>{error}</Text>
-                <Text onPress={() => setModalVisible(false)}>Okay</Text>
+              <View style={UserRegisterstyles.modalInnerContainer}>
+                <Image
+                  source={require('../assets/warning.png')}
+                  style={{width: 70, height: 70}}
+                />
+                <Text style={{color: 'red'}}>{error}</Text>
+                <Button mode="elevated" onPress={() => setModalVisible(false)}>
+                  Okay
+                </Button>
               </View>
             ) : (
               <ModalView />

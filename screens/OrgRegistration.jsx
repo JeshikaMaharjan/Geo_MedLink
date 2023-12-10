@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, Image} from 'react-native';
 import {
   Button,
   TextInput,
@@ -7,13 +7,19 @@ import {
   RadioButton,
   Divider,
   Card,
+  Tooltip,
+  HelperText,
+  Chip,
+  Portal,
+  Modal,
 } from 'react-native-paper';
 import {OrgRegisterstyles} from '../styles/OrgRegistration';
 
 import axios from 'axios';
 import {GlobalContext} from '../context/GlobalStates';
+import ModalView from './ModalView';
 
-function OrgRegistration({navigation}) {
+export default function OrgRegistration({navigation}) {
   const [{baseURL}] = useContext(GlobalContext);
   const [organizationName, setorgName] = useState();
   const [address, setAddress] = useState();
@@ -23,7 +29,8 @@ function OrgRegistration({navigation}) {
   const [bio, setBio] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [orgtype, setOrgType] = useState();
-  const [services, setServices] = useState([]);
+  // const [services, setServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
 
   const [error, setError] = useState('');
   const [isError, setisError] = useState(false);
@@ -37,7 +44,7 @@ function OrgRegistration({navigation}) {
       address: address,
       email: email,
       type: 2,
-      services: [1, 2],
+      services: selectedServices,
       phoneNumber: parseInt(phoneNumber),
       userName: userName,
       password: password,
@@ -98,8 +105,18 @@ function OrgRegistration({navigation}) {
     //   console.log(isError);
     //   return;
     // }
+
     postData();
   }
+  const toggleService = service => {
+    if (selectedServices.includes(service)) {
+      // If the service is already selected, remove it
+      setSelectedServices(selectedServices.filter(s => s !== service));
+    } else {
+      // If the service is not selected, add it
+      setSelectedServices([...selectedServices, service]);
+    }
+  };
 
   return (
     <View>
@@ -112,7 +129,19 @@ function OrgRegistration({navigation}) {
             onChangeText={text => {
               setorgName(text);
             }}
-            label="Organization Name"
+            label="Organization Name*"
+          />
+        </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            value={userName}
+            onChangeText={text => {
+              setUserName(text);
+            }}
+            label="User Name*"
+            placeholder="Set your username"
           />
         </View>
 
@@ -124,21 +153,14 @@ function OrgRegistration({navigation}) {
             onChangeText={text => {
               setEmail(text);
             }}
-            label="Email Address"
+            label="Email Address*"
             placeholder="example@gmail.com"
           />
+          <HelperText type="info" visible={true}>
+            Please match the email format as shown. Enter valid email.
+          </HelperText>
         </View>
-        <View>
-          <TextInput
-            mode="outlined"
-            dense="true"
-            value={userName}
-            onChangeText={text => {
-              setUserName(text);
-            }}
-            label="User Name"
-          />
-        </View>
+
         <View>
           <TextInput
             mode="outlined"
@@ -147,7 +169,23 @@ function OrgRegistration({navigation}) {
             onChangeText={text => {
               setPassword(text);
             }}
-            label="Password"
+            label="Password*"
+            placeholder="Set your password"
+          />
+          <HelperText type="info" visible={true}>
+            Password must contain one uppercase, one lowercase and min length is
+            8.
+          </HelperText>
+        </View>
+        <View>
+          <TextInput
+            value={address}
+            mode="outlined"
+            dense="true"
+            onChangeText={text => {
+              setAddress(text);
+            }}
+            label="Current Address*"
           />
         </View>
         <View>
@@ -174,18 +212,8 @@ function OrgRegistration({navigation}) {
             placeholder="Write about yourself"
           />
         </View>
-        <View>
-          <TextInput
-            value={address}
-            mode="outlined"
-            dense="true"
-            onChangeText={text => {
-              setAddress(text);
-            }}
-            label="Current Address"
-          />
-        </View>
-        <Text variant="bodyLarge">Type of Organization</Text>
+
+        <Text variant="bodyLarge">Type of Organization*</Text>
         <Card
           mode="outlined"
           style={{
@@ -201,11 +229,22 @@ function OrgRegistration({navigation}) {
             <RadioButton.Item label="Ambulance" value="3" />
           </RadioButton.Group>
         </Card>
-        {/* {isError && (
-            <View style={styles.error}>
-              <Text style={styles.errmsg}>{error}</Text>
-            </View>
-          )} */}
+        <Text>Select the services you provide.</Text>
+        <View style={OrgRegisterstyles.ChipContainer}>
+          <Chip
+            selected={selectedServices.includes(1)}
+            onPress={() => toggleService(1)}
+            style={OrgRegisterstyles.chip}>
+            MRI
+          </Chip>
+          <Chip
+            selected={selectedServices.includes(2)}
+            onPress={() => toggleService(2)}
+            style={OrgRegisterstyles.chip}>
+            Pathology
+          </Chip>
+        </View>
+
         <Button
           mode="elevated"
           style={{width: 200, alignSelf: 'center'}}
@@ -213,7 +252,43 @@ function OrgRegistration({navigation}) {
           Submit
         </Button>
       </View>
+      <Portal>
+        <Modal
+          visible={isModalVisible}
+          onDismiss={() => {
+            setModalVisible(false);
+          }}
+          contentContainerStyle={OrgRegisterstyles.modalContainer}>
+          <View>
+            {isError ? (
+              <View style={OrgRegisterstyles.modalInnerContainer}>
+                <Image
+                  source={require('../assets/warning.png')}
+                  style={{width: 70, height: 70}}
+                />
+                <Text style={{color: 'red'}}>{error}</Text>
+                <Button mode="elevated" onPress={() => setModalVisible(false)}>
+                  Okay
+                </Button>
+              </View>
+            ) : (
+              <View style={OrgRegisterstyles.modalInnerContainer}>
+                <Image
+                  source={require('../assets/done.png')}
+                  style={{width: 70, height: 70}}
+                />
+                <Text>Registered Successfully.</Text>
+                <Button
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}>
+                  Okay
+                </Button>
+              </View>
+            )}
+          </View>
+        </Modal>
+      </Portal>
     </View>
   );
 }
-export default OrgRegistration;

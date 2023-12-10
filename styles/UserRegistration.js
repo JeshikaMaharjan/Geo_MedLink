@@ -13,5 +13,9 @@ const UserRegisterstyles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 30,
   },
+  modalInnerContainer: {
+    gap: 5,
+    alignItems: 'center',
+  },
 });
 export {UserRegisterstyles};

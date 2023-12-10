@@ -1,4 +1,4 @@
-import {ImageBackground, View} from 'react-native';
+import {ImageBackground, KeyboardAvoidingView, View} from 'react-native';
 import {useContext, useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
 import {Loginstyles as styles} from '../styles/Login';
@@ -77,12 +77,6 @@ export default function Login({navigation}) {
             </Button>
           </View>
         </View>
-        {/* <Button
-          title="Dashboard"
-          onPress={() => {
-            navigate('Dashboard');
-          }}
-        /> */}
       </View>
     </ImageBackground>
   );

@@ -2,7 +2,7 @@ const {StyleSheet} = require('react-native');
 
 const Registerstyles = StyleSheet.create({
   card: {
-    height: '100%',
+    height: '97%',
     overflow: 'scroll',
   },
   backgroundImage: {

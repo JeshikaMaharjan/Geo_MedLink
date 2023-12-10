@@ -12,6 +12,19 @@ const OrgRegisterstyles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     borderRadius: 30,
+    justifyContent: 'center',
+  },
+  modalInnerContainer: {
+    gap: 5,
+    alignItems: 'center',
+  },
+  ChipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 16,
+  },
+  chip: {
+    margin: 4,
   },
 });
 export {OrgRegisterstyles};

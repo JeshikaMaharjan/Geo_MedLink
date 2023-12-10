@@ -3,11 +3,10 @@ import Geolocation from 'react-native-geolocation-service';
 import MapboxGL from '@rnmapbox/maps';
 import {useEffect, useState} from 'react';
 // import Hooks from '../custom_hooks/hooks';
+import {MAPBOX_TOKEN} from '../../constants/constants';
 
 MapboxGL.setWellKnownTileServer('Mapbox');
-MapboxGL.setAccessToken(
-  'pk.eyJ1Ijoia2NwcmVtIiwiYSI6ImNscGp0cjN4ZzAyeHoyanBjcTg1cHg4Z3oifQ.mF_otRgUhIMfKYdMIouEbg',
-);
+MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
 const requestLocationPermission = async () => {

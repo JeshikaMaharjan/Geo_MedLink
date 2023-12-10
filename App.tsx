@@ -11,6 +11,7 @@ import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Dashboard from './components/Dashboard';
 import Registration from './components/Register';
+import GlobalContextProvider from './context/GlobalStates';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -19,38 +20,40 @@ function App() {
   const isNotSignedIn = true;
   // Dashboard acces garna change isNotSignedIn to false
   return (
-    <PaperProvider theme={paperTheme}>
-      <NavigationContainer>
-        <SafeAreaProvider>
-          <Stack.Navigator
-            initialRouteName="Login"
-            screenOptions={{
-              headerShown: false,
-            }}>
-            {isNotSignedIn ? (
-              <Stack.Group>
-                <Stack.Screen
-                  name="Login"
-                  component={Login}
-                  options={{
-                    title: 'Login Screen',
-                  }}
-                />
-                <Stack.Screen
-                  name="ForgotPassword"
-                  component={ForgotPassword}
-                />
-                <Stack.Screen name="Registration" component={Registration} />
-              </Stack.Group>
-            ) : (
-              <Stack.Group>
-                <Stack.Screen name="Dashboard" component={Dashboard} />
-              </Stack.Group>
-            )}
-          </Stack.Navigator>
-        </SafeAreaProvider>
-      </NavigationContainer>
-    </PaperProvider>
+    <GlobalContextProvider>
+      <PaperProvider theme={paperTheme}>
+        <NavigationContainer>
+          <SafeAreaProvider>
+            <Stack.Navigator
+              initialRouteName="Login"
+              screenOptions={{
+                headerShown: false,
+              }}>
+              {isNotSignedIn ? (
+                <Stack.Group>
+                  <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{
+                      title: 'Login Screen',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ForgotPassword"
+                    component={ForgotPassword}
+                  />
+                  <Stack.Screen name="Registration" component={Registration} />
+                </Stack.Group>
+              ) : (
+                <Stack.Group>
+                  <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Group>
+              )}
+            </Stack.Navigator>
+          </SafeAreaProvider>
+        </NavigationContainer>
+      </PaperProvider>
+    </GlobalContextProvider>
   );
 }
 

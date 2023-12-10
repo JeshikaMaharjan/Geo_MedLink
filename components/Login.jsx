@@ -1,12 +1,15 @@
 import {ImageBackground, View} from 'react-native';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
 import {Loginstyles as styles} from '../styles/Login';
 import axios from 'axios';
+import {GlobalContext} from '../context/GlobalStates';
 
 export default function Login({navigation}) {
+  const [{baseURL, userName, token}, {setToken, setuserName}] =
+    useContext(GlobalContext);
+
   const navigate = navigation.navigate;
-  const baseURL = '192.168.1.71:3000';
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   async function postData() {

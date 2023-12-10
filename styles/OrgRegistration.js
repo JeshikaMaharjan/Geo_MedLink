@@ -1,6 +1,6 @@
 const {StyleSheet} = require('react-native');
 
-const UserRegisterstyles = StyleSheet.create({
+const OrgRegisterstyles = StyleSheet.create({
   container: {
     gap: 10,
     padding: 20,
@@ -14,4 +14,4 @@ const UserRegisterstyles = StyleSheet.create({
     borderRadius: 30,
   },
 });
-export {UserRegisterstyles};
+export {OrgRegisterstyles};

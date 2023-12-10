@@ -5,7 +5,7 @@ const Loginstyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    gap: 20,
+    gap: 10,
     marginLeft: 20,
     marginRight: 20,
     paddingTop: 290,

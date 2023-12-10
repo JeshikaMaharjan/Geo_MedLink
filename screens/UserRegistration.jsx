@@ -1,5 +1,5 @@
-import {View, ScrollView} from 'react-native';
-import {useState} from 'react';
+import {View, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {useContext, useState} from 'react';
 import {
   Button,
   TextInput,
@@ -11,9 +11,10 @@ import {
 import {UserRegisterstyles} from '../styles/UserRegistration';
 import ModalView from './ModalView';
 import axios from 'axios';
+import {GlobalContext} from '../context/GlobalStates';
 
 function UserRegistration({navigation}) {
-  const baseURL = '192.168.1.71:3000';
+  const [{baseURL}] = useContext(GlobalContext);
   const [firstName, setFirstName] = useState(null);
   const [middleName, setMiddleName] = useState(null);
   const [lastName, setLastName] = useState(null);
@@ -28,7 +29,6 @@ function UserRegistration({navigation}) {
   const [error, setError] = useState();
 
   async function postData() {
-    console.log('((99999999');
     setisError(false);
     const data = {
       firstName: firstName,
@@ -45,7 +45,6 @@ function UserRegistration({navigation}) {
     console.log('d', data);
     try {
       const res = await axios.post(`http://${baseURL}/api/user`, data);
-      console.log('$$$$$$$$$$$$$');
       console.log(res.data);
 
       if (!res) throw new Error('error msg');
@@ -105,65 +104,64 @@ function UserRegistration({navigation}) {
 
   return (
     <View>
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <View style={UserRegisterstyles.container}>
         <View>
-          <View>
-            {/* <Text>First Name</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Firstname"
-              value={firstName}
-              onChangeText={text => {
-                setFirstName(text);
-              }}
-            />
-          </View>
-          <View>
-            {/* <Text>Middle Name</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Middlename"
-              value={middleName}
-              onChangeText={text => {
-                setMiddleName(text);
-              }}
-            />
-          </View>
-          <View>
-            {/* <Text>Last Name</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Lastname"
-              value={lastName}
-              onChangeText={text => {
-                setLastName(text);
-              }}
-            />
-          </View>
+          <TextInput
+            dense="true"
+            mode="outlined"
+            label="Firstname"
+            value={firstName}
+            onChangeText={text => {
+              setFirstName(text);
+            }}
+          />
+        </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Middlename"
+            value={middleName}
+            onChangeText={text => {
+              setMiddleName(text);
+            }}
+          />
+        </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Lastname"
+            value={lastName}
+            onChangeText={text => {
+              setLastName(text);
+            }}
+          />
+        </View>
 
-          <View>
-            {/* <Text>User Name</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Username"
-              value={userName}
-              onChangeText={text => {
-                setUserName(text);
-              }}
-            />
-          </View>
-          <View>
-            {/* <Text>Password</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Password"
-              value={password}
-              onChangeText={text => {
-                setPassword(text);
-              }}
-            />
-          </View>
-          {/* <View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Username"
+            value={userName}
+            onChangeText={text => {
+              setUserName(text);
+            }}
+          />
+        </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Password"
+            value={password}
+            onChangeText={text => {
+              setPassword(text);
+            }}
+          />
+        </View>
+        {/* <View>
             <Text>Gender</Text>
             <RadioButton.Group
               onValueChange={value => {
@@ -176,50 +174,52 @@ function UserRegistration({navigation}) {
             {console.log(gender)}
           </View> */}
 
-          <View>
-            {/* <Text>Email Address</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Email Address"
-              value={email}
-              onChangeText={text => {
-                setEmail(text);
-              }}
-            />
-          </View>
-          <View>
-            {/* <Text>Address</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Current Address"
-              value={address}
-              onChangeText={text => {
-                setAddress(text);
-              }}
-            />
-          </View>
-          <View>
-            {/* <Text>Phone Number</Text> */}
-            <TextInput
-              mode="outlined"
-              label="Enter Current Phone Number"
-              value={phoneNumber}
-              onChangeText={text => {
-                setPhone(text);
-              }}
-            />
-          </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Email Address"
+            value={email}
+            onChangeText={text => {
+              setEmail(text);
+            }}
+          />
+        </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Current Address"
+            value={address}
+            onChangeText={text => {
+              setAddress(text);
+            }}
+          />
+        </View>
+        <View>
+          <TextInput
+            mode="outlined"
+            dense="true"
+            label="Current Phone Number"
+            value={phoneNumber}
+            onChangeText={text => {
+              setPhone(text);
+            }}
+          />
+        </View>
 
-          {/* {isError && (
+        {/* {isError && (
             <View style={styles.error}>
               <Text style={styles.errmsg}>{error}</Text>
             </View>
           )} */}
-          <Button mode="elevated" onPress={handleSubmit}>
-            Submit
-          </Button>
-        </View>
-      </ScrollView>
+        <Button
+          mode="elevated"
+          style={{width: 200, alignSelf: 'center'}}
+          onPress={handleSubmit}>
+          Submit
+        </Button>
+      </View>
 
       <Portal>
         <Modal

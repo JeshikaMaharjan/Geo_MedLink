@@ -38,11 +38,13 @@ export default function Login({navigation}) {
         </View>
         <View style={styles.formInput}>
           <TextInput
+            mode="outlined"
             label="Username"
             value={username}
             onChangeText={username => setUsername(username)}
           />
           <TextInput
+            mode="outlined"
             label="Password"
             value={password}
             onChangeText={password => setPassword(password)}

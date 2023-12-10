@@ -2,7 +2,8 @@ const {StyleSheet} = require('react-native');
 
 const Registerstyles = StyleSheet.create({
   card: {
-    height: '95%',
+    height: '100%',
+    overflow: 'scroll',
   },
   backgroundImage: {
     height: '100%',
@@ -12,20 +13,7 @@ const Registerstyles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    // backgroundColor: 'red',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-
     padding: 10,
-  },
-  titleHighlight: {
-    borderWidth: 2,
-    padding: 5,
-    borderBottomLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  titleNoHighlight: {
-    textDecorationLine: 'none',
   },
 });
 export {Registerstyles};

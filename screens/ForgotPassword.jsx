@@ -14,19 +14,25 @@ export default function ForgotPassword({navigation}) {
       resizeMode="cover"
       style={styles.backgroundImage}>
       <View style={styles.container}>
-        <Text variant="headlineLarge" style={{alignSelf: 'center'}}>
-          {' '}
-          Forgot Password
-        </Text>
+        <View>
+          <Text variant="headlineLarge" style={{alignSelf: 'center'}}>
+            Forgot Password
+          </Text>
+          <Text style={{alignSelf: 'center'}}>
+            Please provide your correct information.
+          </Text>
+        </View>
 
         <View style={styles.formInput}>
           <TextInput
             label="Email"
+            mode="outlined"
             value={email}
             onChangeText={email => setEmail(email)}
           />
           <TextInput
             label="Username"
+            mode="outlined"
             value={username}
             onChangeText={username => setUsername(username)}
           />
@@ -40,7 +46,7 @@ export default function ForgotPassword({navigation}) {
               Submit
             </Button>
           </View>
-          <Text variant="titleSmall" style={{alignSelf: 'center'}}>
+          <Text variant="titleMedium" style={{alignSelf: 'center'}}>
             Please check your email for further details.
           </Text>
         </View>

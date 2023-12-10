@@ -3,14 +3,13 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {ImageBackground, View, useColorScheme} from 'react-native';
 import {MD3LightTheme, PaperProvider} from 'react-native-paper';
 
-import {theme} from './styles/Theme';
-import Login from './components/Login';
-import ForgotPassword from './components/ForgotPassword';
-import Dashboard from './components/Dashboard';
-import Registration from './components/Register';
+import {theme} from './constants/Theme';
+import Login from './screens/Login';
+import ForgotPassword from './screens/ForgotPassword';
+import Dashboard from './screens/Dashboard';
+import Registration from './screens/Register';
 import GlobalContextProvider from './context/GlobalStates';
 
 const Stack = createNativeStackNavigator();

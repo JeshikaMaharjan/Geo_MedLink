@@ -8,6 +8,7 @@ const useStatesAndActions = () => {
   const [userName, setuserName] = useState('hh');
   const [userId, setUserId] = useState('');
   const [isModalVisible, setModalVisible] = useState(true);
+  const [location, setLocation] = useState(false);
 
   const state = {
     baseURL,
@@ -15,12 +16,14 @@ const useStatesAndActions = () => {
     userName,
     userId,
     isModalVisible,
+    location,
   };
   const actions = {
     setToken,
     setuserName,
     setUserId,
     setModalVisible,
+    setLocation,
   };
   return [state, actions];
 };

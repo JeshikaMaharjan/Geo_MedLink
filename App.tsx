@@ -6,11 +6,12 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {MD3LightTheme, PaperProvider} from 'react-native-paper';
 
 import {theme} from './constants/Theme';
-import Login from './screens/Login';
-import ForgotPassword from './screens/ForgotPassword';
-import Dashboard from './screens/Dashboard';
-import Registration from './screens/Register';
+
 import GlobalContextProvider from './context/GlobalStates';
+import Login from './screens/Login/Login';
+import ForgotPassword from './screens/ForgotPassword/ForgotPassword';
+import Registration from './screens/Registration/Register';
+import Dashboard from './screens/Dashboard/Dashboard';
 
 const Stack = createNativeStackNavigator();
 function App() {

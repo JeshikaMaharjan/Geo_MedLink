@@ -1,7 +1,7 @@
 import {ImageBackground, View} from 'react-native';
 import {useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
-import {Loginstyles as styles} from '../styles/Login';
+import {Loginstyles as styles} from '../Login/style/Login';
 
 export default function ForgotPassword({navigation}) {
   const navigate = navigation.navigate;
@@ -10,7 +10,7 @@ export default function ForgotPassword({navigation}) {
   const [username, setUsername] = useState();
   return (
     <ImageBackground
-      source={require('../assets/Background.jpeg')}
+      source={require('../../assets/Background.jpeg')}
       resizeMode="cover"
       style={styles.backgroundImage}>
       <View style={styles.container}>

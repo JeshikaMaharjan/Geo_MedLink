@@ -5,25 +5,23 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {
-  Button,
   Card,
   Appbar,
   Text,
   SegmentedButtons,
   Divider,
 } from 'react-native-paper';
-import {Registerstyles as styles} from '../styles/Register';
-import {useState} from 'react';
-import UserRegistration from './UserRegistration';
-import OrgRegistration from './OrgRegistration';
+import {Registerstyles as styles} from './style/Register';
+import React, {useState} from 'react';
+import UserRegistration from './UserRegistration/UserRegistration';
+import OrgRegistration from './OrganizationRegistration/OrgRegistration';
 
 function Registration({navigation}) {
-  const navigate = navigation.navigate;
   const [active, setActive] = useState('user');
 
   return (
     <ImageBackground
-      source={require('../assets/Background.jpeg')}
+      source={require('../../assets/Background.jpeg')}
       resizeMode="cover"
       style={styles.backgroundImage}>
       <Appbar.Header mode="center-aligned">
@@ -56,8 +54,12 @@ function Registration({navigation}) {
             </View>
             <ScrollView keyboardShouldPersistTaps="handled">
               <View>
-                {active == 'user' && <UserRegistration />}
-                {active == 'organization' && <OrgRegistration />}
+                {active === 'user' && (
+                  <UserRegistration navigation={navigation} />
+                )}
+                {active === 'organization' && (
+                  <OrgRegistration navigation={navigation} />
+                )}
               </View>
             </ScrollView>
           </Card>

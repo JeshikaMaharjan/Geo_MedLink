@@ -1,6 +1,6 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Nearby from './Map/Nearby';
-import Map from './Map/Map';
+import Map from '../Map/Map';
+import Nearby from '../Map/Nearby';
 
 const Drawer = createDrawerNavigator();
 

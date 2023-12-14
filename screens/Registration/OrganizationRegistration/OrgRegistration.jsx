@@ -13,11 +13,11 @@ import {
   Portal,
   Modal,
 } from 'react-native-paper';
-import {OrgRegisterstyles} from '../styles/OrgRegistration';
+import {OrgRegisterstyles} from './style/OrgRegistration';
 
 import axios from 'axios';
-import {GlobalContext} from '../context/GlobalStates';
-import ModalView from './ModalView';
+import {GlobalContext} from '../../../context/GlobalStates';
+import ModalView from '../ModalView';
 
 export default function OrgRegistration({navigation}) {
   const [{baseURL}] = useContext(GlobalContext);
@@ -263,7 +263,7 @@ export default function OrgRegistration({navigation}) {
             {isError ? (
               <View style={OrgRegisterstyles.modalInnerContainer}>
                 <Image
-                  source={require('../assets/warning.png')}
+                  source={require('../../../assets/warning.png')}
                   style={{width: 70, height: 70}}
                 />
                 <Text style={{color: 'red'}}>{error}</Text>
@@ -274,7 +274,7 @@ export default function OrgRegistration({navigation}) {
             ) : (
               <View style={OrgRegisterstyles.modalInnerContainer}>
                 <Image
-                  source={require('../assets/done.png')}
+                  source={require('../../../assets/done.png')}
                   style={{width: 70, height: 70}}
                 />
                 <Text>Registered Successfully.</Text>

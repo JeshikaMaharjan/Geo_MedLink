@@ -1,23 +1,24 @@
-import {useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Image} from 'react-native';
 import {Button, RadioButton, Text, TextInput} from 'react-native-paper';
 import axios from 'axios';
-import {GlobalContext} from '../context/GlobalStates';
-import {UserRegisterstyles} from '../styles/UserRegistration';
+import {GlobalContext} from '../../context/GlobalStates';
+import {UserRegisterstyles} from './UserRegistration/style/UserRegistration';
 
-export default function ModalView() {
-  const [{baseURL}] = useContext(GlobalContext);
+export default function ModalView({navigation}) {
+  const [{baseURL}, {setModalVisible}] = useContext(GlobalContext);
   const [bloodGroup, setBloodGroup] = useState('');
   const [NMC, setNMC] = useState('');
   const [degree, setDegree] = useState('');
-  const [checked, setChecked] = useState('');
   const [ModalNumber, setModalNumber] = useState(0);
+  const navigate = navigation.navigate;
+
   return (
     <View>
       {ModalNumber == 0 && (
         <View style={UserRegisterstyles.modalInnerContainer}>
           <Image
-            source={require('../assets/done.png')}
+            source={require('../../assets/done.png')}
             style={{width: 70, height: 70}}
           />
           <Text>Registered Successfully.</Text>
@@ -109,9 +110,7 @@ export default function ModalView() {
           <Button
             mode="elevated"
             onPress={() => {
-              setModalNumber(0);
-              setModalVisible(false);
-              navigation.navigate('Registration');
+              setModalNumber(5);
             }}>
             Skip
           </Button>
@@ -154,10 +153,26 @@ export default function ModalView() {
                 .catch(err => {
                   console.log(err?.response?.data);
                 });
-              setModalNumber(0);
-              //   navigation.navigate('Registration');
+              setModalNumber(5);
             }}>
             Done
+          </Button>
+        </View>
+      )}
+      {ModalNumber == 5 && (
+        <View style={UserRegisterstyles.modalInnerContainer}>
+          <Image
+            source={require('../../assets/done.png')}
+            style={{width: 70, height: 70}}
+          />
+          <Text>Registered Successfully.</Text>
+          <Button
+            mode="elevated"
+            onPress={() => {
+              navigate('Registration');
+              setModalVisible(false);
+            }}>
+            Okay
           </Button>
         </View>
       )}

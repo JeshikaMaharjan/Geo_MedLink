@@ -10,13 +10,14 @@ import {
   Card,
   HelperText,
 } from 'react-native-paper';
-import {UserRegisterstyles} from '../styles/UserRegistration';
-import ModalView from './ModalView';
+import {UserRegisterstyles} from './style/UserRegistration';
+import ModalView from '../ModalView';
 import axios from 'axios';
-import {GlobalContext} from '../context/GlobalStates';
+import {GlobalContext} from '../../../context/GlobalStates';
 
 function UserRegistration({navigation}) {
-  const [{baseURL}] = useContext(GlobalContext);
+  const [{baseURL, isModalVisible}, {setModalVisible}] =
+    useContext(GlobalContext);
   const [firstName, setFirstName] = useState(null);
   const [middleName, setMiddleName] = useState(null);
   const [lastName, setLastName] = useState(null);
@@ -26,7 +27,7 @@ function UserRegistration({navigation}) {
   const [email, setEmail] = useState(null);
   const [phoneNumber, setPhone] = useState(null);
   const [gender, setGender] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
+  // const [isModalVisible, setModalVisible] = useState(true);
   const [isError, setisError] = useState(false);
   const [error, setError] = useState();
 
@@ -242,7 +243,7 @@ function UserRegistration({navigation}) {
             {isError ? (
               <View style={UserRegisterstyles.modalInnerContainer}>
                 <Image
-                  source={require('../assets/warning.png')}
+                  source={require('../../../assets/warning.png')}
                   style={{width: 70, height: 70}}
                 />
                 <Text style={{color: 'red'}}>{error}</Text>
@@ -251,7 +252,7 @@ function UserRegistration({navigation}) {
                 </Button>
               </View>
             ) : (
-              <ModalView />
+              <ModalView navigation={navigation} />
             )}
           </View>
         </Modal>

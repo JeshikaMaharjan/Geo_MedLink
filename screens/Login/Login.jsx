@@ -1,9 +1,9 @@
 import {ImageBackground, KeyboardAvoidingView, View} from 'react-native';
 import {useContext, useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
-import {Loginstyles as styles} from '../styles/Login';
+import {Loginstyles as styles} from './style/Login';
 import axios from 'axios';
-import {GlobalContext} from '../context/GlobalStates';
+import {GlobalContext} from '../../context/GlobalStates';
 
 export default function Login({navigation}) {
   const [{baseURL, userName, token}, {setToken, setuserName}] =
@@ -26,7 +26,7 @@ export default function Login({navigation}) {
   }
   return (
     <ImageBackground
-      source={require('../assets/Background.jpeg')}
+      source={require('../../assets/Background.jpeg')}
       resizeMode="cover"
       style={styles.backgroundImage}>
       <View style={styles.container}>

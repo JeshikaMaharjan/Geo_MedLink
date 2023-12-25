@@ -46,6 +46,7 @@ export default function Login({navigation}) {
           <TextInput
             mode="outlined"
             label="Password"
+            secureTextEntry
             value={password}
             onChangeText={password => setPassword(password)}
           />

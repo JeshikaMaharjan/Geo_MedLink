@@ -1,14 +1,24 @@
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Map from '../Map/Map';
 import Nearby from '../Map/Nearby';
+import messaging from '@react-native-firebase/messaging';
+import {Alert} from 'react-native';
+import {useEffect} from 'react';
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function Dashboard() {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Map" component={Map} />
-      {/* <Drawer.Screen name="Search" component={Nearby} /> */}
-    </Drawer.Navigator>
+    <Tab.Navigator>
+      <Tab.Screen name="Map" component={Map} />
+      {/* <Tab.Screen name="Search" component={Nearby} /> */}
+    </Tab.Navigator>
   );
 }

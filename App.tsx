@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -12,6 +12,9 @@ import Login from './screens/Login/Login';
 import ForgotPassword from './screens/ForgotPassword/ForgotPassword';
 import Registration from './screens/Registration/Register';
 import Dashboard from './screens/Dashboard/Dashboard';
+import Firebase from './screens/Firebase/test';
+
+import {getToken, notificationListener, requestUserPermission} from './utils';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -19,6 +22,12 @@ function App() {
 
   const isNotSignedIn = true;
   // Dashboard acces garna change isNotSignedIn to false
+
+  useEffect(() => {
+    requestUserPermission();
+    notificationListener();
+    // getToken();
+  });
   return (
     <GlobalContextProvider>
       <PaperProvider theme={paperTheme}>
@@ -26,6 +35,7 @@ function App() {
           <SafeAreaProvider>
             <Stack.Navigator
               initialRouteName="Login"
+              // initialRouteName="Firebase"
               screenOptions={{
                 headerShown: false,
               }}>
@@ -43,6 +53,7 @@ function App() {
                     component={ForgotPassword}
                   />
                   <Stack.Screen name="Registration" component={Registration} />
+                  <Stack.Screen name="Firebase" component={Firebase} />
                 </Stack.Group>
               ) : (
                 <Stack.Group>

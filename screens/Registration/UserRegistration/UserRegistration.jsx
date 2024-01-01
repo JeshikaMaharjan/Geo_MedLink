@@ -14,6 +14,7 @@ import {UserRegisterstyles} from './style/UserRegistration';
 import ModalView from '../ModalView';
 import axios from 'axios';
 import {GlobalContext} from '../../../context/GlobalStates';
+import {getToken} from '../../../utils';
 
 function UserRegistration({navigation}) {
   const [{baseURL, isModalVisible}, {setModalVisible}] =
@@ -28,10 +29,12 @@ function UserRegistration({navigation}) {
   const [phoneNumber, setPhone] = useState(null);
   const [gender, setGender] = useState(null);
   // const [isModalVisible, setModalVisible] = useState(true);
+  const [deviceToken, setDeviceToken] = useState();
   const [isError, setisError] = useState(false);
   const [error, setError] = useState();
 
   async function postData() {
+    console.log(deviceToken);
     setisError(false);
     const data = {
       firstName: firstName,
@@ -70,6 +73,9 @@ function UserRegistration({navigation}) {
   }
 
   function handleSubmit() {
+    const mobileToken = getToken();
+    setDeviceToken(mobileToken);
+
     if (
       !firstName ||
       !lastName ||

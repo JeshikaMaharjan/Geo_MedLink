@@ -4,6 +4,7 @@ import {Text, TextInput, Button} from 'react-native-paper';
 import {Loginstyles as styles} from './style/Login';
 import axios from 'axios';
 import {GlobalContext} from '../../context/GlobalStates';
+import {getToken} from '../../utils';
 
 export default function Login({navigation}) {
   const [{baseURL, userName, token}, {setToken, setuserName}] =
@@ -12,7 +13,10 @@ export default function Login({navigation}) {
   const navigate = navigation.navigate;
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [deviceToken, setDeviceToken] = useState();
   async function postData() {
+    console.log(deviceToken);
+    // logic for device token BE
     const data = {
       userName: username,
       password: password,
@@ -24,6 +28,11 @@ export default function Login({navigation}) {
       console.log(error?.response?.data);
     }
   }
+  const handleClick = () => {
+    const mobileToken = getToken();
+    setDeviceToken(mobileToken);
+    postData();
+  };
   return (
     <ImageBackground
       source={require('../../assets/Background.jpeg')}
@@ -55,9 +64,7 @@ export default function Login({navigation}) {
               <Button
                 mode="elevated"
                 style={{width: 180}}
-                onPress={() => {
-                  postData();
-                }}>
+                onPress={handleClick}>
                 Log In
               </Button>
               <Button

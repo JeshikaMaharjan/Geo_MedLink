@@ -33,7 +33,7 @@ export default function Map() {
   useEffect(() => {
     getLocation();
   }, []);
-  // console.log('$$$', location);
+  console.log('$$$', location);
 
   return (
     <View style={styles.page}>
@@ -45,10 +45,10 @@ export default function Map() {
           </View>
         ) : (
           <>
-            {/* <View style={styles.map}>
+            <View style={styles.map}>
               <Text>djjddj</Text>
-            </View> */}
-            <MapboxGL.MapView style={styles.map}>
+            </View>
+            {/* <MapboxGL.MapView style={styles.map}>
               <MapboxGL.Camera
                 zoomLevel={15}
                 centerCoordinate={[
@@ -65,7 +65,7 @@ export default function Map() {
                   location.coords.latitude,
                 ]}
               />
-            </MapboxGL.MapView>
+            </MapboxGL.MapView> */}
             <View style={styles.bottomView}>
               <View style={styles.searchBoxView}>
                 <Searchbar

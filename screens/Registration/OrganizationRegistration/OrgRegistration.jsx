@@ -18,6 +18,7 @@ import {OrgRegisterstyles} from './style/OrgRegistration';
 import axios from 'axios';
 import {GlobalContext} from '../../../context/GlobalStates';
 import ModalView from '../ModalView';
+import {getToken} from '../../../utils';
 
 export default function OrgRegistration({navigation}) {
   const [{baseURL}] = useContext(GlobalContext);
@@ -31,12 +32,15 @@ export default function OrgRegistration({navigation}) {
   const [orgtype, setOrgType] = useState();
   // const [services, setServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
+  const [deviceToken, setDeviceToken] = useState();
 
   const [error, setError] = useState('');
   const [isError, setisError] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
   async function postData() {
+    console.log(deviceToken);
+
     // setisError(false);
     const data = {
       name: organizationName,
@@ -73,6 +77,9 @@ export default function OrgRegistration({navigation}) {
     setModalVisible(true);
   }
   function handleSubmit() {
+    const mobileToken = getToken();
+    setDeviceToken(mobileToken);
+
     // if (
     //   !organizationName ||
     //   !userName ||

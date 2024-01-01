@@ -9,6 +9,7 @@ const useStatesAndActions = () => {
   const [userId, setUserId] = useState('');
   const [isModalVisible, setModalVisible] = useState(true);
   const [location, setLocation] = useState(false);
+  const [deviceToken, setDeviceToken] = useState();
 
   const state = {
     baseURL,
@@ -17,6 +18,7 @@ const useStatesAndActions = () => {
     userId,
     isModalVisible,
     location,
+    deviceToken,
   };
   const actions = {
     setToken,
@@ -24,6 +26,7 @@ const useStatesAndActions = () => {
     setUserId,
     setModalVisible,
     setLocation,
+    setDeviceToken,
   };
   return [state, actions];
 };

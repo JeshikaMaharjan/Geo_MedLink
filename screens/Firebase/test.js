@@ -5,18 +5,15 @@ import {firebase} from '@react-native-firebase/database';
 const reference = firebase
   .app()
   .database(
-    'https://fir-geomedlink-default-rtdb.asia-southeast1.firebasedatabase.app',
+    'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/',
   )
   .ref('Ambulance');
 console.log('r', reference);
 
 const Firebase = () => {
   const [state, setState] = useState();
-
-  const intervalId = setInterval(() => {
-    const currentLocation = {latitude: 27.7053, longitude: 85.3188};
-    reference.set(currentLocation);
-  }, 10000);
+  const currentLocation = {userId: 1, latitude: 27.7053, longitude: 85.39};
+  reference.set(currentLocation);
 
   reference.on('value', snapshot => {
     setState(snapshot.val());

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "704683264320",
-    "project_id": "fir-geomedlink",
-    "storage_bucket": "fir-geomedlink.appspot.com"
+    "project_number": "1052719085338",
+    "project_id": "geomedlink-a59fa",
+    "storage_bucket": "geomedlink-a59fa.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:704683264320:android:0111da0a9b9e159f1ad2a5",
+        "mobilesdk_app_id": "1:1052719085338:android:27e5184eacc4430bbfdea3",
         "android_client_info": {
           "package_name": "com.geo_medlink"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC1JI5emsO2ntrk7VTokEAaXe9mcHcBeZ0"
+          "current_key": "AIzaSyAuVd9zyBiNHExxCsxwosYRCQTkRroed00"
         }
       ],
       "services": {

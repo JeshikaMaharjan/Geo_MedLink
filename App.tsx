@@ -20,13 +20,13 @@ const Stack = createNativeStackNavigator();
 function App() {
   const paperTheme = {...MD3LightTheme, colors: theme.light};
 
-  const isNotSignedIn = true;
+  const isNotSignedIn = false;
   // Dashboard acces garna change isNotSignedIn to false
 
   useEffect(() => {
     requestUserPermission();
     notificationListener();
-    // getToken();
+    getToken();
   });
   return (
     <GlobalContextProvider>
@@ -34,8 +34,8 @@ function App() {
         <NavigationContainer>
           <SafeAreaProvider>
             <Stack.Navigator
-              initialRouteName="Login"
-              // initialRouteName="Firebase"
+              // initialRouteName="Login"
+              initialRouteName="Firebase"
               screenOptions={{
                 headerShown: false,
               }}>

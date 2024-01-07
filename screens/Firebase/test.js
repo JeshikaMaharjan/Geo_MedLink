@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Text, View} from 'react-native';
 import {firebase} from '@react-native-firebase/database';
+import {GlobalContext} from '../../context/GlobalStates';
 
 const reference = firebase
   .app()
@@ -12,6 +13,8 @@ console.log('r', reference);
 
 const Firebase = () => {
   const [state, setState] = useState();
+  const [{location}] = useContext(GlobalContext);
+  // ambulance le request accept garepaxi eta yoo location firebase ma halnu parxa.
   const currentLocation = {userId: 1, latitude: 27.7053, longitude: 85.39};
   reference.set(currentLocation);
 

@@ -61,5 +61,16 @@ const Mapstyles = StyleSheet.create({
     borderWidth: 1,
     padding: 5,
   },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 30,
+  },
+  modalInnerContainer: {
+    gap: 15,
+    alignItems: 'center',
+  },
 });
 export {Mapstyles};

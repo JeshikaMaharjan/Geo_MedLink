@@ -3,19 +3,20 @@ import MapboxGL from '@rnmapbox/maps';
 import React, {useContext, useEffect} from 'react';
 import {Mapstyles as styles} from './style/Map';
 import {MAPBOX_TOKEN} from '../../constants/constants';
-import {ActivityIndicator, Text} from 'react-native-paper';
+import {ActivityIndicator, Portal, Text} from 'react-native-paper';
 import {GlobalContext} from '../../context/GlobalStates';
 import useHelperFunctions from './utils/helper';
 import MapActions from './MapActions';
+import InteractionModal from './InteractionModal';
 
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
 export default function Map() {
-  const [{location}, {setLocation}] = useContext(GlobalContext);
+  const [{location, isInteractionModalVisible}, {setLocation}] =
+    useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
-
   useEffect(() => {
     getLocation();
   }, []);
@@ -56,6 +57,9 @@ export default function Map() {
           </>
         )}
       </View>
+      <Portal>
+        <InteractionModal />
+      </Portal>
     </View>
   );
 }

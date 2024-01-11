@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View} from 'react-native';
 import {Button, Card, Searchbar, Text} from 'react-native-paper';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Mapstyles as styles} from './style/Map';
 import useHelperFunctions from './utils/helper';
+import {GlobalContext} from '../../context/GlobalStates';
 
 const MapActions = () => {
+  const [, {setIsInteractionModalVisible}] = useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
   const [searchText, setSearchText] = useState('');
 
@@ -44,11 +46,9 @@ const MapActions = () => {
         </View>
         <Card style={styles.buttonContainer}>
           <Button
-
-          // onPress={() => {
-          //   pass;
-          // }}
-          >
+            onPress={() => {
+              setIsInteractionModalVisible(true);
+            }}>
             Send Request
           </Button>
         </Card>

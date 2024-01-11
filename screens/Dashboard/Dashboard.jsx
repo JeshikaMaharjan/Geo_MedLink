@@ -3,22 +3,33 @@ import Map from '../Map/Map';
 import Nearby from '../Map/Nearby';
 import messaging from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
-import {useEffect} from 'react';
+import {useContext, useEffect} from 'react';
+import {GlobalContext} from '../../context/GlobalStates';
+import InteractionModal from '../Map/InteractionModal';
 
 const Tab = createBottomTabNavigator();
 
 export default function Dashboard() {
+  const [, {setIsIncoming, setIncomingRequest, setIsInteractionModalVisible}] =
+    useContext(GlobalContext);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      setIsIncoming(true);
+      // setIncomingRequest(JSON.stringify(remoteMessage));
+      // setIncomingRequest(remoteMessage.notification.body);
+      setIncomingRequest(remoteMessage.data.body);
+      setIsInteractionModalVisible(true);
     });
 
     return unsubscribe;
   }, []);
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Map" component={Map} />
-      {/* <Tab.Screen name="Search" component={Nearby} /> */}
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator>
+        <Tab.Screen name="Map" component={Map} />
+        {/* <Tab.Screen name="Search" component={Nearby} /> */}
+      </Tab.Navigator>
+      <InteractionModal />
+    </>
   );
 }

@@ -10,6 +10,10 @@ const useStatesAndActions = () => {
   const [isModalVisible, setModalVisible] = useState(true);
   const [location, setLocation] = useState(false);
   const [deviceToken, setDeviceToken] = useState();
+  const [isInteractionModalVisible, setIsInteractionModalVisible] =
+    useState(false);
+  const [isIncoming, setIsIncoming] = useState(false);
+  const [incomingRequest, setIncomingRequest] = useState({});
 
   const state = {
     baseURL,
@@ -19,6 +23,9 @@ const useStatesAndActions = () => {
     isModalVisible,
     location,
     deviceToken,
+    isInteractionModalVisible,
+    isIncoming,
+    incomingRequest,
   };
   const actions = {
     setToken,
@@ -27,6 +34,9 @@ const useStatesAndActions = () => {
     setModalVisible,
     setLocation,
     setDeviceToken,
+    setIsInteractionModalVisible,
+    setIsIncoming,
+    setIncomingRequest,
   };
   return [state, actions];
 };

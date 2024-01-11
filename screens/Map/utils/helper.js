@@ -1,10 +1,11 @@
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {GlobalContext} from '../../../context/GlobalStates';
 import {PermissionsAndroid} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 const useHelperFunctions = () => {
   const [{location}, {setLocation}] = useContext(GlobalContext);
+
   const requestLocationPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(

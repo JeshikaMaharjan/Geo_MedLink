@@ -21,19 +21,19 @@ export default function Login({navigation}) {
     setDeviceToken(mobileToken);
   }, []);
   async function postData() {
-    console.log(deviceToken);
-    // logic for device token BE
     const data = {
       userName: username,
       password: password,
       deviceId: deviceToken?._j?.token,
     };
+    console.log(data);
     try {
       const res = await axios.post(`http://${baseURL}/api/login`, data);
       console.log(res.data);
       setToken(res?.data?.token);
       setuserName(res?.data?.userName);
     } catch (error) {
+      console.log('ee', error);
       console.log(error?.response?.data?.error?.message);
     }
   }

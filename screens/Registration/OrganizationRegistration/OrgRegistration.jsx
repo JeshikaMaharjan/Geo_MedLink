@@ -14,6 +14,7 @@ import {
 import {OrgRegisterstyles} from './style/OrgRegistration';
 import axios from 'axios';
 import {GlobalContext} from '../../../context/GlobalStates';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function OrgRegistration({navigation}) {
   const [{baseURL, location, deviceToken}] = useContext(GlobalContext);
@@ -26,6 +27,8 @@ export default function OrgRegistration({navigation}) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [orgtype, setOrgType] = useState();
   const [selectedServices, setSelectedServices] = useState([]);
+  const [image, setImage] = useState(null);
+
   const [error, setError] = useState('');
   const [isError, setisError] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -47,7 +50,7 @@ export default function OrgRegistration({navigation}) {
       deviceId: deviceToken?._j?.token,
       longitude: location?.coords?.longitude,
       latitude: location?.coords?.latitude,
-      image: null,
+      image: image,
     };
     console.log('d', data);
     try {
@@ -112,6 +115,22 @@ export default function OrgRegistration({navigation}) {
     } else {
       // If the service is not selected, add it
       setSelectedServices([...selectedServices, service]);
+    }
+  };
+  const pickImage = async () => {
+    console.log('image');
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.1,
+      base64: true,
+    });
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].base64);
     }
   };
 
@@ -240,6 +259,17 @@ export default function OrgRegistration({navigation}) {
             style={OrgRegisterstyles.chip}>
             Pathology
           </Chip>
+        </View>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <Button mode="elevated" onPress={pickImage}>
+            Click to upload profile picture.{' '}
+          </Button>
+          {image && (
+            <Image
+              source={{uri: `data:image/png;base64,${image}`}}
+              style={{width: 200, height: 200}}
+            />
+          )}
         </View>
 
         <Button

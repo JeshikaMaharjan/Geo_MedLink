@@ -5,8 +5,8 @@ import axios from 'axios';
 import {GlobalContext} from '../../context/GlobalStates';
 import {UserRegisterstyles} from './UserRegistration/style/UserRegistration';
 
-export default function ModalView({navigation, userName}) {
-  const [{baseURL}, {setModalVisible}] = useContext(GlobalContext);
+export default function ModalView({navigation}) {
+  const [{baseURL, userName}, {setModalVisible}] = useContext(GlobalContext);
   const [bloodGroup, setBloodGroup] = useState('');
   const [NMC, setNMC] = useState('');
   const [degree, setDegree] = useState('');

@@ -1,4 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
+import * as ImagePicker from 'expo-image-picker';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();

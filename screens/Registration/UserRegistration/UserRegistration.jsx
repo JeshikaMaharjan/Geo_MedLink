@@ -12,12 +12,16 @@ import {
 } from 'react-native-paper';
 import {UserRegisterstyles} from './style/UserRegistration';
 import ModalView from '../ModalView';
+import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import {GlobalContext} from '../../../context/GlobalStates';
+import {pickImage} from '../../../utils';
 
 function UserRegistration({navigation}) {
-  const [{baseURL, isModalVisible, location, deviceToken}, {setModalVisible}] =
-    useContext(GlobalContext);
+  const [
+    {baseURL, isModalVisible, location, deviceToken},
+    {setModalVisible, setuserName},
+  ] = useContext(GlobalContext);
   const [firstName, setFirstName] = useState(null);
   const [middleName, setMiddleName] = useState(null);
   const [lastName, setLastName] = useState(null);
@@ -26,6 +30,7 @@ function UserRegistration({navigation}) {
   const [address, setAddress] = useState(null);
   const [email, setEmail] = useState(null);
   const [phoneNumber, setPhone] = useState(null);
+  const [image, setImage] = useState(null);
   const [gender, setGender] = useState(null);
   const [isError, setisError] = useState(false);
   const [error, setError] = useState();
@@ -46,7 +51,7 @@ function UserRegistration({navigation}) {
       deviceId: deviceToken?._j?.token,
       longitude: location?.coords?.longitude,
       latitude: location?.coords?.latitude,
-      image: '',
+      image: image,
     };
     console.log('d', data);
     try {
@@ -54,6 +59,7 @@ function UserRegistration({navigation}) {
       console.log(res.data);
 
       if (!res) throw new Error();
+      setuserName(userName);
       setFirstName('');
       setMiddleName('');
       setLastName('');
@@ -107,6 +113,22 @@ function UserRegistration({navigation}) {
     }
     postData();
   }
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.1,
+      base64: true,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].base64);
+    }
+  };
 
   return (
     <View>
@@ -230,6 +252,18 @@ function UserRegistration({navigation}) {
               }
             }}
           />
+        </View>
+
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <Button mode="elevated" onPress={pickImage}>
+            Click to upload profile picture.
+          </Button>
+          {image && (
+            <Image
+              source={{uri: `data:image/png;base64,${image}`}}
+              style={{width: 200, height: 200}}
+            />
+          )}
         </View>
 
         <Button

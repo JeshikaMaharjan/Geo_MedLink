@@ -14,10 +14,9 @@ import {UserRegisterstyles} from './style/UserRegistration';
 import ModalView from '../ModalView';
 import axios from 'axios';
 import {GlobalContext} from '../../../context/GlobalStates';
-import {getToken} from '../../../utils';
 
 function UserRegistration({navigation}) {
-  const [{baseURL, isModalVisible}, {setModalVisible}] =
+  const [{baseURL, isModalVisible, location, deviceToken}, {setModalVisible}] =
     useContext(GlobalContext);
   const [firstName, setFirstName] = useState(null);
   const [middleName, setMiddleName] = useState(null);
@@ -28,13 +27,10 @@ function UserRegistration({navigation}) {
   const [email, setEmail] = useState(null);
   const [phoneNumber, setPhone] = useState(null);
   const [gender, setGender] = useState(null);
-  // const [isModalVisible, setModalVisible] = useState(true);
-  const [deviceToken, setDeviceToken] = useState();
   const [isError, setisError] = useState(false);
   const [error, setError] = useState();
 
   async function postData() {
-    console.log(deviceToken);
     setisError(false);
     const data = {
       firstName: firstName,
@@ -43,50 +39,52 @@ function UserRegistration({navigation}) {
       userName: userName,
       password: password,
       type: 1,
-      // gender: gender,
+      gender: gender,
       address: address,
       email: email,
-      phoneNumber: parseInt(phoneNumber),
+      phoneNumber: phoneNumber,
+      deviceId: deviceToken?._j?.token,
+      longitude: location?.coords?.longitude,
+      latitude: location?.coords?.latitude,
+      image: '',
     };
     console.log('d', data);
     try {
       const res = await axios.post(`http://${baseURL}/api/user`, data);
       console.log(res.data);
 
-      if (!res) throw new Error('error msg');
-      // setFirstName('');
-      // setMiddleName('');
-      // setLastName('');
-      // setUserName('');
-      // setPassword('');
-      // setPhone('');
-      // // setGender();
-
-      // setAddress('');
-      // setEmail('');
+      if (!res) throw new Error();
+      setFirstName('');
+      setMiddleName('');
+      setLastName('');
+      setUserName('');
+      setPassword('');
+      setPhone('');
+      setGender();
+      setAddress('');
+      setEmail('');
     } catch (error) {
-      console.log('error');
-      console.log(error.message);
-      // console.log({error});
+      console.log(error?.response?.data);
+      setisError(true);
+      setError(error?.response?.data?.error.message);
+      setModalVisible(true);
     }
     setModalVisible(true);
   }
 
   function handleSubmit() {
-    const mobileToken = getToken();
-    setDeviceToken(mobileToken);
-
     if (
       !firstName ||
       !lastName ||
       !userName ||
       !password ||
-      // !gender ||
+      !gender ||
       !address ||
       !email
     ) {
       setError('Please fill all the required fields!!');
       setisError(true);
+      setModalVisible(true);
       return;
     }
 
@@ -96,7 +94,7 @@ function UserRegistration({navigation}) {
     if (!emailRegex.test(email)) {
       setisError(true);
       setError('Please match the email format as shown.');
-      console.log(isError);
+      setModalVisible(true);
       return;
     }
     if (!passwordRegex.test(password)) {
@@ -104,10 +102,9 @@ function UserRegistration({navigation}) {
       setError(
         'Password must contain one uppercase, one lowercase and min length is 8',
       );
-      console.log(isError);
+      setModalVisible(true);
       return;
     }
-    console.log('$$$$$44');
     postData();
   }
 
@@ -191,7 +188,7 @@ function UserRegistration({navigation}) {
           </HelperText>
         </View>
 
-        {/* <Text variant="bodyLarge">Gender</Text>
+        <Text variant="bodyLarge">Gender</Text>
         <Card
           mode="outlined"
           style={{
@@ -204,8 +201,9 @@ function UserRegistration({navigation}) {
             value={gender}>
             <RadioButton.Item label="Male" value="male" />
             <RadioButton.Item label="Female" value="female" />
+            <RadioButton.Item label="Others" value="others" />
           </RadioButton.Group>
-        </Card> */}
+        </Card>
 
         <View>
           <TextInput
@@ -225,7 +223,11 @@ function UserRegistration({navigation}) {
             label="Current Phone Number"
             value={phoneNumber}
             onChangeText={text => {
-              setPhone(text);
+              if (text) {
+                setPhone(parseInt(text));
+              } else {
+                setPhone(null);
+              }
             }}
           />
         </View>
@@ -258,7 +260,7 @@ function UserRegistration({navigation}) {
                 </Button>
               </View>
             ) : (
-              <ModalView navigation={navigation} />
+              <ModalView navigation={navigation} userName={userName} />
             )}
           </View>
         </Modal>

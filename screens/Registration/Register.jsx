@@ -12,12 +12,22 @@ import {
   Divider,
 } from 'react-native-paper';
 import {Registerstyles as styles} from './style/Register';
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import UserRegistration from './UserRegistration/UserRegistration';
 import OrgRegistration from './OrganizationRegistration/OrgRegistration';
+import useHelperFunctions from '../Map/utils/helper';
+import {GlobalContext} from '../../context/GlobalStates';
+import {getToken} from '../../utils';
 
 function Registration({navigation}) {
   const [active, setActive] = useState('user');
+  const [, {setDeviceToken}] = useContext(GlobalContext);
+  const {getLocation} = useHelperFunctions();
+  useEffect(() => {
+    getLocation();
+    const mobileToken = getToken();
+    setDeviceToken(mobileToken);
+  }, []);
 
   return (
     <ImageBackground

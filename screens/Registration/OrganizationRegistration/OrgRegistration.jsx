@@ -1,27 +1,22 @@
 import {useContext, useState} from 'react';
-import {View, ScrollView, Image} from 'react-native';
+import {View, Image} from 'react-native';
 import {
   Button,
   TextInput,
   Text,
   RadioButton,
-  Divider,
   Card,
-  Tooltip,
   HelperText,
   Chip,
   Portal,
   Modal,
 } from 'react-native-paper';
 import {OrgRegisterstyles} from './style/OrgRegistration';
-
 import axios from 'axios';
 import {GlobalContext} from '../../../context/GlobalStates';
-import ModalView from '../ModalView';
-import {getToken} from '../../../utils';
 
 export default function OrgRegistration({navigation}) {
-  const [{baseURL}] = useContext(GlobalContext);
+  const [{baseURL, location, deviceToken}] = useContext(GlobalContext);
   const [organizationName, setorgName] = useState();
   const [address, setAddress] = useState();
   const [email, setEmail] = useState();
@@ -30,18 +25,14 @@ export default function OrgRegistration({navigation}) {
   const [bio, setBio] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [orgtype, setOrgType] = useState();
-  // const [services, setServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
-  const [deviceToken, setDeviceToken] = useState();
-
   const [error, setError] = useState('');
   const [isError, setisError] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
   async function postData() {
-    console.log(deviceToken);
+    setisError(false);
 
-    // setisError(false);
     const data = {
       name: organizationName,
       organizationType: parseInt(orgtype),
@@ -53,65 +44,64 @@ export default function OrgRegistration({navigation}) {
       userName: userName,
       password: password,
       bio: bio,
+      deviceId: deviceToken?._j?.token,
+      longitude: location?.coords?.longitude,
+      latitude: location?.coords?.latitude,
+      image: null,
     };
     console.log('d', data);
     try {
-      console.log('try');
       const res = await axios.post(`http://${baseURL}/api/user`, data);
-      console.log('eeeeeeee');
-      console.log(res.data);
-      // if (!res) throw new Error('error msg');
-      // setAddress('');
-      // setEmail('');
-      // setType('');
-      // setorgName('');
-      // setUserName('');
-      // setPassword('');
-      // setBio('');
-      // setPhoneNumber('');
+      console.log('r', res.data);
+      if (!res) throw new Error();
+      setAddress('');
+      setEmail('');
+      setorgName('');
+      setUserName('');
+      setPassword('');
+      setBio('');
+      setPhoneNumber('');
     } catch (error) {
-      console.log(error);
-      console.log(error?.response?.data);
-      // console.log(error);
+      console.log('error', error);
+      setisError(true);
+      setError(error?.response?.data?.error.message);
+      setModalVisible(true);
     }
     setModalVisible(true);
   }
   function handleSubmit() {
-    const mobileToken = getToken();
-    setDeviceToken(mobileToken);
+    if (
+      !organizationName ||
+      !userName ||
+      !password ||
+      !address ||
+      !email ||
+      !phoneNumber ||
+      !orgtype
+    ) {
+      setError('Please fill all the required fields!!');
+      setisError(true);
+      setModalVisible(true);
+      return;
+    }
 
-    // if (
-    //   !organizationName ||
-    //   !userName ||
-    //   !password ||
-    //   !services ||
-    //   !address ||
-    //   !email ||
-    //   !phoneNumber ||
-    //   !orgtype
-    // ) {
-    //   setError('Please fill all the required fields!!');
-    //   setisError(true);
-    //   return;
-    // }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-
-    // if (!emailRegex.test(email)) {
-    //   setisError(true);
-    //   setError('Please match the email format as shown.');
-    //   // console.log(isError);
-    //   return;
-    // }
-    // if (!passwordRegex.test(password)) {
-    //   setisError(true);
-    //   setError(
-    //     'Password must contain one uppercase, one lowercase and min length is 8',
-    //   );
-    //   console.log(isError);
-    //   return;
-    // }
+    if (!emailRegex.test(email)) {
+      setisError(true);
+      setError('Please match the email format as shown.');
+      setModalVisible(true);
+      return;
+    }
+    if (!passwordRegex.test(password)) {
+      setisError(true);
+      setError(
+        'Password must contain one uppercase, one lowercase and min length is 8',
+      );
+      setModalVisible(true);
+      return;
+    }
 
     postData();
   }

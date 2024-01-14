@@ -1,6 +1,4 @@
 import messaging from '@react-native-firebase/messaging';
-import {useContext} from 'react';
-import {GlobalContext} from '../context/GlobalStates';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -17,8 +15,9 @@ export const notificationListener = () => {
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'Notification caused app to open from background state:',
-      remoteMessage.notification,
+      remoteMessage.data,
     );
+    console.log(remoteMessage);
     // navigation.navigate(remoteMessage.data.type);
   });
 
@@ -29,7 +28,7 @@ export const notificationListener = () => {
       if (remoteMessage) {
         console.log(
           'Notification caused app to open from quit state:',
-          remoteMessage.notification,
+          remoteMessage.data,
         );
         // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
       }
@@ -40,6 +39,5 @@ export const notificationListener = () => {
 export const getToken = async () => {
   await messaging().registerDeviceForRemoteMessages();
   const token = await messaging().getToken();
-  console.log(token);
-  return token;
+  return {token};
 };

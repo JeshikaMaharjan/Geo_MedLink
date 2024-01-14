@@ -3,11 +3,11 @@ import {createContext, useState} from 'react';
 export const GlobalContext = createContext([{state: {}, actions: {}}]);
 
 const useStatesAndActions = () => {
-  const baseURL = '192.168.1.71:3000';
+  const baseURL = '192.168.1.76:3000';
   const [token, setToken] = useState('');
-  const [userName, setuserName] = useState('hh');
+  const [userName, setuserName] = useState('');
   const [userId, setUserId] = useState('');
-  const [isModalVisible, setModalVisible] = useState(true);
+  const [isModalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState(false);
   const [deviceToken, setDeviceToken] = useState();
   const [isInteractionModalVisible, setIsInteractionModalVisible] =

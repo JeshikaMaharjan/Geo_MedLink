@@ -14,19 +14,19 @@ import Registration from './screens/Registration/Register';
 import Dashboard from './screens/Dashboard/Dashboard';
 import Firebase from './screens/Firebase/test';
 
-import {getToken, notificationListener, requestUserPermission} from './utils';
+import {notificationListener, requestUserPermission} from './utils';
+import useHelperFunctions from './screens/Map/utils/helper';
 
 const Stack = createNativeStackNavigator();
 function App() {
   const paperTheme = {...MD3LightTheme, colors: theme.light};
 
-  const isNotSignedIn = false;
+  const isNotSignedIn = true;
   // Dashboard acces garna change isNotSignedIn to false
 
   useEffect(() => {
     requestUserPermission();
     notificationListener();
-    getToken();
   });
   return (
     <GlobalContextProvider>
@@ -34,8 +34,8 @@ function App() {
         <NavigationContainer>
           <SafeAreaProvider>
             <Stack.Navigator
-              // initialRouteName="Login"
-              initialRouteName="Firebase"
+              initialRouteName="Login"
+              // initialRouteName="Firebase"
               screenOptions={{
                 headerShown: false,
               }}>

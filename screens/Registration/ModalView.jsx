@@ -5,7 +5,7 @@ import axios from 'axios';
 import {GlobalContext} from '../../context/GlobalStates';
 import {UserRegisterstyles} from './UserRegistration/style/UserRegistration';
 
-export default function ModalView({navigation}) {
+export default function ModalView({navigation, userName}) {
   const [{baseURL}, {setModalVisible}] = useContext(GlobalContext);
   const [bloodGroup, setBloodGroup] = useState('');
   const [NMC, setNMC] = useState('');
@@ -77,8 +77,8 @@ export default function ModalView({navigation}) {
             mode="elevated"
             onPress={() => {
               axios
-                // .put(`http://${baseURL}/api/donor/activate/${userName}`, {
-                .put(`http://${baseURL}/api/donor/activate/Jjjjjgff`, {
+                .put(`http://${baseURL}/api/donor/activate/${userName}`, {
+                  // .put(`http://${baseURL}/api/donor/activate/Jjjjjgff`, {
                   blood_Group: bloodGroup,
                 })
                 .then(res => {
@@ -143,7 +143,7 @@ export default function ModalView({navigation}) {
             onPress={() => {
               axios
                 .post(`http://${baseURL}/api/register/doctor`, {
-                  userName: 'Jcka1',
+                  userName: userName,
                   degree: degree,
                   NMC: parseInt(NMC),
                 })

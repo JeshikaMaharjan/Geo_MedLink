@@ -44,8 +44,8 @@ const InteractionModal = () => {
               <>
                 {/* <Text>{incomingRequest}</Text> */}
                 <Text>Incoming request</Text>
-                <Button onPress={handleAcceptClick}>Accept</Button>
-                <Button onPress={handleRejectClick}>Reject</Button>
+                {/* <Button onPress={handleAcceptClick}>Accept</Button>
+                <Button onPress={handleRejectClick}>Reject</Button> */}
               </>
             )}
           </View>

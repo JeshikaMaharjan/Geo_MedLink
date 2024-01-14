@@ -1,36 +1,43 @@
 import {ImageBackground, KeyboardAvoidingView, View} from 'react-native';
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
 import {Loginstyles as styles} from './style/Login';
 import axios from 'axios';
 import {GlobalContext} from '../../context/GlobalStates';
 import {getToken} from '../../utils';
+import useHelperFunctions from '../Map/utils/helper';
 
 export default function Login({navigation}) {
-  const [{baseURL, userName, token}, {setToken, setuserName}] =
+  const [{baseURL, deviceToken}, {setToken, setuserName, setDeviceToken}] =
     useContext(GlobalContext);
+  const {getLocation} = useHelperFunctions();
 
   const navigate = navigation.navigate;
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
-  const [deviceToken, setDeviceToken] = useState();
+  useEffect(() => {
+    getLocation();
+    const mobileToken = getToken();
+    setDeviceToken(mobileToken);
+  }, []);
   async function postData() {
     console.log(deviceToken);
     // logic for device token BE
     const data = {
       userName: username,
       password: password,
+      deviceId: deviceToken?._j?.token,
     };
     try {
       const res = await axios.post(`http://${baseURL}/api/login`, data);
-      console.log(res);
+      console.log(res.data);
+      setToken(res?.data?.token);
+      setuserName(res?.data?.userName);
     } catch (error) {
-      console.log(error?.response?.data);
+      console.log(error?.response?.data?.error?.message);
     }
   }
   const handleClick = () => {
-    const mobileToken = getToken();
-    setDeviceToken(mobileToken);
     postData();
   };
   return (

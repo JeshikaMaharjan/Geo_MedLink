@@ -15,8 +15,7 @@ export default function Dashboard() {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       setIsIncoming(true);
-      // setIncomingRequest(JSON.stringify(remoteMessage));
-      // setIncomingRequest(remoteMessage.notification.body);
+      console.log('incoming', remoteMessage);
       setIncomingRequest(remoteMessage.data.body);
       setIsInteractionModalVisible(true);
     });

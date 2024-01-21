@@ -26,14 +26,11 @@ export default function Login({navigation}) {
       password: password,
       deviceId: deviceToken?._j?.token,
     };
-    console.log(data);
     try {
       const res = await axios.post(`http://${baseURL}/api/login`, data);
-      console.log(res.data);
       setToken(res?.data?.token);
       setuserName(res?.data?.userName);
     } catch (error) {
-      console.log('ee', error);
       console.log(error?.response?.data?.error?.message);
     }
   }

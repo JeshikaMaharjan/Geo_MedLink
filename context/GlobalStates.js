@@ -14,6 +14,8 @@ const useStatesAndActions = () => {
     useState(false);
   const [isIncoming, setIsIncoming] = useState(false);
   const [incomingRequest, setIncomingRequest] = useState({});
+  const [mapView, setMapView] = useState('default');
+  const [searchCoords, setSearchCoords] = useState();
 
   const state = {
     baseURL,
@@ -26,6 +28,8 @@ const useStatesAndActions = () => {
     isInteractionModalVisible,
     isIncoming,
     incomingRequest,
+    mapView,
+    searchCoords,
   };
   const actions = {
     setToken,
@@ -37,6 +41,8 @@ const useStatesAndActions = () => {
     setIsInteractionModalVisible,
     setIsIncoming,
     setIncomingRequest,
+    setMapView,
+    setSearchCoords,
   };
   return [state, actions];
 };

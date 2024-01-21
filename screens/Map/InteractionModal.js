@@ -18,7 +18,6 @@ const InteractionModal = () => {
     setIsInteractionModalVisible(false);
   };
   const handleAcceptClick = () => {};
-  console.log(typeof incomingRequest);
 
   return (
     <>

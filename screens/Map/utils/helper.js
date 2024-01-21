@@ -23,7 +23,6 @@ const useHelperFunctions = () => {
       if (res) {
         Geolocation.getCurrentPosition(
           position => {
-            console.log(position);
             setLocation(position);
           },
           error => {
@@ -34,7 +33,6 @@ const useHelperFunctions = () => {
         );
       }
     });
-    console.log(location);
   };
 
   return {

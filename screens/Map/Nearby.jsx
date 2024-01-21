@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {MAPBOX_TOKEN} from '../../constants/constants';
 
@@ -16,6 +15,7 @@ export default function Nearby() {
       console.log(error);
     }
   }
+  console;
 
   return (
     <>

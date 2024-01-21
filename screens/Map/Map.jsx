@@ -32,10 +32,10 @@ export default function Map() {
           </View>
         ) : (
           <>
-            <View style={styles.map}>
+            {/* <View style={styles.map}>
               <Text>djjddj</Text>
-            </View>
-            {/* <MapboxGL.MapView style={styles.map}>
+            </View> */}
+            <MapboxGL.MapView style={styles.map}>
               <MapboxGL.Camera
                 zoomLevel={15}
                 centerCoordinate={[
@@ -52,7 +52,7 @@ export default function Map() {
                   location.coords.latitude,
                 ]}
               />
-            </MapboxGL.MapView> */}
+            </MapboxGL.MapView>
             <MapActions />
           </>
         )}

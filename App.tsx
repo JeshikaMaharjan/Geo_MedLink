@@ -16,7 +16,6 @@ import Firebase from './screens/Firebase/test';
 
 import {notificationListener, requestUserPermission} from './utils';
 import useHelperFunctions from './screens/Map/utils/helper';
-import ImagePickerExample from './screens/Image';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -36,7 +35,6 @@ function App() {
           <SafeAreaProvider>
             <Stack.Navigator
               initialRouteName="Login"
-              // initialRouteName="ImagePickerExample"
               // initialRouteName="Firebase"
               screenOptions={{
                 headerShown: false,
@@ -56,10 +54,6 @@ function App() {
                   />
                   <Stack.Screen name="Registration" component={Registration} />
                   <Stack.Screen name="Firebase" component={Firebase} />
-                  <Stack.Screen
-                    name="ImagePickerExample"
-                    component={ImagePickerExample}
-                  />
                 </Stack.Group>
               ) : (
                 <Stack.Group>

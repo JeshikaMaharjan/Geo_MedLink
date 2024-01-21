@@ -8,19 +8,19 @@ import {GlobalContext} from '../../context/GlobalStates';
 import useHelperFunctions from './utils/helper';
 import MapActions from './MapActions';
 import InteractionModal from './InteractionModal';
+import FindNearby from './FindNearby';
 
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
 export default function Map() {
-  const [{location, isInteractionModalVisible}, {setLocation}] =
-    useContext(GlobalContext);
+  const [{location, mapView}] = useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
+
   useEffect(() => {
     getLocation();
   }, []);
-  console.log('$$$', location);
 
   return (
     <View style={styles.page}>
@@ -32,27 +32,32 @@ export default function Map() {
           </View>
         ) : (
           <>
-            {/* <View style={styles.map}>
-              <Text>djjddj</Text>
-            </View> */}
-            <MapboxGL.MapView style={styles.map}>
-              <MapboxGL.Camera
-                zoomLevel={15}
-                centerCoordinate={[
-                  location.coords.longitude,
-                  location.coords.latitude,
-                ]}
-                animationMode={'flyTo'}
-                animationDuration={8000}
-              />
-              <MapboxGL.PointAnnotation
-                id="marker"
-                coordinate={[
-                  location.coords.longitude,
-                  location.coords.latitude,
-                ]}
-              />
-            </MapboxGL.MapView>
+            {mapView === 'default' ? (
+              // <MapboxGL.MapView style={styles.map}>
+              //   <MapboxGL.Camera
+              //     zoomLevel={15}
+              //     centerCoordinate={[
+              //       location.coords.longitude,
+              //       location.coords.latitude,
+              //     ]}
+              //     animationMode={'flyTo'}
+              //     animationDuration={8000}
+              //   />
+              //   <MapboxGL.PointAnnotation
+              //     id="marker"
+              //     coordinate={[
+              //       location.coords.longitude,
+              //       location.coords.latitude,
+              //     ]}
+              //   />
+              // </MapboxGL.MapView>
+              <View>
+                <Text>map</Text>
+              </View>
+            ) : (
+              <FindNearby />
+            )}
+
             <MapActions />
           </>
         )}

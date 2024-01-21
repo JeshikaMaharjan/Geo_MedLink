@@ -23,7 +23,6 @@ export default function Hooks() {
       if (res) {
         Geolocation.getCurrentPosition(
           position => {
-            console.log(position);
             setLocation(position);
           },
           error => {
@@ -35,7 +34,6 @@ export default function Hooks() {
       }
       return location;
     });
-    //   console.log(location);
   };
   return {getLocation};
 }

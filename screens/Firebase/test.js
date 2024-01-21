@@ -9,7 +9,6 @@ const reference = firebase
     'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/',
   )
   .ref('Ambulance');
-console.log('r', reference);
 
 const Firebase = () => {
   const [state, setState] = useState();

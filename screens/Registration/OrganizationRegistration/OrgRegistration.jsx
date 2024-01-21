@@ -52,10 +52,8 @@ export default function OrgRegistration({navigation}) {
       latitude: location?.coords?.latitude,
       image: image,
     };
-    console.log('d', data);
     try {
       const res = await axios.post(`http://${baseURL}/api/user`, data);
-      console.log('r', res.data);
       if (!res) throw new Error();
       setAddress('');
       setEmail('');
@@ -118,7 +116,6 @@ export default function OrgRegistration({navigation}) {
     }
   };
   const pickImage = async () => {
-    console.log('image');
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -127,7 +124,6 @@ export default function OrgRegistration({navigation}) {
       quality: 0.1,
       base64: true,
     });
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].base64);

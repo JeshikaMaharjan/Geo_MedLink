@@ -1,8 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Map from '../Map/Map';
-import Nearby from '../Map/Nearby';
 import messaging from '@react-native-firebase/messaging';
-import {Alert} from 'react-native';
 import {useContext, useEffect} from 'react';
 import {GlobalContext} from '../../context/GlobalStates';
 import InteractionModal from '../Map/InteractionModal';
@@ -26,7 +24,6 @@ export default function Dashboard() {
     <>
       <Tab.Navigator>
         <Tab.Screen name="Map" component={Map} />
-        {/* <Tab.Screen name="Search" component={Nearby} /> */}
       </Tab.Navigator>
       <InteractionModal />
     </>

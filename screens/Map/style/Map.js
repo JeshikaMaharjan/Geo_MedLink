@@ -11,7 +11,7 @@ const Mapstyles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    height: '75%',
+    height: '70%',
     backgroundColor: 'red',
   },
   loader: {
@@ -29,9 +29,11 @@ const Mapstyles = StyleSheet.create({
     gap: 10,
   },
   searchBoxView: {
+    display: 'flex',
     flexDirection: 'row',
     gap: 15,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   searchBox: {
     width: 340,

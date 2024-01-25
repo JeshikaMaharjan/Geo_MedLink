@@ -12,10 +12,9 @@ const useStatesAndActions = () => {
   const [deviceToken, setDeviceToken] = useState();
   const [isInteractionModalVisible, setIsInteractionModalVisible] =
     useState(false);
-  const [isIncoming, setIsIncoming] = useState(false);
-  const [incomingRequest, setIncomingRequest] = useState({});
   const [mapView, setMapView] = useState('default');
   const [searchCoords, setSearchCoords] = useState();
+  const [isIncoming, setIsIncoming] = useState(false);
 
   const state = {
     baseURL,
@@ -26,10 +25,9 @@ const useStatesAndActions = () => {
     location,
     deviceToken,
     isInteractionModalVisible,
-    isIncoming,
-    incomingRequest,
     mapView,
     searchCoords,
+    isIncoming,
   };
   const actions = {
     setToken,
@@ -39,10 +37,9 @@ const useStatesAndActions = () => {
     setLocation,
     setDeviceToken,
     setIsInteractionModalVisible,
-    setIsIncoming,
-    setIncomingRequest,
     setMapView,
     setSearchCoords,
+    setIsIncoming,
   };
   return [state, actions];
 };

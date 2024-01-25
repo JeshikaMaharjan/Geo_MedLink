@@ -15,7 +15,7 @@ import Dashboard from './screens/Dashboard/Dashboard';
 import Firebase from './screens/Firebase/test';
 
 import {notificationListener, requestUserPermission} from './utils';
-import useHelperFunctions from './screens/Map/utils/helper';
+import Notification from './screens/Notifications/Notification';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -58,6 +58,7 @@ function App() {
               ) : (
                 <Stack.Group>
                   <Stack.Screen name="Dashboard" component={Dashboard} />
+                  <Stack.Screen name="Notification" component={Notification} />
                 </Stack.Group>
               )}
             </Stack.Navigator>

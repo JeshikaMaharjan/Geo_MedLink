@@ -3,7 +3,14 @@ import MapboxGL from '@rnmapbox/maps';
 import React, {useContext, useEffect} from 'react';
 import {Mapstyles as styles} from './style/Map';
 import {MAPBOX_TOKEN} from '../../constants/constants';
-import {ActivityIndicator, Portal, Text} from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Badge,
+  IconButton,
+  Modal,
+  Portal,
+  Text,
+} from 'react-native-paper';
 import {GlobalContext} from '../../context/GlobalStates';
 import useHelperFunctions from './utils/helper';
 import MapActions from './MapActions';
@@ -14,12 +21,32 @@ MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
-export default function Map() {
-  const [{location, mapView}] = useContext(GlobalContext);
+export default function Map({navigation}) {
+  const [{location, mapView, isIncoming}] = useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
+  const [{isInteractionModalVisible}, {setIsInteractionModalVisible}] =
+    useContext(GlobalContext);
 
   useEffect(() => {
     getLocation();
+    navigation.setOptions({
+      headerRight: () => (
+        <View>
+          <Badge
+            visible={isIncoming}
+            size={10}
+            style={{position: 'absolute', top: 10, right: 12}}
+          />
+          <IconButton
+            icon="bell"
+            onPress={() => {
+              navigation.navigate('Notification');
+            }}
+            color="#fff"
+          />
+        </View>
+      ),
+    });
   }, []);
 
   return (
@@ -59,12 +86,19 @@ export default function Map() {
             )}
 
             <MapActions />
+            <Portal>
+              <Modal
+                visible={isInteractionModalVisible}
+                onDismiss={() => {
+                  setIsInteractionModalVisible(false);
+                }}
+                contentContainerStyle={styles.modalContainer}>
+                <InteractionModal navigation={navigation} />
+              </Modal>
+            </Portal>
           </>
         )}
       </View>
-      <Portal>
-        <InteractionModal />
-      </Portal>
     </View>
   );
 }

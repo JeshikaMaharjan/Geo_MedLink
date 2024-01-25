@@ -1,21 +1,20 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Map from '../Map/Map';
 import messaging from '@react-native-firebase/messaging';
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {GlobalContext} from '../../context/GlobalStates';
-import InteractionModal from '../Map/InteractionModal';
+import {Button, Dialog, Portal, Text} from 'react-native-paper';
 
 const Tab = createBottomTabNavigator();
 
-export default function Dashboard() {
-  const [, {setIsIncoming, setIncomingRequest, setIsInteractionModalVisible}] =
-    useContext(GlobalContext);
+export default function Dashboard({navigation}) {
+  const [, {setIsIncoming}] = useContext(GlobalContext);
+  const [isDialogVisible, setIsDialogVisible] = useState(true);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      setIsIncoming(true);
       console.log('incoming', remoteMessage);
-      setIncomingRequest(remoteMessage.data.body);
-      setIsInteractionModalVisible(true);
+      setIsIncoming(true);
+      setIsDialogVisible(true);
     });
 
     return unsubscribe;
@@ -25,7 +24,21 @@ export default function Dashboard() {
       <Tab.Navigator>
         <Tab.Screen name="Map" component={Map} />
       </Tab.Navigator>
-      <InteractionModal />
+      <Portal>
+        <Dialog
+          visible={isDialogVisible}
+          onDismiss={() => setIsDialogVisible(false)}>
+          <Dialog.Title>New notification</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">
+              You have an incoming request.Check your notifications section.
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setIsDialogVisible(false)}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </>
   );
 }

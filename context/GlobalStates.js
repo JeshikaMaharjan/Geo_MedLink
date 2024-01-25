@@ -1,9 +1,12 @@
 import {createContext, useState} from 'react';
+import {firebase} from '@react-native-firebase/database';
 
 export const GlobalContext = createContext([{state: {}, actions: {}}]);
 
 const useStatesAndActions = () => {
   const baseURL = '192.168.1.76:3000';
+  const firebaseURl =
+    'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/';
   const [token, setToken] = useState('');
   const [userName, setuserName] = useState('');
   const [userId, setUserId] = useState('');
@@ -14,8 +17,12 @@ const useStatesAndActions = () => {
     useState(false);
   const [mapView, setMapView] = useState('default');
   const [searchCoords, setSearchCoords] = useState();
-  const [isIncoming, setIsIncoming] = useState(false);
-
+  const [isIncoming, setIsIncoming] = useState(true);
+  const AmbulanceDb = firebase.app().database(firebaseURl).ref('Ambulance');
+  const NotificationDb = firebase
+    .app()
+    .database(firebaseURl)
+    .ref('Notification');
   const state = {
     baseURL,
     token,
@@ -28,6 +35,8 @@ const useStatesAndActions = () => {
     mapView,
     searchCoords,
     isIncoming,
+    AmbulanceDb,
+    NotificationDb,
   };
   const actions = {
     setToken,

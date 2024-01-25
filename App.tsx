@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {MD3LightTheme, PaperProvider} from 'react-native-paper';
+import {firebase} from '@react-native-firebase/database';
 
 import {theme} from './constants/Theme';
 
@@ -20,13 +21,19 @@ import Notification from './screens/Notifications/Notification';
 const Stack = createNativeStackNavigator();
 function App() {
   const paperTheme = {...MD3LightTheme, colors: theme.light};
+  const NotificationDb = firebase
+    .app()
+    .database(
+      'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/',
+    )
+    .ref('Notification');
 
   const isNotSignedIn = false;
   // Dashboard acces garna change isNotSignedIn to false
 
   useEffect(() => {
     requestUserPermission();
-    notificationListener();
+    notificationListener({NotificationDb});
   });
   return (
     <GlobalContextProvider>

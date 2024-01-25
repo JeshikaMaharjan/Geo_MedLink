@@ -8,13 +8,21 @@ import {Button, Dialog, Portal, Text} from 'react-native-paper';
 const Tab = createBottomTabNavigator();
 
 export default function Dashboard({navigation}) {
-  const [, {setIsIncoming}] = useContext(GlobalContext);
-  const [isDialogVisible, setIsDialogVisible] = useState(true);
+  const [{NotificationDb}, {setIsIncoming}] = useContext(GlobalContext);
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('incoming', remoteMessage);
       setIsIncoming(true);
       setIsDialogVisible(true);
+      const newEntry = NotificationDb.push();
+      console.log('Auto generated key: ', newEntry.key);
+
+      newEntry
+        .set({
+          data: remoteMessage?.data,
+        })
+        .then(() => console.log('Data updated.'));
     });
 
     return unsubscribe;

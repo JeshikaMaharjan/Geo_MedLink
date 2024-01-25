@@ -12,14 +12,21 @@ export async function requestUserPermission() {
   }
 }
 
-export const notificationListener = () => {
+export const notificationListener = ({NotificationDb}) => {
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'Notification caused app to open from background state:',
       remoteMessage.data,
     );
-    console.log(remoteMessage);
-    // navigation.navigate(remoteMessage.data.type);
+
+    const newEntry = NotificationDb.push();
+    console.log('Auto generated key: ', newEntry.key);
+
+    newEntry
+      .set({
+        data: remoteMessage?.data,
+      })
+      .then(() => console.log('Data updated.'));
   });
 
   // Check whether an initial notification is available
@@ -31,8 +38,15 @@ export const notificationListener = () => {
           'Notification caused app to open from quit state:',
           remoteMessage.data,
         );
-        // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
       }
+      const newEntry = NotificationDb.push();
+      console.log('Auto generated key: ', newEntry.key);
+
+      newEntry
+        .set({
+          data: remoteMessage?.data,
+        })
+        .then(() => console.log('Data updated.'));
       //   setLoading(false);
     });
 };
@@ -40,5 +54,6 @@ export const notificationListener = () => {
 export const getToken = async () => {
   await messaging().registerDeviceForRemoteMessages();
   const token = await messaging().getToken();
+  console.log(token);
   return {token};
 };

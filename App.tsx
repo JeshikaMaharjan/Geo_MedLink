@@ -15,8 +15,9 @@ import Registration from './screens/Registration/Register';
 import Dashboard from './screens/Dashboard/Dashboard';
 import Firebase from './screens/Firebase/test';
 
-import {notificationListener, requestUserPermission} from './utils';
+import {getToken, notificationListener, requestUserPermission} from './utils';
 import Notification from './screens/Notifications/Notification';
+import {PermissionsAndroid} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -30,10 +31,24 @@ function App() {
 
   const isNotSignedIn = false;
   // Dashboard acces garna change isNotSignedIn to false
+  const requestNotificationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+
+      return granted === 'granted';
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
 
   useEffect(() => {
-    requestUserPermission();
+    // requestUserPermission();
+    requestNotificationPermission();
     notificationListener({NotificationDb});
+    getToken();
   });
   return (
     <GlobalContextProvider>

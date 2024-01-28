@@ -28,6 +28,9 @@
 
   <!-- Include only if your app benefits from precise location access. -->
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <!-- new11 -->
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <!-- new11 -->
   <!-- new -->
   <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

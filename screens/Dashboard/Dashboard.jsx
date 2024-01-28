@@ -15,18 +15,38 @@ export default function Dashboard({navigation}) {
       console.log('incoming', remoteMessage);
       setIsIncoming(true);
       setIsDialogVisible(true);
-      const newEntry = NotificationDb.push();
-      console.log('Auto generated key: ', newEntry.key);
+      const newEntry = NotificationDb.ref(
+        `Notification/${remoteMessage?.data?.requestId}`,
+      );
 
       newEntry
-        .set({
+        .push({
+          requestId: `${remoteMessage?.data?.requestId}`,
           data: remoteMessage?.data,
         })
         .then(() => console.log('Data updated.'));
+      console.log('Auto generated key: ', newEntry.key);
     });
 
     return unsubscribe;
   }, []);
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     console.log('incoming', remoteMessage);
+  //     setIsIncoming(true);
+  //     setIsDialogVisible(true);
+  //     const newEntry = NotificationDb.ref(`Notification/incoming`);
+  //     newEntry
+  //       .set({
+  //         // requestId: `${remoteMessage?.data?.requestId}`,
+  //         requestId: '100',
+  //         data: remoteMessage?.data,
+  //       })
+  //       .then(() => console.log('Data updated.'));
+  //   });
+
+  //   return unsubscribe;
+  // }, []);
   return (
     <>
       <Tab.Navigator>

@@ -3,9 +3,11 @@ import {View} from 'react-native';
 import {Button, RadioButton, Text} from 'react-native-paper';
 import {Mapstyles as styles} from './style/Map';
 import {GlobalContext} from '../../context/GlobalStates';
+import uuid from 'react-native-uuid';
+import axios from 'axios';
 
 const InteractionModal = ({navigation}) => {
-  const [{userName, location}, {setIsInteractionModalVisible}] =
+  const [{userName, location, baseURL}, {setIsInteractionModalVisible}] =
     useContext(GlobalContext);
   const [modalNumber, setModalNumber] = useState(0);
   const [bloodGroup, setBloodGroup] = useState();
@@ -15,24 +17,29 @@ const InteractionModal = ({navigation}) => {
   async function postData() {
     setIsError(false);
     const data = {
+      requestId: uuid.v4(),
       bloodGroup: bloodGroup,
-      latitude: location?.coords?.latitude,
-      longitude: location?.coords?.longitude,
+      latitude: `${location?.coords?.latitude}`,
+      longitude: `${location?.coords?.longitude}`,
       // userName: userName,
-      userName: 'test',
+      userName: 'Jen1',
     };
+    console.log(typeof data.bloodGroup);
     console.log(data);
     setModalNumber(1);
-    // try {
-    //   const res = await axios.post(`http://${baseURL}/api/send/notifications/request`, data);
+    try {
+      const res = await axios.post(
+        `http://${baseURL}/api/send/notifications/request/`,
+        data,
+      );
 
-    //   if (!res) throw new Error();
-    //   setModalNumber(1);
-
-    // } catch (error) {
-    //   console.log(error?.response?.data);
-
-    // }
+      if (!res) throw new Error();
+      console.log(res.data);
+      setModalNumber(1);
+    } catch (error) {
+      console.log('err', error);
+      console.log(error?.response?.data);
+    }
   }
 
   const handleBloodDonorClick = () => {

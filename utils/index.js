@@ -20,7 +20,6 @@ export const notificationListener = ({NotificationDb}) => {
     );
 
     const newEntry = NotificationDb.push();
-    console.log('Auto generated key: ', newEntry.key);
 
     newEntry
       .set({
@@ -40,7 +39,6 @@ export const notificationListener = ({NotificationDb}) => {
         );
       }
       const newEntry = NotificationDb.push();
-      console.log('Auto generated key: ', newEntry.key);
 
       newEntry
         .set({

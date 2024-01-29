@@ -20,6 +20,7 @@ const useStatesAndActions = () => {
   const [isIncoming, setIsIncoming] = useState(true);
   const AmbulanceDb = firebase.app().database(firebaseURl).ref('Ambulance');
   const NotificationDb = firebase.app().database(firebaseURl);
+  const [requestId, setRequestId] = useState();
 
   const state = {
     baseURL,
@@ -35,6 +36,7 @@ const useStatesAndActions = () => {
     isIncoming,
     AmbulanceDb,
     NotificationDb,
+    requestId,
   };
   const actions = {
     setToken,
@@ -47,6 +49,7 @@ const useStatesAndActions = () => {
     setMapView,
     setSearchCoords,
     setIsIncoming,
+    setRequestId,
   };
   return [state, actions];
 };

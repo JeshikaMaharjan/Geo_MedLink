@@ -7,8 +7,10 @@ import uuid from 'react-native-uuid';
 import axios from 'axios';
 
 const InteractionModal = ({navigation}) => {
-  const [{userName, location, baseURL}, {setIsInteractionModalVisible}] =
-    useContext(GlobalContext);
+  const [
+    {userName, location, baseURL},
+    {setIsInteractionModalVisible, setRequestId},
+  ] = useContext(GlobalContext);
   const [modalNumber, setModalNumber] = useState(0);
   const [bloodGroup, setBloodGroup] = useState();
   const navigate = navigation.navigate;
@@ -24,8 +26,9 @@ const InteractionModal = ({navigation}) => {
       // userName: userName,
       userName: 'Jen1',
     };
-    console.log(typeof data.bloodGroup);
     console.log(data);
+    setRequestId(data?.requestId);
+
     setModalNumber(1);
     try {
       const res = await axios.post(

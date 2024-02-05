@@ -20,6 +20,7 @@ const useStatesAndActions = () => {
   const [isIncoming, setIsIncoming] = useState(true);
   const AmbulanceDb = firebase.app().database(firebaseURl).ref('Ambulance');
   const NotificationDb = firebase.app().database(firebaseURl);
+  const RequestDb = firebase.app().database(firebaseURl);
   const [requestId, setRequestId] = useState();
 
   const state = {
@@ -36,6 +37,7 @@ const useStatesAndActions = () => {
     isIncoming,
     AmbulanceDb,
     NotificationDb,
+    RequestDb,
     requestId,
   };
   const actions = {

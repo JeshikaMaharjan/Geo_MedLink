@@ -7,16 +7,50 @@ const NotificationStyle = StyleSheet.create({
     overflowY: 'scroll',
   },
   loader: {
-    // display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
-    top: 30,
+    height: '600px',
+    padding: 20,
   },
   surface: {
     display: 'flex',
+    padding: 10,
+    // alignItems: 'center',
+    // height: 80,
+  },
+  notificationInnerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  button: {
+    display: 'flex',
+    alignSelf: 'flex-start',
+  },
+  detailBox: {
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 8,
+    marginTop: 2,
+  },
+  userDetail: {
+    fontSize: 18,
+    color: '#3f9192',
+  },
+  locationBox: {
+    display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
-    height: 80,
+    justifyContent: 'flex-end',
+  },
+  actionBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 8,
+    marginTop: 5,
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 });
 export {NotificationStyle};

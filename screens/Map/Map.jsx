@@ -21,11 +21,17 @@ MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
-export default function Map({navigation}) {
+export default function Map({route, navigation}) {
   const [{location, mapView, isIncoming}] = useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
   const [{isInteractionModalVisible}, {setIsInteractionModalVisible}] =
     useContext(GlobalContext);
+  // if (route?.params) {
+  //   const {latitude, longitude} = route.params;
+  //   console.log('llllll', latitude, longitude);
+  // }
+
+  // console.log(route);
 
   useEffect(() => {
     getLocation();

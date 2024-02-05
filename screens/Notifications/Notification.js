@@ -2,26 +2,29 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {GlobalContext} from '../../context/GlobalStates';
 import {NotificationStyle as styles} from './style';
-import {ActivityIndicator, Appbar, Surface, Text} from 'react-native-paper';
+import {ActivityIndicator, Appbar, Text} from 'react-native-paper';
+import SingleNotificationBox from './SingleNotificationBox';
+import useNotificationUtils from './utils/useNotificationUtils';
 
-const Notification = () => {
-  const [{NotificationDb, requestId}] = useContext(GlobalContext);
-  const [content, setContent] = useState([]);
+const Notification = ({navigation}) => {
+  const [{NotificationDb, requestId}, {setMapView, setLocation}] =
+    useContext(GlobalContext);
+  const {content, setContent, setVisibleDetail} = useNotificationUtils({
+    navigation,
+  });
 
   useEffect(() => {
-    const onChildAdd = NotificationDb.ref(`/Notification/${requestId}`).on(
+    const onChildAdd = NotificationDb.ref('Notification').on(
       'child_added',
       snapshot => {
-        console.log('A new node has been added', snapshot.val());
         setContent(prevContent => [...prevContent, snapshot.val()]);
+        setVisibleDetail(prevVisibleDetail => [...prevVisibleDetail, false]);
       },
     );
     return () =>
-      NotificationDb.ref(`/Notification/${requestId}`).off(
-        'child_added',
-        onChildAdd,
-      );
-  }, [requestId]);
+      NotificationDb.ref('/Notification').off('child_added', onChildAdd);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Appbar.Header>
@@ -35,11 +38,14 @@ const Notification = () => {
             <Text>Incoming messages will be shown here.</Text>
           </View>
         ) : (
-          <View style={{display: 'flex', gap: 20, marginTop: '100px'}}>
+          <View style={{display: 'flex', gap: 10, marginTop: '100px'}}>
             {content.map((item, index) => (
-              <Surface key={index} elevation={4} style={styles.surface}>
-                <Text>{item.data.userName}</Text>
-              </Surface>
+              <SingleNotificationBox
+                key={index}
+                item={item}
+                index={index}
+                navigation={navigation}
+              />
             ))}
           </View>
         )}

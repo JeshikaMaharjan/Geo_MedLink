@@ -19,13 +19,17 @@ export const notificationListener = ({NotificationDb}) => {
       remoteMessage.data,
     );
 
-    const newEntry = NotificationDb.push();
+    // const newEntry = NotificationDb.ref(
+    //   `Notification/${remoteMessage?.data?.requestId}`,
+    // );
 
-    newEntry
-      .set({
-        data: remoteMessage?.data,
-      })
-      .then(() => console.log('Data updated.'));
+    // newEntry
+    //   .push({
+    //     requestId: `${remoteMessage?.data?.requestId}`,
+    //     data: remoteMessage?.data,
+    //   })
+    //   .then(() => console.log('Data updated.'));
+    // console.log('Auto generated key: ', newEntry.key);
   });
 
   // Check whether an initial notification is available
@@ -38,14 +42,17 @@ export const notificationListener = ({NotificationDb}) => {
           remoteMessage.data,
         );
       }
-      const newEntry = NotificationDb.push();
+      // const newEntry = NotificationDb.ref(
+      //   `Notification/${remoteMessage?.data?.requestId}`,
+      // );
 
-      newEntry
-        .set({
-          data: remoteMessage?.data,
-        })
-        .then(() => console.log('Data updated.'));
-      //   setLoading(false);
+      // newEntry
+      //   .push({
+      //     requestId: `${remoteMessage?.data?.requestId}`,
+      //     data: remoteMessage?.data,
+      //   })
+      //   .then(() => console.log('Data updated.'));
+      // console.log('Auto generated key: ', newEntry.key);
     });
 };
 

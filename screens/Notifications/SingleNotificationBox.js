@@ -1,14 +1,15 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Button, Surface, Text} from 'react-native-paper';
+import {Button, Surface, Text, Chip} from 'react-native-paper';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {NotificationStyle as styles} from './style';
 import useNotificationUtils from './utils/useNotificationUtils';
 
 const SingleNotificationBox = ({index, item, navigation}) => {
-  const {visibleDetail, handleClick, toggleDetails} = useNotificationUtils({
-    navigation,
-  });
+  const {visibleDetail, handleClick, toggleDetails, handleConfirmClick} =
+    useNotificationUtils({
+      navigation,
+    });
 
   return (
     <Surface key={index} elevation={5} style={styles.surface}>
@@ -28,7 +29,18 @@ const SingleNotificationBox = ({index, item, navigation}) => {
       </View>
       {visibleDetail[index] && (
         <View style={styles.detailBox}>
-          <Text style={styles.userDetail}>User Details</Text>
+          <View style={styles.userDetailBox}>
+            <Text style={styles.userDetail}>User Details</Text>
+            <Chip
+              mode="outlined"
+              style={
+                item?.data?.status == 'Active'
+                  ? styles.activeStatusBox
+                  : styles.closedStatusBox
+              }>
+              {item?.data?.status}
+            </Chip>
+          </View>
           <Text variant="bodyLarge">User: {item?.data?.userName}</Text>
           <Text variant="bodyLarge">
             Phone Number: {item?.data?.phoneNumber}
@@ -52,19 +64,29 @@ const SingleNotificationBox = ({index, item, navigation}) => {
           </View>
         </View>
       )}
-      {visibleDetail[index] && item?.data?.type === 'request' && (
-        <View style={styles.actionBox}>
-          <Text>Request Actions</Text>
-          <Button mode="elevated">Accept</Button>
-          <Button mode="elevated">Reject</Button>
-        </View>
-      )}
-      {visibleDetail[index] && item?.data?.type === 'accepted' && (
-        <View style={styles.actionBox}>
-          <Text>Request Action</Text>
-          <Button mode="elevated">Confirm User</Button>
-        </View>
-      )}
+      {visibleDetail[index] &&
+        item?.data?.type === 'request' &&
+        item?.data?.status === 'Active' && (
+          <View style={styles.actionBox}>
+            <Text>Request Actions</Text>
+            <Button mode="elevated">Accept</Button>
+            <Button mode="elevated">Reject</Button>
+          </View>
+        )}
+      {visibleDetail[index] &&
+        item?.data?.type === 'accepted' &&
+        item?.data?.status === 'Active' && (
+          <View style={styles.actionBox}>
+            <Text>Request Action</Text>
+            <Button
+              mode="elevated"
+              onPress={() => {
+                handleConfirmClick(item);
+              }}>
+              Confirm User
+            </Button>
+          </View>
+        )}
     </Surface>
   );
 };

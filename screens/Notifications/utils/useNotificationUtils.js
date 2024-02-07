@@ -2,7 +2,8 @@ import {useContext, useState} from 'react';
 import {GlobalContext} from '../../../context/GlobalStates';
 
 const useNotificationUtils = ({navigation}) => {
-  const [, {setMapView, setLocation}] = useContext(GlobalContext);
+  const [{NotificationDb}, {setMapView, setLocation}] =
+    useContext(GlobalContext);
   const [content, setContent] = useState([]);
   const navigate = navigation.navigate;
   const [visibleDetail, setVisibleDetail] = useState([]);
@@ -24,6 +25,43 @@ const useNotificationUtils = ({navigation}) => {
       return newVisibleDetail;
     });
   };
+
+  const handleConfirmClick = item => {
+    console.log(item);
+    const confirmedRequestId = item?.data?.requestId;
+    NotificationDb.ref(`Notification`)
+      .once('value')
+      .then(snapshot => {
+        snapshot.forEach(childSnapshot => {
+          const uniqueKey = childSnapshot.key;
+          const newStatus = 'Closed';
+          const requestData = childSnapshot.child('data').val(); // Retrieve data object
+          if (requestData.requestId === confirmedRequestId) {
+            // Check if requestId matches
+            const entryRef = NotificationDb.ref(
+              `Notification/${uniqueKey}/data/status`,
+            );
+            // Update the status for the current entry
+            entryRef
+              .set(newStatus)
+              .then(() => {
+                console.log(
+                  `Status updated successfully for entry ${uniqueKey}`,
+                );
+              })
+              .catch(error => {
+                console.error(
+                  `Error updating status for entry ${uniqueKey}:`,
+                  error,
+                );
+              });
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error retrieving data from Firebase:', error);
+      });
+  };
   return {
     content,
     setContent,
@@ -31,6 +69,7 @@ const useNotificationUtils = ({navigation}) => {
     setVisibleDetail,
     handleClick,
     toggleDetails,
+    handleConfirmClick,
   };
 };
 

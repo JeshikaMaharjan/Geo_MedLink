@@ -14,15 +14,37 @@ const Notification = ({navigation}) => {
   });
 
   useEffect(() => {
-    const onChildAdd = NotificationDb.ref('Notification').on(
+    const onChildAdded = NotificationDb.ref('Notification').on(
       'child_added',
       snapshot => {
-        setContent(prevContent => [...prevContent, snapshot.val()]);
+        const newData = snapshot.val();
+        setContent(prevContent => [...prevContent, newData]);
         setVisibleDetail(prevVisibleDetail => [...prevVisibleDetail, false]);
       },
     );
-    return () =>
-      NotificationDb.ref('/Notification').off('child_added', onChildAdd);
+
+    const onChildChanged = NotificationDb.ref('Notification').on(
+      'child_changed',
+      snapshot => {
+        const newData = snapshot.val();
+        setContent(prevContent => {
+          return prevContent.map(item => {
+            if (item.requestId === newData.requestId) {
+              return {
+                ...item,
+                data: {...item.data, status: newData.data.status},
+              };
+            }
+            return item;
+          });
+        });
+      },
+    );
+
+    return () => {
+      NotificationDb.ref('Notification').off('child_added', onChildAdded);
+      NotificationDb.ref('Notification').off('child_changed', onChildChanged);
+    };
   }, []);
 
   return (

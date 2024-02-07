@@ -52,5 +52,19 @@ const NotificationStyle = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
+  userDetailBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  activeStatusBox: {
+    backgroundColor: '#75cf30',
+    borderColor: 'black',
+  },
+  closedStatusBox: {
+    backgroundColor: '#d74e33',
+    borderColor: 'black',
+  },
 });
 export {NotificationStyle};

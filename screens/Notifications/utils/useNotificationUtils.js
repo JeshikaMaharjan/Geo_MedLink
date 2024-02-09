@@ -2,7 +2,7 @@ import {useContext, useState} from 'react';
 import {GlobalContext} from '../../../context/GlobalStates';
 
 const useNotificationUtils = ({navigation}) => {
-  const [{NotificationDb}, {setMapView, setLocation}] =
+  const [{NotificationDb, userName}, {setMapView, setLocation}] =
     useContext(GlobalContext);
   const [content, setContent] = useState([]);
   const navigate = navigation.navigate;
@@ -29,7 +29,7 @@ const useNotificationUtils = ({navigation}) => {
   const handleConfirmClick = item => {
     console.log(item);
     const confirmedRequestId = item?.data?.requestId;
-    NotificationDb.ref(`Notification`)
+    NotificationDb.ref(`Notification/${userName}`)
       .once('value')
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -39,7 +39,7 @@ const useNotificationUtils = ({navigation}) => {
           if (requestData.requestId === confirmedRequestId) {
             // Check if requestId matches
             const entryRef = NotificationDb.ref(
-              `Notification/${uniqueKey}/data/status`,
+              `Notification/${userName}/${uniqueKey}/data/status`,
             );
             // Update the status for the current entry
             entryRef

@@ -7,14 +7,14 @@ import SingleNotificationBox from './SingleNotificationBox';
 import useNotificationUtils from './utils/useNotificationUtils';
 
 const Notification = ({navigation}) => {
-  const [{NotificationDb, requestId}, {setMapView, setLocation}] =
+  const [{NotificationDb, requestId, userName}, {setMapView, setLocation}] =
     useContext(GlobalContext);
   const {content, setContent, setVisibleDetail} = useNotificationUtils({
     navigation,
   });
 
   useEffect(() => {
-    const onChildAdded = NotificationDb.ref('Notification').on(
+    const onChildAdded = NotificationDb.ref(`Notification/${userName}`).on(
       'child_added',
       snapshot => {
         const newData = snapshot.val();
@@ -23,7 +23,7 @@ const Notification = ({navigation}) => {
       },
     );
 
-    const onChildChanged = NotificationDb.ref('Notification').on(
+    const onChildChanged = NotificationDb.ref(`Notification/${userName}`).on(
       'child_changed',
       snapshot => {
         const newData = snapshot.val();
@@ -42,8 +42,14 @@ const Notification = ({navigation}) => {
     );
 
     return () => {
-      NotificationDb.ref('Notification').off('child_added', onChildAdded);
-      NotificationDb.ref('Notification').off('child_changed', onChildChanged);
+      NotificationDb.ref(`Notification/${userName}`).off(
+        'child_added',
+        onChildAdded,
+      );
+      NotificationDb.ref(`Notification/${userName}`).off(
+        'child_changed',
+        onChildChanged,
+      );
     };
   }, []);
 

@@ -8,7 +8,7 @@ const useStatesAndActions = () => {
   const firebaseURl =
     'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/';
   const [token, setToken] = useState('');
-  const [userName, setuserName] = useState('test');
+  const [userName, setuserName] = useState('Jess');
   const [userId, setUserId] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState(false);
@@ -20,8 +20,6 @@ const useStatesAndActions = () => {
   const [isIncoming, setIsIncoming] = useState(true);
   const AmbulanceDb = firebase.app().database(firebaseURl).ref('Ambulance');
   const NotificationDb = firebase.app().database(firebaseURl);
-  const RequestDb = firebase.app().database(firebaseURl);
-  const [requestId, setRequestId] = useState();
 
   const state = {
     baseURL,
@@ -37,8 +35,6 @@ const useStatesAndActions = () => {
     isIncoming,
     AmbulanceDb,
     NotificationDb,
-    RequestDb,
-    requestId,
   };
   const actions = {
     setToken,
@@ -51,7 +47,6 @@ const useStatesAndActions = () => {
     setMapView,
     setSearchCoords,
     setIsIncoming,
-    setRequestId,
   };
   return [state, actions];
 };

@@ -9,8 +9,7 @@ import uuid from 'react-native-uuid';
 const Tab = createBottomTabNavigator();
 
 export default function Dashboard({navigation}) {
-  const [{NotificationDb, RequestDb}, {setIsIncoming, setRequestId}] =
-    useContext(GlobalContext);
+  const [{NotificationDb}, {setIsIncoming}] = useContext(GlobalContext);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -19,19 +18,15 @@ export default function Dashboard({navigation}) {
       setIsDialogVisible(true);
       const notificationId = uuid.v4();
 
-      NotificationDb.ref(`Notification/${notificationId}`)
+      NotificationDb.ref(
+        `Notification/${remoteMessage?.data?.sent_to}/${notificationId}`,
+      )
         .set({
           requestId: `${remoteMessage?.data?.requestId}`,
           notification: remoteMessage?.notification,
           data: remoteMessage?.data,
         })
         .then(() => console.log('Data updated.'));
-      RequestDb.ref(`Requests/${remoteMessage?.data?.requestId}`).push({
-        data: remoteMessage?.data,
-        notificationId,
-      });
-
-      // setRequestId(remoteMessage?.data?.requestId);
     });
 
     return unsubscribe;

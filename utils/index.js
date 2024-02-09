@@ -1,5 +1,4 @@
 import messaging from '@react-native-firebase/messaging';
-import * as ImagePicker from 'expo-image-picker';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -18,18 +17,6 @@ export const notificationListener = ({NotificationDb}) => {
       'Notification caused app to open from background state:',
       remoteMessage.data,
     );
-
-    // const newEntry = NotificationDb.ref(
-    //   `Notification/${remoteMessage?.data?.requestId}`,
-    // );
-
-    // newEntry
-    //   .push({
-    //     requestId: `${remoteMessage?.data?.requestId}`,
-    //     data: remoteMessage?.data,
-    //   })
-    //   .then(() => console.log('Data updated.'));
-    // console.log('Auto generated key: ', newEntry.key);
   });
 
   // Check whether an initial notification is available
@@ -42,17 +29,6 @@ export const notificationListener = ({NotificationDb}) => {
           remoteMessage.data,
         );
       }
-      // const newEntry = NotificationDb.ref(
-      //   `Notification/${remoteMessage?.data?.requestId}`,
-      // );
-
-      // newEntry
-      //   .push({
-      //     requestId: `${remoteMessage?.data?.requestId}`,
-      //     data: remoteMessage?.data,
-      //   })
-      //   .then(() => console.log('Data updated.'));
-      // console.log('Auto generated key: ', newEntry.key);
     });
 };
 

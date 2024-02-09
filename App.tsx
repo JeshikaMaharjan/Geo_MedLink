@@ -26,8 +26,7 @@ function App() {
     .app()
     .database(
       'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/',
-    )
-    .ref('Notification');
+    );
 
   const isNotSignedIn = false;
   // Dashboard acces garna change isNotSignedIn to false

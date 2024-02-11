@@ -8,36 +8,97 @@ import axios from 'axios';
 
 const InteractionModal = ({navigation}) => {
   const [
-    {userName, location, baseURL},
-    {setIsInteractionModalVisible, setRequestId},
+    {userName, location, baseURL, NotificationDb},
+    {setIsInteractionModalVisible},
   ] = useContext(GlobalContext);
   const [modalNumber, setModalNumber] = useState(0);
   const [bloodGroup, setBloodGroup] = useState();
   const navigate = navigation.navigate;
   const [isError, setIsError] = useState(false);
 
-  async function postData() {
+  async function postBloodData() {
     setIsError(false);
     const data = {
       requestId: uuid.v4(),
       bloodGroup: bloodGroup,
       latitude: `${location?.coords?.latitude}`,
       longitude: `${location?.coords?.longitude}`,
-      // userName: userName,
-      userName: 'Jen1',
+      userName: userName,
+      requestType: 'blood',
+      type: 'request',
+      status: 'Active',
+      // userName: 'Jen1',
     };
     console.log(data);
-    setRequestId(data?.requestId);
 
     setModalNumber(1);
     try {
       const res = await axios.post(
-        `http://${baseURL}/api/send/notifications/request/`,
+        `http://${baseURL}/api/send/notifications/request/blood`,
+        data,
+      );
+
+      if (!res) throw new Error();
+      const notificationId = uuid.v4();
+      const sentTo = res?.data?.data?.sent_to;
+
+      if (sentTo) {
+        const sentToList = sentTo.split(',');
+        sentToList.forEach(item => {
+          NotificationDb.ref(`Notification/${item}/${notificationId}`)
+            .set({
+              requestId: `${res?.data?.data?.requestId}`,
+              notification: res?.data?.data?.notification,
+              data: res?.data?.data,
+            })
+            .then(() => console.log('Data updated.'))
+            .catch(error => console.error('Error updating data:', error));
+        });
+      }
+      setModalNumber(1);
+    } catch (error) {
+      console.log('err', error);
+      console.log(error?.response?.data);
+    }
+  }
+  async function postAmbulanceData() {
+    setIsError(false);
+    const data = {
+      requestId: uuid.v4(),
+      latitude: `${location?.coords?.latitude}`,
+      longitude: `${location?.coords?.longitude}`,
+      userName: userName,
+      requestType: 'ambulance',
+      type: 'request',
+      status: 'Active',
+    };
+    console.log(data);
+
+    setModalNumber(1);
+    try {
+      const res = await axios.post(
+        `http://${baseURL}/api/send/notifications/request/ambulance`,
         data,
       );
 
       if (!res) throw new Error();
       console.log(res.data);
+      const notificationId = uuid.v4();
+      const sentTo = res?.data?.data?.sent_to;
+
+      if (sentTo) {
+        const sentToList = sentTo.split(',');
+        sentToList.forEach(item => {
+          NotificationDb.ref(`Notification/${item}/${notificationId}`)
+            .set({
+              requestId: `${res?.data?.data?.requestId}`,
+              notification: res?.data?.data?.notification,
+              data: res?.data?.data,
+            })
+            .then(() => console.log('Data updated.'))
+            .catch(error => console.error('Error updating data:', error));
+        });
+      }
       setModalNumber(1);
     } catch (error) {
       console.log('err', error);
@@ -50,12 +111,12 @@ const InteractionModal = ({navigation}) => {
       setIsError(true);
       return;
     }
-    postData();
+    postBloodData();
     // API logic
   };
 
   const handleAmbulanceClick = () => {
-    setModalNumber(1);
+    postAmbulanceData();
   };
 
   return (

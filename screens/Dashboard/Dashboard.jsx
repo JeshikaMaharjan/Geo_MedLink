@@ -13,20 +13,8 @@ export default function Dashboard({navigation}) {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('incoming', remoteMessage);
       setIsIncoming(true);
       setIsDialogVisible(true);
-      const notificationId = uuid.v4();
-
-      NotificationDb.ref(
-        `Notification/${remoteMessage?.data?.sent_to}/${notificationId}`,
-      )
-        .set({
-          requestId: `${remoteMessage?.data?.requestId}`,
-          notification: remoteMessage?.notification,
-          data: remoteMessage?.data,
-        })
-        .then(() => console.log('Data updated.'));
     });
 
     return unsubscribe;

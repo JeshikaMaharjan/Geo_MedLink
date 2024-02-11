@@ -26,12 +26,6 @@ export default function Map({route, navigation}) {
   const {getLocation} = useHelperFunctions();
   const [{isInteractionModalVisible}, {setIsInteractionModalVisible}] =
     useContext(GlobalContext);
-  // if (route?.params) {
-  //   const {latitude, longitude} = route.params;
-  //   console.log('llllll', latitude, longitude);
-  // }
-
-  // console.log(route);
 
   useEffect(() => {
     getLocation();

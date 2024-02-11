@@ -6,10 +6,15 @@ import {NotificationStyle as styles} from './style';
 import useNotificationUtils from './utils/useNotificationUtils';
 
 const SingleNotificationBox = ({index, item, navigation}) => {
-  const {visibleDetail, handleClick, toggleDetails, handleConfirmClick} =
-    useNotificationUtils({
-      navigation,
-    });
+  const {
+    visibleDetail,
+    handleClick,
+    toggleDetails,
+    handleRequestAccept,
+    handleConfirmClick,
+  } = useNotificationUtils({
+    navigation,
+  });
 
   return (
     <Surface key={index} elevation={5} style={styles.surface}>
@@ -69,8 +74,20 @@ const SingleNotificationBox = ({index, item, navigation}) => {
         item?.data?.status === 'Active' && (
           <View style={styles.actionBox}>
             <Text>Request Actions</Text>
-            <Button mode="elevated">Accept</Button>
-            <Button mode="elevated">Reject</Button>
+            <Button
+              mode="elevated"
+              onPress={() => {
+                handleRequestAccept(item);
+              }}>
+              Accept
+            </Button>
+            <Button
+              mode="elevated"
+              onPress={() => {
+                toggleDetails(index);
+              }}>
+              Reject
+            </Button>
           </View>
         )}
       {visibleDetail[index] &&

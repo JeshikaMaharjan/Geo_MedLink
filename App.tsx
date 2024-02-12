@@ -18,6 +18,7 @@ import Firebase from './screens/Firebase/test';
 import {getToken, notificationListener, requestUserPermission} from './utils';
 import Notification from './screens/Notifications/Notification';
 import {PermissionsAndroid} from 'react-native';
+import useAuth from './custom_hooks/useAuth';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -27,9 +28,9 @@ function App() {
     .database(
       'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/',
     );
+  const {isAuthenticated} = useAuth();
+  console.log('auth', isAuthenticated);
 
-  const isNotSignedIn = false;
-  // Dashboard acces garna change isNotSignedIn to false
   const requestNotificationPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -56,11 +57,10 @@ function App() {
           <SafeAreaProvider>
             <Stack.Navigator
               initialRouteName="Login"
-              // initialRouteName="Firebase"
               screenOptions={{
                 headerShown: false,
               }}>
-              {isNotSignedIn ? (
+              {!isAuthenticated ? (
                 <Stack.Group>
                   <Stack.Screen
                     name="Login"

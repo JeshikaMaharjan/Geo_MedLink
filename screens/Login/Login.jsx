@@ -6,11 +6,13 @@ import axios from 'axios';
 import {GlobalContext} from '../../context/GlobalStates';
 import {getToken} from '../../utils';
 import useHelperFunctions from '../Map/utils/helper';
+import useAuth from '../../custom_hooks/useAuth';
 
 export default function Login({navigation}) {
   const [{baseURL, deviceToken}, {setToken, setuserName, setDeviceToken}] =
     useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
+  const {setIsAuthenticated} = useAuth();
 
   const navigate = navigation.navigate;
   const [username, setUsername] = useState(null);
@@ -30,7 +32,9 @@ export default function Login({navigation}) {
       const res = await axios.post(`http://${baseURL}/api/login`, data);
       setToken(res?.data?.token);
       setuserName(res?.data?.userName);
+      setIsAuthenticated(true);
     } catch (error) {
+      console.log('err', error);
       console.log(error?.response?.data?.error?.message);
     }
   }

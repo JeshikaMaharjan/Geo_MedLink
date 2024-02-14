@@ -21,18 +21,31 @@ export default function Login({navigation}) {
     getLocation();
     const mobileToken = getToken();
     setDeviceToken(mobileToken);
+    console.log(baseURL);
   }, []);
   async function postData() {
     const data = {
       userName: username,
       password: password,
-      deviceId: deviceToken?._j?.token,
+      // deviceId: deviceToken?._j?.token,
     };
+    console.log(data);
+    console.log(`http://${baseURL}/api/login`);
     try {
-      const res = await axios.post(`http://${baseURL}/api/login`, data);
-      setToken(res?.data?.token);
-      setuserName(res?.data?.userName);
-      setIsAuthenticated(true);
+      // const res = await axios.post(`http://${baseURL}/api/login`, data);
+      // // const res = await axios.post('http://localhost:8000/api/login', data);
+      // setToken(res?.data?.token);
+      // setuserName(res?.data?.userName);
+      // setIsAuthenticated(true);
+
+      const dataTest = await fetch(`http://${baseURL}/api/user/Jen1`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'},
+      });
+      console.log('fetfaf');
+      console.log(data);
+      const response = await dataTest.json();
+      console.log(response);
     } catch (error) {
       console.log('err', error);
       console.log(error?.response?.data?.error?.message);

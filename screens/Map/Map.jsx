@@ -60,28 +60,28 @@ export default function Map({route, navigation}) {
         ) : (
           <>
             {mapView === 'default' ? (
-              // <MapboxGL.MapView style={styles.map}>
-              //   <MapboxGL.Camera
-              //     zoomLevel={15}
-              //     centerCoordinate={[
-              //       location.coords.longitude,
-              //       location.coords.latitude,
-              //     ]}
-              //     animationMode={'flyTo'}
-              //     animationDuration={8000}
-              //   />
-              //   <MapboxGL.PointAnnotation
-              //     id="marker"
-              //     coordinate={[
-              //       location.coords.longitude,
-              //       location.coords.latitude,
-              //     ]}
-              //   />
-              // </MapboxGL.MapView>
-              <View>
-                <Text>map</Text>
-              </View>
+              <MapboxGL.MapView style={styles.map}>
+                <MapboxGL.Camera
+                  zoomLevel={15}
+                  centerCoordinate={[
+                    location.coords.longitude,
+                    location.coords.latitude,
+                  ]}
+                  animationMode={'flyTo'}
+                  animationDuration={8000}
+                />
+                <MapboxGL.PointAnnotation
+                  id="marker"
+                  coordinate={[
+                    location.coords.longitude,
+                    location.coords.latitude,
+                  ]}
+                />
+              </MapboxGL.MapView>
             ) : (
+              // <View>
+              //   <Text>map</Text>
+              // </View>
               <FindNearby />
             )}
 

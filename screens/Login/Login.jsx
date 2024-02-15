@@ -1,3 +1,4 @@
+import React from 'react';
 import {ImageBackground, KeyboardAvoidingView, View} from 'react-native';
 import {useContext, useEffect, useState} from 'react';
 import {Text, TextInput, Button} from 'react-native-paper';
@@ -19,18 +20,24 @@ export default function Login({navigation}) {
     getLocation();
     const mobileToken = getToken();
     setDeviceToken(mobileToken);
+    console.log(baseURL);
   }, []);
+
   async function postData() {
     const data = {
       userName: username,
       password: password,
       deviceId: deviceToken?._j?.token,
     };
+    console.log(data);
+
     try {
       const res = await axios.post(`http://${baseURL}/api/login`, data);
-      setToken(res?.data?.token);
-      setuserName(res?.data?.userName);
+      setToken(res?.data?.data?.token);
+      setuserName(res?.data?.data?.username);
+      setIsAuthenticated(true);
     } catch (error) {
+      console.log('err', error);
       console.log(error?.response?.data?.error?.message);
     }
   }

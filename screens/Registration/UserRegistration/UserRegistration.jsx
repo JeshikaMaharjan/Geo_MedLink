@@ -53,6 +53,7 @@ function UserRegistration({navigation}) {
       latitude: location?.coords?.latitude,
       image: image,
     };
+    console.log('data', data);
     try {
       const res = await axios.post(`http://${baseURL}/api/user`, data);
 

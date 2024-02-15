@@ -5,6 +5,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {GlobalContext} from '../../context/GlobalStates';
 import {Portal, Snackbar} from 'react-native-paper';
 import uuid from 'react-native-uuid';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +24,15 @@ export default function Dashboard({navigation}) {
   return (
     <>
       <Tab.Navigator>
-        <Tab.Screen name="Map" component={Map} />
+        <Tab.Screen
+          name="Map"
+          component={Map}
+          options={{
+            tabBarIcon: () => (
+              <FontAwesomeIcon name="map-o" color="black" size={15} />
+            ),
+          }}
+        />
       </Tab.Navigator>
       <Portal>
         <Snackbar

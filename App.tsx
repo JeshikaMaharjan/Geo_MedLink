@@ -1,26 +1,15 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {MD3LightTheme, PaperProvider} from 'react-native-paper';
 import {firebase} from '@react-native-firebase/database';
-
 import {theme} from './constants/Theme';
-
 import GlobalContextProvider from './context/GlobalStates';
-import Login from './screens/Login/Login';
-import ForgotPassword from './screens/ForgotPassword/ForgotPassword';
-import Registration from './screens/Registration/Register';
-import Dashboard from './screens/Dashboard/Dashboard';
-import Firebase from './screens/Firebase/test';
-
 import {getToken, notificationListener, requestUserPermission} from './utils';
-import Notification from './screens/Notifications/Notification';
 import {PermissionsAndroid} from 'react-native';
-import useAuth from './custom_hooks/useAuth';
+import RootStack from './navigation/RootStack';
 
-const Stack = createNativeStackNavigator();
 function App() {
   const paperTheme = {...MD3LightTheme, colors: theme.light};
   const NotificationDb = firebase
@@ -28,8 +17,6 @@ function App() {
     .database(
       'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/',
     );
-  const {isAuthenticated} = useAuth();
-  console.log('auth', isAuthenticated);
 
   const requestNotificationPermission = async () => {
     try {
@@ -49,40 +36,13 @@ function App() {
     requestNotificationPermission();
     notificationListener({NotificationDb});
     getToken();
-  });
+  }, []);
   return (
     <GlobalContextProvider>
       <PaperProvider theme={paperTheme}>
         <NavigationContainer>
           <SafeAreaProvider>
-            <Stack.Navigator
-              initialRouteName="Login"
-              screenOptions={{
-                headerShown: false,
-              }}>
-              {!isAuthenticated ? (
-                <Stack.Group>
-                  <Stack.Screen
-                    name="Login"
-                    component={Login}
-                    options={{
-                      title: 'Login Screen',
-                    }}
-                  />
-                  <Stack.Screen
-                    name="ForgotPassword"
-                    component={ForgotPassword}
-                  />
-                  <Stack.Screen name="Registration" component={Registration} />
-                  <Stack.Screen name="Firebase" component={Firebase} />
-                </Stack.Group>
-              ) : (
-                <Stack.Group>
-                  <Stack.Screen name="Dashboard" component={Dashboard} />
-                  <Stack.Screen name="Notification" component={Notification} />
-                </Stack.Group>
-              )}
-            </Stack.Navigator>
+            <RootStack />
           </SafeAreaProvider>
         </NavigationContainer>
       </PaperProvider>

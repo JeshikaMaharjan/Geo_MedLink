@@ -4,13 +4,12 @@ import {firebase} from '@react-native-firebase/database';
 export const GlobalContext = createContext([{state: {}, actions: {}}]);
 
 const useStatesAndActions = () => {
-  const baseURL = '192.168.101.7:3000';
+  const baseURL = '192.168.1.40:5000';
+  // const baseURL = '192.168.1.41:3000';
   const firebaseURl =
     'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/';
   const [token, setToken] = useState('');
-  const [userName, setuserName] = useState('Jen1');
-  // const [userName, setuserName] = useState('Malisha1');
-  // const [userName, setuserName] = useState('Nepal1234567');
+  const [userName, setuserName] = useState();
   const [userId, setUserId] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState(false);

@@ -64,6 +64,9 @@ import {theme} from './constants/Theme';
 
 const queryClient = new QueryClient();
 export default function App() {
+  {
+    console.log({queryClient});
+  }
   const paperTheme = {...MD3LightTheme, colors: theme.light};
   const user = useUser();
   return (

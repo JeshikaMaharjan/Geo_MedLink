@@ -22,7 +22,7 @@ export const LoginScreen = () => {
     // const data = {userName: username, password: password};
     // try {
     //   const res = await axios.post(
-    //     `http://192.168.101.11:5000/api/login`,
+    //     `http://192.168.101.19:5000/api/login`,
     //     data,
     //   );
     //   console.log(res);
@@ -58,7 +58,7 @@ export const LoginScreen = () => {
         Login
       </Button>
       {/* <Text variant="bodyMedium">{error?.message}</Text> */}
-      {console.log({error})}
+      {/* {console.log({error})} */}
     </View>
   );
 };

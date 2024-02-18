@@ -1,5 +1,5 @@
-import {View} from 'react-native';
-import MapboxGL from '@rnmapbox/maps';
+import {Image, View} from 'react-native';
+import MapboxGL, {MarkerView} from '@rnmapbox/maps';
 import React, {useContext, useEffect} from 'react';
 import {Mapstyles as styles} from './style/Map';
 import {MAPBOX_TOKEN} from '../../constants/constants';
@@ -10,13 +10,15 @@ import MapActions from './MapActions';
 import InteractionModal from './InteractionModal';
 import FindNearby from './FindNearby';
 import Icon from '../Notifications/Icon';
+import userMarker from '../../assets/userMarker.png';
 
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
 export default function Map({navigation}) {
-  const [{location, mapView}] = useContext(GlobalContext);
+  const [{location, confirmedUserLocation, mapView}] =
+    useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
   const [{isInteractionModalVisible}, {setIsInteractionModalVisible}] =
     useContext(GlobalContext);
@@ -39,29 +41,41 @@ export default function Map({navigation}) {
               <Text variant="titleLarge">Map</Text>
               <Icon navigation={navigation} />
             </View>
-            {mapView === 'default' ? (
-              // <MapboxGL.MapView style={styles.map}>
-              //   <MapboxGL.Camera
-              //     zoomLevel={15}
-              //     centerCoordinate={[
-              //       location.coords.longitude,
-              //       location.coords.latitude,
-              //     ]}
-              //     animationMode={'flyTo'}
-              //     animationDuration={8000}
-              //   />
-              //   <MapboxGL.PointAnnotation
-              //     id="marker"
-              //     coordinate={[
-              //       location.coords.longitude,
-              //       location.coords.latitude,
-              //     ]}
-              //   />
-              // </MapboxGL.MapView>
-              <View>
-                <Text>map</Text>
-              </View>
+            {mapView === 'default' || mapView === 'confirmedUser' ? (
+              <MapboxGL.MapView style={styles.map}>
+                <MapboxGL.Camera
+                  zoomLevel={15}
+                  centerCoordinate={[
+                    location.coords.longitude,
+                    location.coords.latitude,
+                  ]}
+                  animationMode={'flyTo'}
+                  animationDuration={8000}
+                />
+                <MarkerView
+                  id="marker"
+                  coordinate={[
+                    location.coords.longitude,
+                    location.coords.latitude,
+                  ]}
+                  anchor={{x: 0.5, y: 1}}>
+                  <Image source={userMarker} style={{width: 60, height: 60}} />
+                </MarkerView>
+
+                {confirmedUserLocation && mapView === 'confirmedUser' && (
+                  <MapboxGL.PointAnnotation
+                    id="marker"
+                    coordinate={[
+                      confirmedUserLocation.coords.longitude,
+                      confirmedUserLocation.coords.latitude,
+                    ]}
+                  />
+                )}
+              </MapboxGL.MapView>
             ) : (
+              // <View>
+              //   <Text>map</Text>
+              // </View>
               <FindNearby />
             )}
 

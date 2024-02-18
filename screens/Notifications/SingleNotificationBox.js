@@ -64,7 +64,12 @@ const SingleNotificationBox = ({index, item, navigation}) => {
             Location: [{item?.data?.latitude}, {item?.data?.longitude}]
           </Text>
           <View style={styles.locationBox}>
-            <Button>View Location on Map</Button>
+            <Button
+              onPress={() => {
+                handleClick(item);
+              }}>
+              View Location on Map
+            </Button>
             <FontAwesomeIcon name="map-o" color="black" size={15} />
           </View>
         </View>

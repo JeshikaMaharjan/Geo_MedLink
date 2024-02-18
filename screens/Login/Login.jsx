@@ -35,8 +35,7 @@ export default function Login({navigation}) {
       password: password,
       deviceId: deviceToken?._j?.token,
     };
-    console.log(data);
-
+    console.log({data});
     try {
       const res = await axios.post(`http://${BASEURL}/api/login`, data);
       console.log(res?.data);
@@ -45,7 +44,7 @@ export default function Login({navigation}) {
       setContextToken(res?.data?.data?.token);
       setImage(res?.data?.data?.image);
     } catch (error) {
-      console.log('err', error);
+      console.log({error});
       console.log(error?.response?.data?.error?.message);
     }
   }

@@ -19,6 +19,9 @@ const useStatesAndActions = () => {
   const [searchCoords, setSearchCoords] = useState();
   const AmbulanceDb = firebase.app().database(firebaseURl).ref('Ambulance');
   const NotificationDb = firebase.app().database(firebaseURl);
+  const [bloodDonorsLocation, setBloodDonorsLocation] = useState();
+  const [ambulancesLocation, setAmbulancesLocation] = useState();
+  const [confirmedUserLocation, setConfirmedUserLocation] = useState();
 
   const state = {
     baseURL,
@@ -32,6 +35,9 @@ const useStatesAndActions = () => {
     searchCoords,
     AmbulanceDb,
     NotificationDb,
+    bloodDonorsLocation,
+    ambulancesLocation,
+    confirmedUserLocation,
   };
   const actions = {
     setuserName,
@@ -42,6 +48,9 @@ const useStatesAndActions = () => {
     setIsInteractionModalVisible,
     setMapView,
     setSearchCoords,
+    setBloodDonorsLocation,
+    setAmbulancesLocation,
+    setConfirmedUserLocation,
   };
   return [state, actions];
 };

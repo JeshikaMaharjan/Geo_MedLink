@@ -6,20 +6,20 @@ import uuid from 'react-native-uuid';
 const useNotificationUtils = ({navigation}) => {
   const [
     {NotificationDb, location, userName, baseURL},
-    {setMapView, setLocation},
+    {setMapView, setConfirmedUserLocation},
   ] = useContext(GlobalContext);
   const [content, setContent] = useState([]);
   const navigate = navigation.navigate;
   const [visibleDetail, setVisibleDetail] = useState([]);
   const handleClick = item => {
-    setMapView('default');
-    setLocation({
+    setMapView('confirmedUser');
+    setConfirmedUserLocation({
       coords: {
         latitude: item?.data?.latitude,
         longitude: item?.data?.longitude,
       },
     });
-    navigate('Map');
+    navigate('Dashboard');
   };
 
   const toggleDetails = index => {

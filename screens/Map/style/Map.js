@@ -19,7 +19,7 @@ const Mapstyles = StyleSheet.create({
     padding: 5,
   },
   map: {
-    height: '70%',
+    height: '67%',
     backgroundColor: 'red',
   },
   loader: {

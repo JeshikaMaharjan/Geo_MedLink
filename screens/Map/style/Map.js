@@ -10,6 +10,14 @@ const Mapstyles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  mapHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 5,
+  },
   map: {
     height: '70%',
     backgroundColor: 'red',

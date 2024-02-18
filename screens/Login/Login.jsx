@@ -7,20 +7,26 @@ import axios from 'axios';
 import {GlobalContext} from '../../context/GlobalStates';
 import {getToken} from '../../utils';
 import useHelperFunctions from '../Map/utils/helper';
+import {useUserContext} from '../../src/context/userContext';
+import {BASEURL} from '@env';
 
 export default function Login({navigation}) {
-  const [{baseURL, deviceToken}, {setToken, setuserName, setDeviceToken}] =
+  const [{deviceToken}, {setuserName, setDeviceToken}] =
     useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
 
   const navigate = navigation.navigate;
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const {
+    setUsername: setContextUsername,
+    setToken: setContextToken,
+    setImage,
+  } = useUserContext();
   useEffect(() => {
     getLocation();
     const mobileToken = getToken();
     setDeviceToken(mobileToken);
-    console.log(baseURL);
   }, []);
 
   async function postData() {
@@ -32,10 +38,12 @@ export default function Login({navigation}) {
     console.log(data);
 
     try {
-      const res = await axios.post(`http://${baseURL}/api/login`, data);
-      setToken(res?.data?.data?.token);
+      const res = await axios.post(`http://${BASEURL}/api/login`, data);
+      console.log(res?.data);
       setuserName(res?.data?.data?.username);
-      setIsAuthenticated(true);
+      setContextUsername(res?.data?.data?.username);
+      setContextToken(res?.data?.data?.token);
+      setImage(res?.data?.data?.image);
     } catch (error) {
       console.log('err', error);
       console.log(error?.response?.data?.error?.message);

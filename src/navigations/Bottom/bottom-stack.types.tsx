@@ -5,7 +5,7 @@ export type BottomTabParamsList = {
   ProfileStack: undefined;
   Feed: undefined;
   Upload: undefined;
-  Maps: undefined;
+  Dashboard: undefined;
   News: undefined;
 };
 

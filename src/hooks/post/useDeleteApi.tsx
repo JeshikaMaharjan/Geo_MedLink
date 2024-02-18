@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useUserContext} from '../../context/userContext';
-const BASEURL = process.env.EXPO_PUBLIC_API_URL;
+import axios from 'axios';
+import {BASEURL} from '@env';
 
 export const useDeletePost = () => {
   const {username} = useUserContext();
@@ -8,13 +9,19 @@ export const useDeletePost = () => {
   return useMutation({
     mutationFn: async (postId: number) => {
       console.log({postId});
-      const data = await fetch(`${BASEURL}/api/post/delete/${postId}`, {
-        method: 'DELETE',
-        headers: {'Content-Type': 'application/json'},
-      });
-      const response = await data.json();
-      if (data.status !== 200) throw new Error(response.error.message[0]);
-      return response;
+      try {
+        const response = await axios.delete(
+          `http://${BASEURL}/api/post/delete/${postId}`,
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        if (response.status !== 200)
+          throw new Error(response.data.error.message[0]);
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
     onError: e => {
       console.log(e);

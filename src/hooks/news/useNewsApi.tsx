@@ -1,7 +1,7 @@
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {useState} from 'react';
-
-const BASEURL = process.env.EXPO_PUBLIC_API_URL;
+import axios from 'axios';
+import {BASEURL} from '@env';
 
 export const useFetchNews = () => {
   console.log('This is fetching apo');
@@ -10,19 +10,19 @@ export const useFetchNews = () => {
   return useInfiniteQuery({
     queryKey: ['news'],
     queryFn: async ({pageParam}) => {
-      const data = await fetch(
-        `${BASEURL}/api/post/scrap?pageNumber=${pageParam}?take=${take}`,
-        {
-          method: 'GET',
-          headers: {'Content-Type': 'application/json'},
-        },
-      );
-      console.log('fetfaf');
-      // console.log(data);
-      const response = await data.json();
-      console.log({response: response?.data?.take});
-      setValue(response?.data?.take);
-      return response;
+      try {
+        const response = await axios.get(
+          `http://${BASEURL}/api/post/scrap?pageNumber=${pageParam}?take=${take}`,
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        console.log({response: response?.data?.take});
+        setValue(response?.data?.take);
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, res) => {

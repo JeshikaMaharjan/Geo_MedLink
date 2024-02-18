@@ -1,28 +1,32 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useUserContext} from '../../context/userContext';
-const BASEURL = process.env.EXPO_PUBLIC_API_URL;
+import axios from 'axios';
+import {BASEURL} from '@env';
 
 export const useToggleLike = () => {
   const queryClient = useQueryClient();
   const {username} = useUserContext();
   return useMutation({
     mutationFn: async (postId: number) => {
-      const data = await fetch(
-        `${BASEURL}/api/post/like/${postId}/${username}`,
-        {
-          method: 'PUT',
-          headers: {'Content-Type': 'application/json'},
-        },
-      );
-      const response = await data.json();
-      if (data.status !== 200) throw new Error(response.error.message[0]);
-      return response;
+      try {
+        const response = await axios.put(
+          `http://${BASEURL}/api/post/like/${postId}/${username}`,
+          null,
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        if (response.status !== 200)
+          throw new Error(response.data.error.message[0]);
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
     onError: e => {
       console.log({e});
     },
     onSuccess: data => {
-      // console.log({ response: data.data.id });
       queryClient.setQueryData(['post'], (oldData: any) => {
         console.log('i have entered set query');
         const newData = oldData?.pages.map((page: any) => ({
@@ -39,10 +43,6 @@ export const useToggleLike = () => {
             }),
           },
         }));
-        // console.log(JSON.stringify({ oldData }, null, 2));
-        // console.log(JSON.stringify({ newData }, null, 2));
-        // console.log("newdata consoled");
-        // console.log(oldData?.pages);
         return {
           ...oldData,
           pages: newData,
@@ -64,10 +64,6 @@ export const useToggleLike = () => {
             }),
           },
         }));
-        // console.log(JSON.stringify({ oldData }, null, 2));
-        // console.log(JSON.stringify({ newData }, null, 2));
-        // console.log("newdata consoled");
-        // console.log(oldData?.pages);
         return {
           ...oldData,
           pages: newData,

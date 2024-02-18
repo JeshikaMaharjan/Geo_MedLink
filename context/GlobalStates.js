@@ -1,14 +1,13 @@
 import {createContext, useState} from 'react';
 import {firebase} from '@react-native-firebase/database';
+import {BASEURL} from '@env';
 
 export const GlobalContext = createContext([{state: {}, actions: {}}]);
 
 const useStatesAndActions = () => {
-  const baseURL = '192.168.1.40:5000';
-  // const baseURL = '192.168.1.41:3000';
+  const baseURL = BASEURL;
   const firebaseURl =
     'https://geomedlink-a59fa-default-rtdb.asia-southeast1.firebasedatabase.app/';
-  const [token, setToken] = useState('');
   const [userName, setuserName] = useState();
   const [userId, setUserId] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
@@ -18,13 +17,11 @@ const useStatesAndActions = () => {
     useState(false);
   const [mapView, setMapView] = useState('default');
   const [searchCoords, setSearchCoords] = useState();
-  const [isIncoming, setIsIncoming] = useState(true);
   const AmbulanceDb = firebase.app().database(firebaseURl).ref('Ambulance');
   const NotificationDb = firebase.app().database(firebaseURl);
 
   const state = {
     baseURL,
-    token,
     userName,
     userId,
     isModalVisible,
@@ -33,12 +30,10 @@ const useStatesAndActions = () => {
     isInteractionModalVisible,
     mapView,
     searchCoords,
-    isIncoming,
     AmbulanceDb,
     NotificationDb,
   };
   const actions = {
-    setToken,
     setuserName,
     setUserId,
     setModalVisible,
@@ -47,7 +42,6 @@ const useStatesAndActions = () => {
     setIsInteractionModalVisible,
     setMapView,
     setSearchCoords,
-    setIsIncoming,
   };
   return [state, actions];
 };

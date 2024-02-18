@@ -5,8 +5,8 @@ import {
 } from '@tanstack/react-query';
 import {useState} from 'react';
 import {useUserContext} from '../../context/userContext';
-
-const BASEURL = process.env.EXPO_PUBLIC_API_URL;
+import axios from 'axios';
+import {BASEURL} from '@env';
 
 type PostCommentParams = {
   comment: string;
@@ -21,14 +21,23 @@ export const usePostComment = () => {
   console.log({username});
   return useMutation({
     mutationFn: async ({comment, postId}: PostCommentParams) => {
-      const data = await fetch(`${BASEURL}/api/comment`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({comment, userName: username, postId}),
-      });
-      setId(postId);
-      const response = await data.json();
-      return response;
+      try {
+        const response = await axios.post(
+          `http://${BASEURL}/api/comment`,
+          {
+            comment,
+            userName: username,
+            postId,
+          },
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        setId(postId);
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     onSuccess: () => {
@@ -38,20 +47,20 @@ export const usePostComment = () => {
 };
 
 export const useFetchComment = (postId: number) => {
-  // console.log("fetching comment");
   return useInfiniteQuery({
     queryKey: ['comment', postId],
     queryFn: async ({pageParam}) => {
-      const data = await fetch(
-        `${BASEURL}/api/comment/${postId}?pageNumber=${pageParam}`,
-        {
-          method: 'GET',
-          headers: {'Content-Type': 'application/json'},
-        },
-      );
-      const response = await data.json();
-      // console.log({ response });
-      return response;
+      try {
+        const response = await axios.get(
+          `http://${BASEURL}/api/comment/${postId}?pageNumber=${pageParam}`,
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        return response.data;
+      } catch (error) {
+        cosole.log(error);
+      }
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, res) => {

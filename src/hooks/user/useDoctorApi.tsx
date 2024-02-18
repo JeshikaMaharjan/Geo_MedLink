@@ -1,18 +1,25 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useUserContext} from '../../context/userContext';
-const BASEURL = process.env.EXPO_PUBLIC_API_URL;
+import axios from 'axios';
+import {BASEURL} from '@env';
+
 export const useFetchDoctor = () => {
   const {username} = useUserContext();
+
   return useQuery({
     queryKey: ['doctor', username],
     queryFn: async () => {
-      const data = await fetch(`${BASEURL}/api/get/doctor/${username}`, {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
-      });
-      const response = await data.json();
-      // console.log({ response });
-      return response;
+      try {
+        const response = await axios.get(
+          `http://${BASEURL}/api/get/doctor/${username}`,
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 };
@@ -21,23 +28,31 @@ type DoctorParams = {
   NMC: string | undefined;
   degree: string | undefined;
 };
+
 export const useDoctor = () => {
   const {username} = useUserContext();
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({NMC, degree}: DoctorParams) => {
-      console.log('his this trytdhgc');
-      const data = await fetch(`${BASEURL}/api/doctor/update`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          userName: username,
-          NMC: parseInt(NMC!),
-          degree,
-        }),
-      });
+      try {
+        const response = await axios.put(
+          `http://${BASEURL}/api/doctor/update`,
+          {
+            userName: username,
+            NMC: parseInt(NMC!),
+            degree,
+          },
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
-    onError(e) {
+    onError: e => {
       console.log(e);
     },
     onSuccess: () => {

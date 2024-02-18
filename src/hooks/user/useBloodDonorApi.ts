@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useUserContext} from '../../context/userContext';
-const BASEURL = process.env.EXPO_PUBLIC_API_URL;
+import axios from 'axios';
+import {BASEURL} from '@env';
 
 type BloodTypeParam = {
   is_donor: boolean;
@@ -10,16 +11,24 @@ type BloodTypeParam = {
 export const useUpdateBloodDonor = () => {
   const queryClient = useQueryClient();
   const {username} = useUserContext();
+
   return useMutation({
     mutationFn: async ({is_donor, blood_Group}: BloodTypeParam) => {
-      const data = await fetch(`${BASEURL}/api/donor/${username}`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          is_donor,
-          blood_Group,
-        }),
-      });
+      try {
+        const response = await axios.put(
+          `${BASEURL}/api/donor/${username}`,
+          {
+            is_donor,
+            blood_Group,
+          },
+          {
+            headers: {'Content-Type': 'application/json'},
+          },
+        );
+        return response.data;
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['user', username]});

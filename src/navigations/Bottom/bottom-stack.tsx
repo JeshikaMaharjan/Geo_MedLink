@@ -12,6 +12,8 @@ import {NewsFeed} from '../../screens/Post/Components/newsFeed';
 import {News} from '../../screens/News/news';
 import {UploadPost} from '../../screens/Post/uploadPost';
 import {Profile} from '../../screens/User/profile';
+import Dashboard from '../../../screens/Dashboard/Dashboard';
+import Icon from '../../../screens/Notifications/Icon';
 
 const Tab = createBottomTabNavigator<BottomTabParamsList>();
 
@@ -21,7 +23,7 @@ export const BottomTabNavigator = () => {
   const {username} = useUserContext();
   return (
     <Navigator>
-      <Screen
+      {/* <Screen
         name="Feed"
         component={NewsFeed}
         options={{
@@ -30,7 +32,8 @@ export const BottomTabNavigator = () => {
           ),
           title: 'Post',
           headerShown: false,
-        }}></Screen>
+        }}
+      /> */}
       <Screen
         name="News"
         component={News}
@@ -39,7 +42,8 @@ export const BottomTabNavigator = () => {
             <FontAwesome name="newspaper-o" size={24} color="black" />
           ),
           title: 'News',
-        }}></Screen>
+        }}
+      />
       <Screen
         name="Upload"
         component={UploadPost}
@@ -49,7 +53,25 @@ export const BottomTabNavigator = () => {
           ),
           title: 'Upload Post',
           headerShown: false,
-        }}></Screen>
+        }}
+      />
+      <Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={{
+          headerRight: () => <Icon />,
+          tabBarIcon: ({color, size}) => (
+            <MaterialCommunityIcons
+              name="google-maps"
+              size={24}
+              color="black"
+            />
+          ),
+          title: 'Map',
+          headerShown: false,
+        }}
+      />
+      {/* <Stack.Screen name="Notification" component={Notification} /> */}
       <Screen
         name="ProfileStack"
         component={Profile}
@@ -59,7 +81,8 @@ export const BottomTabNavigator = () => {
           ),
           title: 'Profile',
           headerShown: false,
-        }}></Screen>
+        }}
+      />
     </Navigator>
   );
 };

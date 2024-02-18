@@ -1,16 +1,11 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Map from '../Map/Map';
 import messaging from '@react-native-firebase/messaging';
 import React, {useContext, useEffect, useState} from 'react';
 import {GlobalContext} from '../../context/GlobalStates';
 import {Portal, Snackbar} from 'react-native-paper';
-import uuid from 'react-native-uuid';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-
-const Tab = createBottomTabNavigator();
 
 export default function Dashboard({navigation}) {
-  const [{NotificationDb}, {setIsIncoming}] = useContext(GlobalContext);
+  const [{}, {setIsIncoming}] = useContext(GlobalContext);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -23,17 +18,7 @@ export default function Dashboard({navigation}) {
 
   return (
     <>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Map"
-          component={Map}
-          options={{
-            tabBarIcon: () => (
-              <FontAwesomeIcon name="map-o" color="black" size={15} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+      <Map navigation={navigation} />
       <Portal>
         <Snackbar
           wrapperStyle={{top: 70}}

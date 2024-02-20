@@ -1,8 +1,6 @@
+import React, {useContext, useEffect} from 'react';
 import {Image, View} from 'react-native';
 import MapboxGL, {MarkerView} from '@rnmapbox/maps';
-import React, {useContext, useEffect} from 'react';
-import {Mapstyles as styles} from './style/Map';
-import {MAPBOX_TOKEN} from '../../constants/constants';
 import {ActivityIndicator, Modal, Portal, Text} from 'react-native-paper';
 import {GlobalContext} from '../../context/GlobalStates';
 import useHelperFunctions from './utils/helper';
@@ -11,20 +9,24 @@ import InteractionModal from './InteractionModal';
 import FindNearby from './FindNearby';
 import Icon from '../Notifications/Icon';
 import userMarker from '../../assets/userMarker.png';
+import RouteBetweenUsers from './RouteBetweenUsers';
+import {MAPBOX_TOKEN} from '../../constants/constants';
+import {Mapstyles as styles} from './style/Map';
 
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
 export default function Map({navigation}) {
-  const [{location, confirmedUserLocation, mapView}] =
-    useContext(GlobalContext);
+  const [
+    {location, confirmedUserLocation, mapView, isInteractionModalVisible},
+    {setIsInteractionModalVisible},
+  ] = useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
-  const [{isInteractionModalVisible}, {setIsInteractionModalVisible}] =
-    useContext(GlobalContext);
 
   useEffect(() => {
     getLocation();
+    console.log({mapView});
   }, []);
 
   return (
@@ -41,7 +43,7 @@ export default function Map({navigation}) {
               <Text variant="titleLarge">Map</Text>
               <Icon navigation={navigation} />
             </View>
-            {mapView === 'default' || mapView === 'confirmedUser' ? (
+            {mapView === 'default' ? (
               <MapboxGL.MapView style={styles.map}>
                 <MapboxGL.Camera
                   zoomLevel={15}
@@ -73,13 +75,16 @@ export default function Map({navigation}) {
                 )}
               </MapboxGL.MapView>
             ) : (
-              // <View>
-              //   <Text>map</Text>
-              // </View>
-              <FindNearby />
+              <>
+                {mapView === 'confirmedUser' ? (
+                  <RouteBetweenUsers />
+                ) : (
+                  <FindNearby />
+                )}
+              </>
             )}
 
-            <MapActions />
+            {mapView !== 'confirmedUser' && <MapActions />}
             <Portal>
               <Modal
                 visible={isInteractionModalVisible}

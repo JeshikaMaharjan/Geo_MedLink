@@ -104,10 +104,18 @@ const Mapstyles = StyleSheet.create({
   flatList: {
     position: 'absolute',
     bottom: 20,
-    left: Dimensions.get('window').width / 2 - 40,
+    left: Dimensions.get('window').width / 2 - 30,
     right: 0,
     backgroundColor: 'transparent',
     zIndex: 1,
+  },
+  buttonView: {
+    position: 'absolute',
+    bottom: 20,
+    left: 5,
+    zIndex: 1,
+    display: 'flex',
+    gap: 8,
   },
   routeProfileButton: {
     width: 80,

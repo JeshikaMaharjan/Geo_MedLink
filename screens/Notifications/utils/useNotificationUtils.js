@@ -93,6 +93,7 @@ const useNotificationUtils = ({navigation}) => {
         bloodGroup: item?.data?.bloodGroup,
       }),
     };
+    console.log({data});
 
     try {
       const apiUrl =

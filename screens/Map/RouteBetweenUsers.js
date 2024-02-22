@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {GlobalContext} from '../../context/GlobalStates';
 import axios from 'axios';
 import {Mapstyles as styles} from './style/Map';
+import {Button} from 'react-native-paper';
 
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
@@ -18,9 +19,10 @@ const routeProfiles = [
   {id: 'cycling', label: 'Cycling', icon: 'bicycle'},
   {id: 'driving', label: 'Driving', icon: 'car'},
 ];
-const RouteBetweenUsers = () => {
+const RouteBetweenUsers = ({navigation}) => {
   const [routeDirections, setRouteDirections] = useState(null);
-  const [{location, confirmedUserLocation}] = useContext(GlobalContext);
+  const [{location, confirmedUserLocation}, {setMapView}] =
+    useContext(GlobalContext);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
   const [selectedRouteProfile, setselectedRouteProfile] = useState('walking');
@@ -148,6 +150,19 @@ const RouteBetweenUsers = () => {
           <Image source={userMarker} style={{width: 60, height: 60}} />
         </MarkerView>
       </MapboxGL.MapView>
+      <View style={styles.buttonView}>
+        <Button mode="contained" buttonColor="rgba(0, 0, 0, 0.4)">
+          Fetch Live Location
+        </Button>
+        <Button
+          mode="contained"
+          buttonColor="rgba(0, 0, 0, 0.4)"
+          onPress={() => {
+            setMapView('default');
+          }}>
+          Exit this view
+        </Button>
+      </View>
       <FlatList
         data={routeProfiles}
         renderItem={renderItem}

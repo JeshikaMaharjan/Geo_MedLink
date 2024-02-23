@@ -1,4 +1,5 @@
-import {View, ScrollView, KeyboardAvoidingView, Image} from 'react-native';
+import React from 'react';
+import {View, Image} from 'react-native';
 import {useContext, useState} from 'react';
 import {
   Button,
@@ -15,7 +16,6 @@ import ModalView from '../ModalView';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import {GlobalContext} from '../../../context/GlobalStates';
-import {pickImage} from '../../../utils';
 
 function UserRegistration({navigation}) {
   const [
@@ -53,7 +53,7 @@ function UserRegistration({navigation}) {
       latitude: location?.coords?.latitude,
       image: image,
     };
-    console.log('data', data);
+    console.log({data});
     try {
       const res = await axios.post(`http://${baseURL}/api/user`, data);
 
@@ -68,7 +68,9 @@ function UserRegistration({navigation}) {
       setGender();
       setAddress('');
       setEmail('');
+      setImage(null);
     } catch (error) {
+      console.log(error);
       console.log(error?.response?.data);
       setisError(true);
       setError(error?.response?.data?.error.message);

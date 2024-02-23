@@ -1,52 +1,32 @@
-import {View} from 'react-native';
-import MapboxGL from '@rnmapbox/maps';
 import React, {useContext, useEffect} from 'react';
-import {Mapstyles as styles} from './style/Map';
-import {MAPBOX_TOKEN} from '../../constants/constants';
-import {
-  ActivityIndicator,
-  Badge,
-  IconButton,
-  Modal,
-  Portal,
-  Text,
-} from 'react-native-paper';
+import {Image, View} from 'react-native';
+import MapboxGL, {MarkerView} from '@rnmapbox/maps';
+import {ActivityIndicator, Modal, Portal, Text} from 'react-native-paper';
 import {GlobalContext} from '../../context/GlobalStates';
 import useHelperFunctions from './utils/helper';
 import MapActions from './MapActions';
 import InteractionModal from './InteractionModal';
 import FindNearby from './FindNearby';
+import Icon from '../Notifications/Icon';
+import userMarker from '../../assets/userMarker.png';
+import RouteBetweenUsers from './RouteBetweenUsers';
+import {MAPBOX_TOKEN} from '../../constants/constants';
+import {Mapstyles as styles} from './style/Map';
 
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 MapboxGL.setConnected(true);
 
-export default function Map({route, navigation}) {
-  const [{location, mapView, isIncoming}] = useContext(GlobalContext);
+export default function Map({navigation}) {
+  const [
+    {location, confirmedUserLocation, mapView, isInteractionModalVisible},
+    {setIsInteractionModalVisible},
+  ] = useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
-  const [{isInteractionModalVisible}, {setIsInteractionModalVisible}] =
-    useContext(GlobalContext);
 
   useEffect(() => {
     getLocation();
-    navigation.setOptions({
-      headerRight: () => (
-        <View>
-          <Badge
-            visible={isIncoming}
-            size={10}
-            style={{position: 'absolute', top: 10, right: 12}}
-          />
-          <IconButton
-            icon="bell"
-            onPress={() => {
-              navigation.navigate('Notification');
-            }}
-            color="#fff"
-          />
-        </View>
-      ),
-    });
+    console.log({mapView});
   }, []);
 
   return (
@@ -59,6 +39,10 @@ export default function Map({route, navigation}) {
           </View>
         ) : (
           <>
+            <View style={styles.mapHeader}>
+              <Text variant="titleLarge">Map</Text>
+              <Icon navigation={navigation} />
+            </View>
             {mapView === 'default' ? (
               <MapboxGL.MapView style={styles.map}>
                 <MapboxGL.Camera
@@ -70,22 +54,37 @@ export default function Map({route, navigation}) {
                   animationMode={'flyTo'}
                   animationDuration={8000}
                 />
-                <MapboxGL.PointAnnotation
+                <MarkerView
                   id="marker"
                   coordinate={[
                     location.coords.longitude,
                     location.coords.latitude,
                   ]}
-                />
+                  anchor={{x: 0.5, y: 1}}>
+                  <Image source={userMarker} style={{width: 60, height: 60}} />
+                </MarkerView>
+
+                {confirmedUserLocation && mapView === 'confirmedUser' && (
+                  <MapboxGL.PointAnnotation
+                    id="marker"
+                    coordinate={[
+                      confirmedUserLocation.coords.longitude,
+                      confirmedUserLocation.coords.latitude,
+                    ]}
+                  />
+                )}
               </MapboxGL.MapView>
             ) : (
-              // <View>
-              //   <Text>map</Text>
-              // </View>
-              <FindNearby />
+              <>
+                {mapView === 'confirmedUser' ? (
+                  <RouteBetweenUsers />
+                ) : (
+                  <FindNearby />
+                )}
+              </>
             )}
 
-            <MapActions />
+            {mapView !== 'confirmedUser' && <MapActions />}
             <Portal>
               <Modal
                 visible={isInteractionModalVisible}

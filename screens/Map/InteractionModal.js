@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const InteractionModal = ({navigation}) => {
   const [
-    {userName, location, baseURL, NotificationDb},
+    {userName, location, baseURL, FirebaseDb: NotificationDb},
     {setIsInteractionModalVisible},
   ] = useContext(GlobalContext);
   const [modalNumber, setModalNumber] = useState(0);

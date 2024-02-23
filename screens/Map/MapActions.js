@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {Button, Card, List, Searchbar, Text} from 'react-native-paper';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -12,7 +12,8 @@ import {MAPBOX_TOKEN} from '../../constants/constants';
 const MapActions = () => {
   const [, {setIsInteractionModalVisible, setMapView, setSearchCoords}] =
     useContext(GlobalContext);
-  const {getLocation} = useHelperFunctions();
+  const {getLocation, getBloodDonorsLocation, getAmbulanceLocation} =
+    useHelperFunctions();
   const [suggestions, setSuggestions] = useState();
   const [timeoutId, setTimeoutId] = useState(null);
 
@@ -46,81 +47,83 @@ const MapActions = () => {
     setSearchText(null);
   }
   return (
-    <View style={styles.bottomView}>
-      <View style={styles.searchBoxView}>
-        <Searchbar
-          placeholder="Search location"
-          onChangeText={onChangeSearch}
-          value={searchText}
-          style={styles.searchBox}
-        />
-        <FontAwesomeIcon
-          name="street-view"
-          size={40}
-          onPress={() => {
-            getLocation();
-            setMapView('default');
-          }}
-          color="#1E3050"
-        />
-      </View>
-      {!!suggestions && (
-        <View style={{height: '100px'}}>
-          {suggestions.map((value, index) => (
-            <List.Item
-              key={index}
-              title={value.place_name}
-              onPress={() => {
-                retrieveCoords(value);
-              }}
-            />
-          ))}
+    <ScrollView>
+      <View style={styles.bottomView}>
+        <View style={styles.searchBoxView}>
+          <Searchbar
+            placeholder="Search location"
+            onChangeText={onChangeSearch}
+            value={searchText}
+            style={styles.searchBox}
+          />
+          <FontAwesomeIcon
+            name="street-view"
+            size={40}
+            onPress={() => {
+              getLocation();
+              setMapView('default');
+            }}
+            color="#1E3050"
+          />
         </View>
-      )}
-      <Text variant="titleMedium" style={{color: '#1E3050'}}>
-        Find Nearby
-      </Text>
-      <View style={{flexDirection: 'row', gap: 15}}>
-        <View style={styles.nearbyContainer}>
-          <View>
-            <Card style={styles.iconContainer}>
-              <MaterialIcons
-                name="bloodtype"
-                size={40}
-                color="#1E3050"
+        {!!suggestions && (
+          <View style={{height: '100px'}}>
+            {suggestions.map((value, index) => (
+              <List.Item
+                key={index}
+                title={value.place_name}
                 onPress={() => {
-                  setMapView('donor');
+                  retrieveCoords(value);
                 }}
               />
-            </Card>
-            <Text>Blood donors</Text>
+            ))}
+          </View>
+        )}
+        <Text variant="titleMedium" style={{color: '#1E3050'}}>
+          View Nearby Location
+        </Text>
+        <View style={{flexDirection: 'row', gap: 15}}>
+          <View style={styles.nearbyContainer}>
+            <View>
+              <Card style={styles.iconContainer}>
+                <MaterialIcons
+                  name="bloodtype"
+                  size={40}
+                  color="#1E3050"
+                  onPress={() => {
+                    getBloodDonorsLocation();
+                  }}
+                />
+              </Card>
+              <Text>Blood donors</Text>
+            </View>
+            <View>
+              <Card style={styles.iconContainer}>
+                <FontAwesomeIcon
+                  name="ambulance"
+                  size={40}
+                  color="#1E3050"
+                  onPress={() => {
+                    getAmbulanceLocation();
+                  }}
+                />
+              </Card>
+              <Text>Ambulances</Text>
+            </View>
           </View>
           <View>
-            <Card style={styles.iconContainer}>
-              <FontAwesomeIcon
-                name="ambulance"
-                size={40}
-                color="#1E3050"
+            <Card style={styles.buttonContainer}>
+              <Button
                 onPress={() => {
-                  setMapView('ambulance');
-                }}
-              />
+                  setIsInteractionModalVisible(true);
+                }}>
+                Send Request
+              </Button>
             </Card>
-            <Text>Ambulances</Text>
           </View>
         </View>
-        <View>
-          <Card style={styles.buttonContainer}>
-            <Button
-              onPress={() => {
-                setIsInteractionModalVisible(true);
-              }}>
-              Send Request
-            </Button>
-          </Card>
-        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

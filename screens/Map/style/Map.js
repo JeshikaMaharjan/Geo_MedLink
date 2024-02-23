@@ -1,4 +1,4 @@
-const {StyleSheet} = require('react-native');
+const {StyleSheet, Dimensions} = require('react-native');
 
 const Mapstyles = StyleSheet.create({
   page: {
@@ -10,8 +10,16 @@ const Mapstyles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  mapHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 5,
+  },
   map: {
-    height: '70%',
+    height: '67%',
     backgroundColor: 'red',
   },
   loader: {
@@ -73,6 +81,61 @@ const Mapstyles = StyleSheet.create({
   modalInnerContainer: {
     gap: 15,
     alignItems: 'center',
+  },
+  routeMapContainer: {
+    flex: 1,
+  },
+  routeMap: {
+    flex: 1,
+  },
+
+  destinationIcon: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  routeProfileList: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    backgroundColor: 'transparent',
+    zIndex: 1,
+  },
+  flatList: {
+    position: 'absolute',
+    bottom: 20,
+    // left: Dimensions.get('window').width / 2 - 30,
+    right: 0,
+    backgroundColor: 'transparent',
+    zIndex: 1,
+  },
+  buttonView: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+  },
+  routeProfileButton: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginHorizontal: 8,
+    borderColor: '#fff',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  selectedRouteProfileButton: {
+    backgroundColor: '#FA9E14',
+    borderColor: '#FA9E14',
+  },
+  routeProfileButtonText: {
+    color: '#fff',
+    marginTop: 5,
+  },
+  selectedRouteProfileButtonText: {
+    color: 'white',
   },
 });
 export {Mapstyles};

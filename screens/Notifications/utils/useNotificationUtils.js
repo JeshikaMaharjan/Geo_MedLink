@@ -5,21 +5,27 @@ import uuid from 'react-native-uuid';
 
 const useNotificationUtils = ({navigation}) => {
   const [
-    {NotificationDb, location, userName, baseURL},
-    {setMapView, setLocation},
+    {
+      FirebaseDb: NotificationDb,
+      FirebaseDb: LocationFetchUsersDb,
+      location,
+      userName,
+      baseURL,
+    },
+    {setMapView, setConfirmedUserLocation},
   ] = useContext(GlobalContext);
   const [content, setContent] = useState([]);
   const navigate = navigation.navigate;
   const [visibleDetail, setVisibleDetail] = useState([]);
   const handleClick = item => {
-    setMapView('default');
-    setLocation({
+    setMapView('confirmedUser');
+    setConfirmedUserLocation({
       coords: {
         latitude: item?.data?.latitude,
         longitude: item?.data?.longitude,
       },
     });
-    navigate('Map');
+    navigate('Dashboard');
   };
 
   const toggleDetails = index => {
@@ -38,6 +44,7 @@ const useNotificationUtils = ({navigation}) => {
       requestType: item?.data?.requestType === 'blood' ? 'blood' : 'ambulance',
       type: 'accepted',
       status: 'Active',
+      disableTracking: false,
       requestInitiator: item?.data?.userName,
       ...(item?.data?.requestType === 'blood' && {
         bloodGroup: item?.data?.bloodGroup,
@@ -76,6 +83,35 @@ const useNotificationUtils = ({navigation}) => {
     }
   }
 
+  const changeStatus = (userId, confirmedRequestId) => {
+    NotificationDb.ref(`Notification/${userId}`)
+      .once('value')
+      .then(snapshot => {
+        snapshot.forEach(childSnapshot => {
+          const uniqueKey = childSnapshot.key;
+          const requestData = childSnapshot.child('data').val(); // Retrieve data object
+          if (requestData.requestId === confirmedRequestId) {
+            // Check if requestId matches
+            const entryRef = NotificationDb.ref(
+              `Notification/${userId}/${uniqueKey}/data/status`,
+            );
+            // Update the status for the current entry
+            entryRef
+              .set('Closed')
+              .then(() => {
+                console.log(
+                  `Status updated successfully for entry ${uniqueKey}`,
+                );
+              })
+              .catch(error => {
+                console.error(
+                  `Error updating status for entry ${uniqueKey}: ${error}`,
+                );
+              });
+          }
+        });
+      });
+  };
   const handleRequestAccept = item => {
     postAcceptData(item);
   };
@@ -86,13 +122,15 @@ const useNotificationUtils = ({navigation}) => {
       latitude: `${location?.coords?.latitude}`,
       longitude: `${location?.coords?.longitude}`,
       responder: userName,
-      type: 'accepted',
+      type: 'confirmed',
       status: 'Active',
+      disableTracking: false,
       requestInitiator: item?.data?.userName,
       ...(item?.data?.requestType === 'blood' && {
         bloodGroup: item?.data?.bloodGroup,
       }),
     };
+    console.log({data});
 
     try {
       const apiUrl =
@@ -124,33 +162,7 @@ const useNotificationUtils = ({navigation}) => {
       if (changeStatusFor) {
         const changeStatusForList = changeStatusFor.split(',');
         changeStatusForList.forEach(userId => {
-          NotificationDb.ref(`Notification/${userId}`)
-            .once('value')
-            .then(snapshot => {
-              snapshot.forEach(childSnapshot => {
-                const uniqueKey = childSnapshot.key;
-                const requestData = childSnapshot.child('data').val(); // Retrieve data object
-                if (requestData.requestId === confirmedRequestId) {
-                  // Check if requestId matches
-                  const entryRef = NotificationDb.ref(
-                    `Notification/${userId}/${uniqueKey}/data/status`,
-                  );
-                  // Update the status for the current entry
-                  entryRef
-                    .set('Closed')
-                    .then(() => {
-                      console.log(
-                        `Status updated successfully for entry ${uniqueKey}`,
-                      );
-                    })
-                    .catch(error => {
-                      console.error(
-                        `Error updating status for entry ${uniqueKey}: ${error}`,
-                      );
-                    });
-                }
-              });
-            });
+          changeStatus(userId, confirmedRequestId);
         });
       }
     } catch (error) {
@@ -194,6 +206,50 @@ const useNotificationUtils = ({navigation}) => {
         console.error('Error retrieving data from Firebase:', error);
       });
   };
+  const handleFetchLiveLocation = item => {
+    let currentStatus = item?.data?.disableTracking;
+    LocationFetchUsersDb.ref(`LocationFetchUsers/${item?.data?.userName}`).set(
+      !currentStatus,
+    );
+    handleClick(item);
+    // Navigating to map screen after setting required states. Done by handleClick function.
+  };
+  const updateDisableTrackingStatus = (user, confirmedRequestId) => {
+    NotificationDb.ref(`Notification/${user}`)
+      .once('value')
+      .then(snapshot => {
+        snapshot.forEach(childSnapshot => {
+          const uniqueKey = childSnapshot.key;
+          const requestData = childSnapshot.child('data').val(); // Retrieve data object
+          if (requestData.requestId === confirmedRequestId) {
+            // Check if requestId matches
+            const entryRef = NotificationDb.ref(
+              `Notification/${user}/${uniqueKey}/data/disableTracking`,
+            );
+            // Update the status for the current entry
+            entryRef
+              .set(true)
+              .then(() => {
+                console.log(
+                  `Status updated successfully for entry ${uniqueKey}`,
+                );
+              })
+              .catch(error => {
+                console.error(
+                  `Error updating status for entry ${uniqueKey}: ${error}`,
+                );
+              });
+          }
+        });
+      });
+  };
+  const handleDisableLocationFetch = item => {
+    LocationFetchUsersDb.ref(`LocationFetchUsers/${userName}`).set(null);
+    const confirmedRequestId = item?.data?.requestId;
+    updateDisableTrackingStatus(item?.data?.userName, confirmedRequestId);
+    updateDisableTrackingStatus(userName, confirmedRequestId);
+  };
+
   return {
     content,
     setContent,
@@ -203,6 +259,8 @@ const useNotificationUtils = ({navigation}) => {
     toggleDetails,
     handleRequestAccept,
     handleConfirmClick,
+    handleFetchLiveLocation,
+    handleDisableLocationFetch,
   };
 };
 

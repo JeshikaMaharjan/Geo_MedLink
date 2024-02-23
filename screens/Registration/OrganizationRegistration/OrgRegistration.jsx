@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Image} from 'react-native';
 import {
   Button,
@@ -57,11 +57,13 @@ export default function OrgRegistration({navigation}) {
       if (!res) throw new Error();
       setAddress('');
       setEmail('');
-      setorgName('');
+      setorgName(null);
       setUserName('');
       setPassword('');
       setBio('');
       setPhoneNumber('');
+      setImage(null);
+      setSelectedServices([]);
     } catch (error) {
       console.log('error', error);
       setisError(true);
@@ -208,7 +210,7 @@ export default function OrgRegistration({navigation}) {
             onChangeText={text => {
               setPhoneNumber(text);
             }}
-            label="Current Phone Number"
+            label="Current Phone Number*"
           />
         </View>
         <View>
@@ -253,7 +255,37 @@ export default function OrgRegistration({navigation}) {
             selected={selectedServices.includes(2)}
             onPress={() => toggleService(2)}
             style={OrgRegisterstyles.chip}>
-            Pathology
+            CT SCAN
+          </Chip>
+          <Chip
+            selected={selectedServices.includes(3)}
+            onPress={() => toggleService(3)}
+            style={OrgRegisterstyles.chip}>
+            ULTRA SOUND
+          </Chip>
+          <Chip
+            selected={selectedServices.includes(4)}
+            onPress={() => toggleService(4)}
+            style={OrgRegisterstyles.chip}>
+            BLOOD BANK
+          </Chip>
+          <Chip
+            selected={selectedServices.includes(5)}
+            onPress={() => toggleService(5)}
+            style={OrgRegisterstyles.chip}>
+            DIALYSIS
+          </Chip>
+          <Chip
+            selected={selectedServices.includes(7)}
+            onPress={() => toggleService(7)}
+            style={OrgRegisterstyles.chip}>
+            PHYSIOTHERAPY
+          </Chip>
+          <Chip
+            selected={selectedServices.includes(8)}
+            onPress={() => toggleService(8)}
+            style={OrgRegisterstyles.chip}>
+            PATHOLOGY
           </Chip>
         </View>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>

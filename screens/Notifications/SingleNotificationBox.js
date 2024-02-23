@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View} from 'react-native';
 import {Button, Surface, Text, Chip} from 'react-native-paper';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {NotificationStyle as styles} from './style';
 import useNotificationUtils from './utils/useNotificationUtils';
+import {GlobalContext} from '../../context/GlobalStates';
 
 const SingleNotificationBox = ({index, item, navigation}) => {
   const {
@@ -12,9 +13,13 @@ const SingleNotificationBox = ({index, item, navigation}) => {
     toggleDetails,
     handleRequestAccept,
     handleConfirmClick,
+    handleFetchLiveLocation,
+    handleDisableLocationFetch,
   } = useNotificationUtils({
     navigation,
   });
+  const [, {setIsThankYouVisible}] = useContext(GlobalContext);
+  const disableTracking = item?.data?.disableTracking;
 
   return (
     <Surface key={index} elevation={5} style={styles.surface}>
@@ -64,7 +69,12 @@ const SingleNotificationBox = ({index, item, navigation}) => {
             Location: [{item?.data?.latitude}, {item?.data?.longitude}]
           </Text>
           <View style={styles.locationBox}>
-            <Button>View Location on Map</Button>
+            <Button
+              onPress={() => {
+                handleClick(item);
+              }}>
+              View Location on Map
+            </Button>
             <FontAwesomeIcon name="map-o" color="black" size={15} />
           </View>
         </View>
@@ -101,6 +111,39 @@ const SingleNotificationBox = ({index, item, navigation}) => {
                 handleConfirmClick(item);
               }}>
               Confirm User
+            </Button>
+          </View>
+        )}
+      {visibleDetail[index] &&
+        item?.data?.type === 'accepted' &&
+        item?.data?.status === 'Closed' &&
+        !disableTracking && (
+          <View style={styles.actionBox}>
+            <Text>Request Action</Text>
+            <Button
+              mode="elevated"
+              onPress={() => {
+                handleFetchLiveLocation(item);
+              }}>
+              Fetch Live Location
+            </Button>
+          </View>
+        )}
+      {visibleDetail[index] &&
+        item?.data?.type === 'confirmed' &&
+        item?.data?.status === 'Closed' &&
+        !disableTracking && (
+          <View style={styles.actionBox}>
+            <Text>
+              Your location is being tracked. Have you reached destination?
+            </Text>
+            <Button
+              mode="elevated"
+              onPress={() => {
+                handleDisableLocationFetch(item);
+                setIsThankYouVisible(true);
+              }}>
+              Yes
             </Button>
           </View>
         )}

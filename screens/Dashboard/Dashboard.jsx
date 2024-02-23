@@ -6,7 +6,7 @@ import {GlobalContext} from '../../context/GlobalStates';
 
 export default function Dashboard({navigation}) {
   const [
-    {RealTimeLocationDb, location, fetchEnabled, userName},
+    {FirebaseDb: RealTimeLocationDb, location, fetchEnabled, userName},
     {setFetchEnabled},
   ] = useContext(GlobalContext);
   const [isDialogVisible, setIsDialogVisible] = useState(false);

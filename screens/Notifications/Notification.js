@@ -2,13 +2,21 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {GlobalContext} from '../../context/GlobalStates';
 import {NotificationStyle as styles} from './style';
-import {ActivityIndicator, Appbar, Text} from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Appbar,
+  Portal,
+  Snackbar,
+  Text,
+} from 'react-native-paper';
 import SingleNotificationBox from './SingleNotificationBox';
 import useNotificationUtils from './utils/useNotificationUtils';
 
 const Notification = ({navigation}) => {
-  const [{NotificationDb, requestId, userName}, {setMapView, setLocation}] =
-    useContext(GlobalContext);
+  const [
+    {FirebaseDb: NotificationDb, requestId, userName, isThankYouVisible},
+    {setMapView, setLocation, setIsThankYouVisible},
+  ] = useContext(GlobalContext);
   const {content, setContent, setVisibleDetail} = useNotificationUtils({
     navigation,
   });
@@ -32,7 +40,11 @@ const Notification = ({navigation}) => {
             if (item.requestId === newData.requestId) {
               return {
                 ...item,
-                data: {...item.data, status: newData.data.status},
+                data: {
+                  ...item.data,
+                  status: newData.data.status,
+                  disableTracking: newData.data.disableTracking,
+                },
               };
             }
             return item;
@@ -78,6 +90,20 @@ const Notification = ({navigation}) => {
           </View>
         )}
       </ScrollView>
+      <Portal>
+        <Snackbar
+          wrapperStyle={{top: 70}}
+          visible={isThankYouVisible}
+          onDismiss={() => setIsThankYouVisible(false)}
+          action={{
+            label: 'Okay',
+            onPress: () => {
+              setIsThankYouVisible(false);
+            },
+          }}>
+          Thank You For Your Service.
+        </Snackbar>
+      </Portal>
     </View>
   );
 };

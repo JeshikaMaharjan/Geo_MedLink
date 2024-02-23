@@ -151,16 +151,13 @@ const RouteBetweenUsers = ({navigation}) => {
         </MarkerView>
       </MapboxGL.MapView>
       <View style={styles.buttonView}>
-        <Button mode="contained" buttonColor="rgba(0, 0, 0, 0.4)">
-          Fetch Live Location
-        </Button>
         <Button
           mode="contained"
           buttonColor="rgba(0, 0, 0, 0.4)"
           onPress={() => {
             setMapView('default');
           }}>
-          Exit this view
+          Exit Location View
         </Button>
       </View>
       <FlatList

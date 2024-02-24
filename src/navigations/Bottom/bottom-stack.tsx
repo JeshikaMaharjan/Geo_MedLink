@@ -23,7 +23,7 @@ export const BottomTabNavigator = () => {
   const {username} = useUserContext();
   return (
     <Navigator>
-      {/* <Screen
+      <Screen
         name="Feed"
         component={NewsFeed}
         options={{
@@ -33,7 +33,7 @@ export const BottomTabNavigator = () => {
           title: 'Post',
           headerShown: false,
         }}
-      /> */}
+      />
       <Screen
         name="News"
         component={News}
@@ -44,6 +44,7 @@ export const BottomTabNavigator = () => {
           title: 'News',
         }}
       />
+
       <Screen
         name="Upload"
         component={UploadPost}

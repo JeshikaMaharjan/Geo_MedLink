@@ -9,9 +9,10 @@ export const useToggleLike = () => {
   return useMutation({
     mutationFn: async (postId: number) => {
       try {
+        console.log(`http://${BASEURL}/api/post/like/${postId}/${username}`);
         const response = await axios.put(
           `http://${BASEURL}/api/post/like/${postId}/${username}`,
-          null,
+          // null,
           {
             headers: {'Content-Type': 'application/json'},
           },
@@ -20,12 +21,12 @@ export const useToggleLike = () => {
           throw new Error(response.data.error.message[0]);
         return response.data;
       } catch (error) {
-        console.log(error);
+        console.log({error});
       }
     },
-    onError: e => {
-      console.log({e});
-    },
+    // onError: e => {
+    //   console.log({e});
+    // },
     onSuccess: data => {
       queryClient.setQueryData(['post'], (oldData: any) => {
         console.log('i have entered set query');

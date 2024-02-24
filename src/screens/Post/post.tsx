@@ -118,12 +118,17 @@ export const Post = (value: any) => {
                     <Iconll
                       name={data.isLiked === '1' ? 'like1' : 'like2'}
                       size={18}
-                      style={data.isLiked && {color: theme.colors.primary}}
+                      style={
+                        data.isLiked === '1'
+                          ? {color: theme.colors.primary}
+                          : {color: 'black'}
+                      }
                     />
                   </View>
                 )}
                 onPress={() => likePost(data.id)}>
-                <Text style={data.isLiked && {color: theme.colors.primary}}>
+                <Text
+                  style={data.isLiked === '1' && {color: theme.colors.primary}}>
                   Like
                 </Text>
               </Button>
@@ -287,7 +292,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   reactionIcon: {
-    color: 'grey',
+    color: 'black',
   },
   bottomSheetContent: {
     padding: 10,

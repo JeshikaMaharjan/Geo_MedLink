@@ -117,10 +117,8 @@ export const Profile = ({route}: ProfileProps | ProfileStackProps) => {
           <TouchableRipple
             style={style.bottomSheetContent}
             onPress={() => {
-              bottomSheetModalRef.current?.dismiss(),
-                setToken(''),
-                setUsername(''),
-                navigation.navigate('Login');
+              bottomSheetModalRef.current?.dismiss();
+              setToken('');
             }}>
             <Text style={style.bottomSheetContentText}>Logout</Text>
           </TouchableRipple>

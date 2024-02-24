@@ -33,7 +33,7 @@ export default function Login({navigation}) {
     const data = {
       userName: username,
       password: password,
-      deviceId: deviceToken?._j?.token,
+      // deviceId: deviceToken?._j?.token,
     };
     console.log({data});
     try {

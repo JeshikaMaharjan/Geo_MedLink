@@ -4,6 +4,7 @@ import {
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from '@expo/vector-icons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomTabParamsList} from './bottom-stack.types';
@@ -14,6 +15,7 @@ import {UploadPost} from '../../screens/Post/uploadPost';
 import {Profile} from '../../screens/User/profile';
 import Dashboard from '../../../screens/Dashboard/Dashboard';
 import Icon from '../../../screens/Notifications/Icon';
+import {EventList} from '../../screens/Event/eventList';
 
 const Tab = createBottomTabNavigator<BottomTabParamsList>();
 
@@ -42,6 +44,16 @@ export const BottomTabNavigator = () => {
             <FontAwesome name="newspaper-o" size={24} color="black" />
           ),
           title: 'News',
+        }}
+      />
+      <Screen
+        name="EventList"
+        component={EventList}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <MaterialIcons name="event-note" size={24} color="black" />
+          ),
+          title: 'Events',
         }}
       />
 

@@ -27,10 +27,23 @@ const FindNearby = () => {
         ];
         break;
       case 'donor':
-        newData = bloodDonorsLocation;
+        newData = bloodDonorsLocation.map(item => ({
+          id: item.id,
+          coords: {
+            latitude: item.user.latitude,
+            longitude: item.user.longitude,
+          },
+        }));
         break;
+
       case 'ambulance':
-        newData = ambulancesLocation;
+        newData = ambulancesLocation.map(item => ({
+          id: item.id,
+          coords: {
+            latitude: item.user.latitude,
+            longitude: item.user.longitude,
+          },
+        }));
         break;
       default:
         newData = [];
@@ -39,7 +52,6 @@ const FindNearby = () => {
 
     setData(newData);
   }, [mapView, searchCoords, bloodDonorsLocation, ambulancesLocation]);
-
   return (
     <MapboxGL.MapView style={styles.map}>
       <MapboxGL.Camera

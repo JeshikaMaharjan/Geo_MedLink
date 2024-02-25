@@ -137,5 +137,11 @@ const Mapstyles = StyleSheet.create({
   selectedRouteProfileButtonText: {
     color: 'white',
   },
+  setLocationContainer: {
+    position: 'absolute',
+    top: 20,
+    right: 10,
+    zIndex: 1,
+  },
 });
 export {Mapstyles};

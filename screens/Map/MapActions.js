@@ -115,7 +115,7 @@ const MapActions = () => {
             <Card style={styles.buttonContainer}>
               <Button
                 onPress={() => {
-                  setIsInteractionModalVisible(true);
+                  setMapView('setLocation');
                 }}>
                 Send Request
               </Button>

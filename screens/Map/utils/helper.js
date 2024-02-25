@@ -38,36 +38,12 @@ const useHelperFunctions = () => {
       }
     });
   };
-  const data = [
-    {
-      id: 1,
-      coords: {
-        latitude: 27.6923169,
-        longitude: 85.313993,
-      },
-    },
-    {
-      id: 2,
-      coords: {
-        latitude: 27.692911,
-        longitude: 85.314293,
-      },
-    },
-    {
-      id: 3,
-      coords: {
-        latitude: 27.690027,
-        longitude: 85.318948,
-      },
-    },
-  ];
 
   async function getBloodDonorsLocation() {
     try {
-      // const res = await axios.get(`http://${baseURL}/api/active/bloodDonors`);
-      // console.log(res.data);
-      // setBloodDonorsLocation(res.data);
-      setBloodDonorsLocation(data);
+      const res = await axios.get(`http://${baseURL}/api/active/bloodDonors`);
+      console.log(res.data.data);
+      setBloodDonorsLocation(res.data.data);
       setMapView('donor');
     } catch (err) {
       console.log(err);
@@ -75,10 +51,9 @@ const useHelperFunctions = () => {
   }
   async function getAmbulanceLocation() {
     try {
-      // const res = await axios.get(`http://${baseURL}/api/active/ambulance`);
-      // console.log(res.data);
-      // setAmbulancesLocation(res.data);
-      setAmbulancesLocation(data);
+      const res = await axios.get(`http://${baseURL}/api/active/ambulance`);
+      console.log(res.data.data);
+      setAmbulancesLocation(res.data.data);
       setMapView('ambulance');
     } catch (err) {
       console.log(err);

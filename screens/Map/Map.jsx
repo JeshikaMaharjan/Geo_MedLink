@@ -12,6 +12,7 @@ import userMarker from '../../assets/userMarker.png';
 import RouteBetweenUsers from './RouteBetweenUsers';
 import {MAPBOX_TOKEN} from '../../constants/constants';
 import {Mapstyles as styles} from './style/Map';
+import SetLocation from './SetLocation';
 
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
@@ -78,13 +79,17 @@ export default function Map({navigation}) {
               <>
                 {mapView === 'confirmedUser' ? (
                   <RouteBetweenUsers />
+                ) : mapView === 'setLocation' ? (
+                  <SetLocation />
                 ) : (
                   <FindNearby />
                 )}
               </>
             )}
 
-            {mapView !== 'confirmedUser' && <MapActions />}
+            {mapView !== 'confirmedUser' && mapView !== 'setLocation' && (
+              <MapActions />
+            )}
             <Portal>
               <Modal
                 visible={isInteractionModalVisible}

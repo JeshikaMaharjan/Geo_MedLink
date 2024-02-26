@@ -56,15 +56,6 @@ const MapActions = () => {
             value={searchText}
             style={styles.searchBox}
           />
-          <FontAwesomeIcon
-            name="street-view"
-            size={40}
-            onPress={() => {
-              getLocation();
-              setMapView('default');
-            }}
-            color="#1E3050"
-          />
         </View>
         {!!suggestions && (
           <View style={{height: '100px'}}>
@@ -79,48 +70,68 @@ const MapActions = () => {
             ))}
           </View>
         )}
-        <Text variant="titleMedium" style={{color: '#1E3050'}}>
-          View Nearby Location
-        </Text>
-        <View style={{flexDirection: 'row', gap: 15}}>
-          <View style={styles.nearbyContainer}>
-            <View>
-              <Card style={styles.iconContainer}>
-                <MaterialIcons
-                  name="bloodtype"
-                  size={40}
-                  color="#1E3050"
-                  onPress={() => {
-                    getBloodDonorsLocation();
-                  }}
-                />
-              </Card>
-              <Text>Blood donors</Text>
-            </View>
-            <View>
-              <Card style={styles.iconContainer}>
-                <FontAwesomeIcon
-                  name="ambulance"
-                  size={40}
-                  color="#1E3050"
-                  onPress={() => {
-                    getAmbulanceLocation();
-                  }}
-                />
-              </Card>
-              <Text>Ambulances</Text>
-            </View>
-          </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 20,
+          }}>
           <View>
-            <Card style={styles.buttonContainer}>
-              <Button
-                onPress={() => {
-                  setMapView('setLocation');
-                }}>
-                Send Request
-              </Button>
-            </Card>
+            <Text variant="titleMedium" style={{color: '#1E3050'}}>
+              View Nearby Location
+            </Text>
+            <View style={styles.nearbyContainer}>
+              <View>
+                <Card style={styles.iconContainer}>
+                  <MaterialIcons
+                    name="bloodtype"
+                    size={40}
+                    color="#1E3050"
+                    onPress={() => {
+                      getBloodDonorsLocation();
+                    }}
+                  />
+                </Card>
+                <Text>Blood donors</Text>
+              </View>
+              <View>
+                <Card style={styles.iconContainer}>
+                  <FontAwesomeIcon
+                    name="ambulance"
+                    size={40}
+                    color="#1E3050"
+                    onPress={() => {
+                      getAmbulanceLocation();
+                    }}
+                  />
+                </Card>
+                <Text>Ambulances</Text>
+              </View>
+              <View>
+                <Card style={styles.iconContainer}>
+                  <FontAwesomeIcon
+                    name="street-view"
+                    size={40}
+                    onPress={() => {
+                      getLocation();
+                      setMapView('default');
+                    }}
+                    color="#1E3050"
+                  />
+                </Card>
+
+                <Text>Locate Myself</Text>
+              </View>
+            </View>
           </View>
+
+          <Card style={styles.buttonContainer}>
+            <Button
+              onPress={() => {
+                setMapView('setLocation');
+              }}>
+              Send Request
+            </Button>
+          </Card>
         </View>
       </View>
     </ScrollView>

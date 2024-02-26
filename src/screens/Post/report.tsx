@@ -39,9 +39,7 @@ export const Report = ({
       </Dialog.Content>
       <Dialog.Actions
         style={{display: 'flex', justifyContent: 'space-between'}}>
-        <Button
-          onPress={onPressNo}
-          style={{backgroundColor: '#f4f4f7', width: '45%'}}>
+        <Button onPress={onPressNo} mode="outlined" style={{width: '45%'}}>
           <Text style={{color: 'black', fontWeight: '700'}}>Cancel</Text>
         </Button>
         <Button

@@ -38,9 +38,9 @@ export const Profile = ({route}: ProfileProps | ProfileStackProps) => {
   // if (!data) return <Text> No data</Text>;
 
   return (
-    <View style={{backgroundColor: '#80BCBD', flex: 1}}>
-      <Header style={{backgroundColor: '#80BCBD'}}>
-        <Text style={{fontSize: 25, fontWeight: 'bold', color: 'white'}}>
+    <View style={{flex: 1}}>
+      <Header style={{backgroundColor: 'white'}}>
+        <Text style={{fontSize: 25, fontWeight: 'bold', color: 'black'}}>
           Profile
         </Text>
         {((usernameParam && usernameParam === currentUsername) ||
@@ -51,6 +51,7 @@ export const Profile = ({route}: ProfileProps | ProfileStackProps) => {
                 name="menuunfold"
                 size={20}
                 style={{transform: [{rotate: '180deg'}]}}
+                color="black"
               />
             )}
             style={{margin: 0}}

@@ -67,7 +67,7 @@ export const EditDonor = () => {
         <Text style={{marginBottom: 8, fontSize: 14}}>Blood Group</Text>
         <DropDown
           label={'bloodGroup'}
-          mode={'flat'}
+          mode={'outlined'}
           visible={showDropDown}
           showDropDown={() => setShowDropDown(true)}
           onDismiss={() => setShowDropDown(false)}

@@ -4,7 +4,6 @@ import BottomSheet, {
   BottomSheetHandle,
 } from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef} from 'react';
-import {StyleSheet} from 'react-native';
 import {Portal, Text} from 'react-native-paper';
 import {AddComment} from './Components/addComment';
 import {ViewComment} from './Components/viewComment';
@@ -74,7 +73,7 @@ export const Comment = ({isVisible, toggleComment, postId}: CommentProps) => {
         enablePanDownToClose
         onClose={toggleComment}
         footerComponent={props => (
-          <BottomSheetFooter {...props} bottomInset={20}>
+          <BottomSheetFooter {...props}>
             <AddComment postId={postId} />
           </BottomSheetFooter>
         )}
@@ -112,31 +111,3 @@ export const Comment = ({isVisible, toggleComment, postId}: CommentProps) => {
     </Portal>
   );
 };
-
-const styles = StyleSheet.create({
-  CommentBox: {
-    // backgroundColor: "#176B87",
-    paddingLeft: 10,
-    borderWidth: 1,
-    borderBottomColor: 'black',
-    paddingTop: 10,
-    bottom: -20,
-  },
-  comment: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    // backgroundColor: 'tan',
-  },
-  commentSection: {
-    // backgroundColor: "transparent",
-    width: '85%',
-    // backgroundColor: 'orange',
-    fontSize: 14,
-  },
-  CommentAction: {
-    alignItems: 'center',
-    paddingTop: 5,
-    margin: 10,
-    // backgroundColor: 'aqua',
-  },
-});

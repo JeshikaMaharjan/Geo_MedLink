@@ -44,7 +44,7 @@ const Mapstyles = StyleSheet.create({
     justifyContent: 'center',
   },
   searchBox: {
-    width: 340,
+    width: '100%',
     height: 52,
     borderColor: 'black',
     borderWidth: 1,
@@ -54,6 +54,7 @@ const Mapstyles = StyleSheet.create({
   nearbyContainer: {
     flexDirection: 'row',
     gap: 10,
+    width: '50%',
   },
   iconContainer: {
     width: 80,
@@ -64,12 +65,15 @@ const Mapstyles = StyleSheet.create({
     padding: 5,
   },
   buttonContainer: {
-    width: 180,
-    gap: 15,
+    // flex: 1,
+    // flexDirection: 'row',
+    // gap: 15,
+    width: 100,
+    justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'black',
     borderWidth: 1,
-    padding: 5,
+    padding: 2,
   },
   modalContainer: {
     backgroundColor: 'white',

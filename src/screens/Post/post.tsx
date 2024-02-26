@@ -66,13 +66,39 @@ export const Post = (value: any) => {
                 }>
                 {data.user_photo === '' || data.user_photo === null ? (
                   <View style={styles.defaultPicture}>
-                    <Avatar.Image size={40} source={require('../mydp.png')} />
+                    <Avatar.Image size={120} source={require('../mydp.png')} />
+                    {/* <Fontisto
+                      name="doctor"
+                      size={20}
+                      color="#40A2E3"
+                      style={{
+                        position: "absolute",
+                        bottom: 5,
+                        right: 5,
+                        transform: [{ translateX: 5 }, { translateY: 10 }],
+                      }}
+                    /> */}
                   </View>
                 ) : (
-                  <Avatar.Image
-                    size={40}
-                    source={{uri: `data:image/png;base64,${data.user_photo}`}}
-                  />
+                  <View style={{position: 'relative'}}>
+                    <Avatar.Image
+                      size={40}
+                      source={{
+                        uri: `data:image/png;base64,${data.user_photo}`,
+                      }}
+                    />
+                    {/* <Fontisto
+                      name="doctor"
+                      size={20}
+                      color="#40A2E3"
+                      style={{
+                        position: "absolute",
+                        bottom: 5,
+                        right: 5,
+                        transform: [{ translateX: 5 }, { translateY: 10 }],
+                      }}
+                    /> */}
+                  </View>
                 )}
 
                 <View style={styles.nameAndDateWrapper}>
@@ -305,6 +331,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 25,
+    position: 'relative',
   },
   nameAndDateWrapper: {
     paddingLeft: 10,

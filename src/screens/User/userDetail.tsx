@@ -1,6 +1,6 @@
 import {EvilIcons, MaterialCommunityIcons} from '@expo/vector-icons';
 import {StyleSheet, View} from 'react-native';
-import {Avatar, Divider, Surface, Text} from 'react-native-paper';
+import {Avatar, Divider, Surface, Text, useTheme} from 'react-native-paper';
 export enum services {
   MRI = 1,
   CT_SCAN = 2,
@@ -12,6 +12,7 @@ export enum services {
 }
 
 export const UserDetail = (userData: any) => {
+  const theme = useTheme();
   const data = userData?.userData?.userData;
   const services = data?.services;
   if (services) {
@@ -47,27 +48,27 @@ export const UserDetail = (userData: any) => {
         <View style={style.informationSection}>
           {data.user.type === 1 ? (
             <Text style={style.fullName}>
-              {data.firstName} {data.middleName !== null && data.middleName}{' '}
-              {data.lastName}
+              {data.firstName}
+              {data.middleName !== null && data.middleName} {data.lastName}
             </Text>
           ) : (
             <Text style={style.fullName}>{data.name}</Text>
           )}
           <Text variant="bodySmall">{data.user.userName}</Text>
-          {data.user.type === 2 && (
+          {data.user.type !== 1 && (
             <>
               <Text variant="bodyMedium">{data.user.phoneNumber}</Text>
               <View style={{flexDirection: 'row', margin: 5}}>
                 <EvilIcons name="location" size={20} color="blue" />
                 <Text>{data.user.address}</Text>
               </View>
-              <>
+              {/* <>
                 {data.services.map((a: any) => (
                   <Text>
-                    {(a === '1' && 'MRI') || (a === '2' && 'Ambulance')}
+                    {(a === "1" && "MRI") || (a === "2" && "Ambulance")}
                   </Text>
                 ))}
-              </>
+              </> */}
             </>
           )}
 

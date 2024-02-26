@@ -1,3 +1,4 @@
+import React from 'react';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
@@ -7,6 +8,7 @@ import {RootStackNavigationProps} from '../../navigations/Root/root-stack.types'
 import {useSearchFetch} from '../../hooks/search/useSearchApi';
 import {useDebounce} from '../../hooks/search/useDebounce';
 import {Header, Row} from '../../components';
+import Iconll from 'react-native-vector-icons/Entypo';
 
 type Response = {
   user_photo: null;
@@ -61,8 +63,10 @@ export const Search = () => {
           </View>
         ) : (
           <View style={style.test2}>
-            {data.map((item: Response) => (
+            {data.map((item: Response, idx: string) => (
               <Pressable
+                key={idx}
+                style={style.card}
                 onPress={() =>
                   navigation.navigate('Profile', {username: item.userName})
                 }>
@@ -94,6 +98,8 @@ export const Search = () => {
 
                   <Text style={style.search_username}>{item.userName}</Text>
                 </Row>
+
+                <Iconll name="chevron-right" size={20} />
               </Pressable>
             ))}
           </View>
@@ -112,14 +118,11 @@ const style = StyleSheet.create({
   header: {
     alignItems: 'center',
     gap: 5,
-    backgroundColor: '#C5FFF8',
+    backgroundColor: '#d4e2ff',
   },
   test: {
     padding: 10,
-    backgroundColor: '#96EFFF',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
-    borderColor: '#5FBDFF',
+    backgroundColor: '#EFECEC',
   },
 
   test2: {
@@ -134,5 +137,16 @@ const style = StyleSheet.create({
     width: '100%',
     height: '90%',
     resizeMode: 'cover',
+  },
+  card: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#EFECEC',
+    paddingRight: 24,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    borderColor: '#fff',
   },
 });

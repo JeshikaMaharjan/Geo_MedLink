@@ -1,17 +1,20 @@
 import React, {useState} from 'react';
-import {Image, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import {Avatar, Button, Text, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Loader} from '../../helper/loader';
-import {Header} from '../../components';
+import {Header, Row} from '../../components';
 import {useAddPost} from '../../hooks/post/usePostApi';
 import {useFetchUser} from '../../hooks/user/useUserApi';
 import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
+import {RootStackNavigationProps} from '../../navigations/Root/root-stack.types';
+import {MaterialIcons} from '@expo/vector-icons';
 
 export const UploadPost = () => {
+  const rootNavigation = useNavigation<RootStackNavigationProps>();
   const [selectedImage, setSelectedImage] = useState('');
   const [postText, setPostText] = useState('');
   const navigation = useNavigation<TabNavigationProps>();
@@ -23,12 +26,10 @@ export const UploadPost = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [16, 9],
       quality: 0.1,
       base64: true,
     });
-
-    // console.log(result);
 
     if (!result.canceled) {
       if (result.assets[0].base64) setSelectedImage(result.assets[0].base64);
@@ -74,12 +75,6 @@ export const UploadPost = () => {
           Post
         </Button>
       </Header>
-      {/* <Row style={styles.firstView}>
-        <Avatar.Image size={32} source={require("../mydp.png")} />
-        <Pressable style={styles.PostBtn} onPress={upload}>
-          <Text style={styles.PostText}>Post</Text>
-        </Pressable>
-      </Row> */}
       <ScrollView>
         <TextInput
           style={styles.secondView}
@@ -91,21 +86,41 @@ export const UploadPost = () => {
         />
         <View style={styles.thirdView}>
           {selectedImage && (
-            <Image
-              source={{uri: `data:image/png;base64,${selectedImage}`}}
-              style={styles.selectedImage}
-            />
-          )}
-          <Pressable onPress={pickImage}>
-            <View style={styles.imageUpload}>
-              <Icon name="image" size={30} color="rgb(124, 117, 126)"></Icon>
-              {!selectedImage ? (
-                <Text variant="bodyMedium"> Add Photo</Text>
-              ) : (
-                <Text variant="bodyMedium">Change Photo</Text>
-              )}
+            <View>
+              <Icon
+                style={{display: 'flex', alignSelf: 'flex-end'}}
+                onPress={() => {
+                  setSelectedImage('');
+                }}
+                name="cross"
+                size={22}
+              />
+              <Image
+                source={{uri: `data:image/png;base64,${selectedImage}`}}
+                style={styles.selectedImage}
+              />
             </View>
-          </Pressable>
+          )}
+          <View>
+            {!selectedImage ? (
+              <Row style={{left: 120, gap: 10}}>
+                <MaterialIcons
+                  name="add-photo-alternate"
+                  size={24}
+                  color="black"
+                  onPress={pickImage}
+                />
+                <MaterialIcons
+                  name="event-note"
+                  size={24}
+                  color="black"
+                  onPress={() => rootNavigation.navigate('Event')}
+                />
+              </Row>
+            ) : (
+              ''
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -134,30 +149,25 @@ const styles = StyleSheet.create({
   secondView: {
     minHeight: 190,
     maxHeight: 800,
-    paddingBottom: 10,
-    // marginTop: 20,
   },
 
   thirdView: {
     alignItems: 'center',
     marginBottom: 40,
+    paddingVertical: 12,
     minHeight: 90,
     maxHeight: 900,
-    // backgroundColor: "#5FBDFF",
+    backgroundColor: 'lightblue',
     justifyContent: 'center',
   },
   imageUpload: {
-    flexDirection: 'row',
-    gap: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
     borderRadius: 20,
     backgroundColor: 'rgb(237, 221, 246)',
-    padding: 10,
+    padding: 6,
   },
   selectedImage: {
-    height: 150,
-    width: 150,
-    margin: 20,
+    height: 200,
+    width: 380,
+    marginVertical: 12,
   },
 });

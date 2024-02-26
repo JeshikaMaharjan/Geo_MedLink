@@ -1,9 +1,12 @@
+import {Feather} from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import {StyleSheet, View} from 'react-native';
 import {Avatar, Text} from 'react-native-paper';
+import {Row} from '../../../../components';
 
 export const ViewComment = (value: any) => {
   const data = value.value;
+  console.log({data});
 
   // console.log("Data testing", data);
   return (
@@ -31,7 +34,14 @@ export const ViewComment = (value: any) => {
         </View>
         <View style={styles.commentAndLikeWrapper}>
           <View style={styles.actualCommentBox}>
-            <Text style={styles.actualCommentBoxText}>{data.comment}</Text>
+            <Row style={{justifyContent: 'space-between'}}>
+              <Text style={styles.actualCommentBoxText}>{data.comment}</Text>
+              <Text>
+                {data.is_spam === 1 && (
+                  <Feather name="alert-octagon" size={24} color="red" />
+                )}
+              </Text>
+            </Row>
           </View>
         </View>
         <View

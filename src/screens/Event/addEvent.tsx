@@ -1,7 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import {useCallback, useState} from 'react';
-import {Image, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
 import {DatePickerInput, TimePickerModal} from 'react-native-paper-dates';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -13,7 +20,7 @@ export const AddEvent = () => {
   const navigation = useNavigation<TabNavigationProps>();
   const [descriptionBox, setDescriptionBox] = useState(false);
   const [description, setEventDescription] = useState('');
-  const [inputDate, setInputDate] = useState(undefined);
+  const [inputDate, setInputDate] = useState<Date | undefined>(undefined);
   const [visible, setVisible] = useState(false);
   const [hour, setHour] = useState('12');
   const [minute, setMinutes] = useState('00');
@@ -21,11 +28,12 @@ export const AddEvent = () => {
   const [selectedImage, setSelectedImage] = useState('');
   const {mutate: CreateEvent} = useCreateEvent();
   const theme = useTheme();
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [16, 9],
       quality: 0.1,
       base64: true,
     });
@@ -34,18 +42,42 @@ export const AddEvent = () => {
       if (result.assets[0].base64) setSelectedImage(result.assets[0].base64);
     }
   };
+
+  const areAllFieldsFilled = () => {
+    return (
+      eventName.trim() !== '' &&
+      description.trim() !== '' &&
+      selectedImage.trim() !== '' &&
+      inputDate !== undefined
+    );
+  };
+
   const onCreateEvent = () => {
-    CreateEvent({
-      eventName,
-      description,
-      hour,
-      minute,
-      selectedImage,
-      date: inputDate,
-      longitude: '',
-      latitude: '',
-    });
-    navigation.navigate('EventList');
+    if (!areAllFieldsFilled()) {
+      Alert.alert('Error', 'Please fill in all the required fields.');
+    } else {
+      CreateEvent({
+        eventName,
+        description,
+        hour,
+        minute,
+        selectedImage,
+        date: inputDate,
+        longitude: '',
+        latitude: '',
+      });
+      navigation.navigate('EventList');
+    }
+  };
+
+  const isCreateButtonEnabled = () => {
+    // Check if all required fields are not empty
+    return (
+      eventName.trim() !== '' &&
+      description.trim() !== '' &&
+      inputDate !== undefined &&
+      eventLocation.trim() !== ''
+    );
   };
 
   const onDismiss = useCallback(() => {
@@ -61,10 +93,9 @@ export const AddEvent = () => {
 
   const onConfirm = useCallback(
     ({hours, minutes}: any) => {
-      setVisible(false);
       setHour(hours);
       setMinutes(minutes);
-      console.log({hours, minutes});
+      setVisible(false);
     },
     [setVisible],
   );
@@ -137,8 +168,8 @@ export const AddEvent = () => {
           <View style={{width: '45%'}}>
             <Text>Date</Text>
             <DatePickerInput
-              locale="en"
-              label=""
+              locale="en-ES"
+              label={inputDate ? inputDate.toDateString() : ''}
               onChange={(d: any) => setInputDate(d)}
               inputMode={'end'}
               value={undefined}
@@ -227,14 +258,7 @@ export const AddEvent = () => {
             }}>
             <Pressable onPress={pickImage}>
               {!selectedImage ? (
-                <Button
-                  mode="elevated"
-                  // style={{
-                  //   width: "30%",
-                  // }}
-                >
-                  Select File
-                </Button>
+                <Button mode="elevated">Select File</Button>
               ) : (
                 ''
               )}
@@ -288,14 +312,15 @@ export const AddEvent = () => {
         <Button
           mode="contained"
           style={{borderRadius: 8}}
-          onPress={onCreateEvent}>
+          onPress={onCreateEvent}
+          disabled={!areAllFieldsFilled()} // Disable the button if not all fields are filled
+        >
           Create Event
         </Button>
       </View>
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   firstView: {
     flexDirection: 'row',

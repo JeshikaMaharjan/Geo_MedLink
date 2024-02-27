@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   newsImage: {
-    width: 300,
+    width: '100%',
     height: 150,
     justifyContent: 'center',
     alignItems: 'center',

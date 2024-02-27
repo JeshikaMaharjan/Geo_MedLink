@@ -7,6 +7,7 @@ export type BottomTabParamsList = {
   Upload: undefined;
   Dashboard: undefined;
   News: undefined;
+  EventList: undefined;
 };
 
 export type ProfileStackProps = NativeStackScreenProps<

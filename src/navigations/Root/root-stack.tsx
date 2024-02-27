@@ -13,6 +13,7 @@ import Login from '../../../screens/Login/Login';
 import ForgotPassword from '../../../screens/ForgotPassword/ForgotPassword';
 import Registration from '../../../screens/Registration/Register';
 import Notification from '../../../screens/Notifications/Notification';
+import {AddEvent} from '../../screens/Event/addEvent';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -52,6 +53,7 @@ export const RootStackNavigator = () => {
           <Screen name="EditProfile" component={EditProfile} />
           <Screen name="EditDonor" component={EditDonor} />
           <Screen name="EditDoctor" component={EditDoctor} />
+          <Screen name="Event" component={AddEvent} />
           <Screen
             name="Profile"
             component={Profile}

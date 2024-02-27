@@ -13,6 +13,7 @@ export type RootStackParamList = {
   EditDonor: undefined;
   EditDoctor: undefined;
   Notification: undefined;
+  Event: undefined;
 };
 // export type CommentProps = NativeStackScreenProps<
 //   RootStackParamList,

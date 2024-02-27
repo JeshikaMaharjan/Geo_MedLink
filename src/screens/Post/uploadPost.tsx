@@ -1,17 +1,21 @@
 import React, {useState} from 'react';
-import {Image, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import {Avatar, Button, Text, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Loader} from '../../helper/loader';
-import {Header} from '../../components';
+import {Header, Row} from '../../components';
 import {useAddPost} from '../../hooks/post/usePostApi';
 import {useFetchUser} from '../../hooks/user/useUserApi';
 import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
+import {RootStackNavigationProps} from '../../navigations/Root/root-stack.types';
+import {MaterialIcons} from '@expo/vector-icons';
+import {AddEvent} from '../Event/addEvent';
 
 export const UploadPost = () => {
+  // const rootNavigation = useNavigation<RootStackNavigationProps>();
   const [selectedImage, setSelectedImage] = useState('');
   const [postText, setPostText] = useState('');
   const navigation = useNavigation<TabNavigationProps>();
@@ -23,12 +27,10 @@ export const UploadPost = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [16, 9],
       quality: 0.1,
       base64: true,
     });
-
-    // console.log(result);
 
     if (!result.canceled) {
       if (result.assets[0].base64) setSelectedImage(result.assets[0].base64);
@@ -69,43 +71,89 @@ export const UploadPost = () => {
             {data.user.userName}
           </Text>
         </View>
-
-        <Button mode="elevated" disabled={!canPost()} onPress={upload}>
-          Post
-        </Button>
       </Header>
-      {/* <Row style={styles.firstView}>
-        <Avatar.Image size={32} source={require("../mydp.png")} />
-        <Pressable style={styles.PostBtn} onPress={upload}>
-          <Text style={styles.PostText}>Post</Text>
-        </Pressable>
-      </Row> */}
       <ScrollView>
-        <TextInput
-          style={styles.secondView}
-          multiline={true}
-          mode="flat"
-          placeholder="What do you want to talk about"
-          value={postText}
-          onChangeText={text => setPostText(text)}
-        />
-        <View style={styles.thirdView}>
-          {selectedImage && (
-            <Image
-              source={{uri: `data:image/png;base64,${selectedImage}`}}
-              style={styles.selectedImage}
-            />
-          )}
-          <Pressable onPress={pickImage}>
-            <View style={styles.imageUpload}>
-              <Icon name="image" size={30} color="rgb(124, 117, 126)"></Icon>
+        <View
+          style={{
+            padding: 4,
+            borderWidth: 1,
+            borderColor: '#000',
+            marginHorizontal: 8,
+            marginBottom: 8,
+          }}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={{fontSize: 18, fontWeight: 'bold', marginVertical: 8}}>
+              Create Post
+            </Text>
+            <Button
+              mode="contained"
+              disabled={!canPost()}
+              onPress={upload}
+              style={{width: '25%', marginVertical: 4, borderRadius: 8}}>
+              Post
+            </Button>
+          </View>
+          <TextInput
+            style={styles.secondView}
+            multiline={true}
+            mode="flat"
+            placeholder="What do you want to talk about"
+            value={postText}
+            onChangeText={text => setPostText(text)}
+          />
+          <View style={styles.thirdView}>
+            {selectedImage && (
+              <View>
+                <Icon
+                  style={{display: 'flex', alignSelf: 'flex-end'}}
+                  onPress={() => {
+                    setSelectedImage('');
+                  }}
+                  name="cross"
+                  size={22}
+                />
+                <Image
+                  source={{uri: `data:image/png;base64,${selectedImage}`}}
+                  style={styles.selectedImage}
+                />
+              </View>
+            )}
+            <View>
               {!selectedImage ? (
-                <Text variant="bodyMedium"> Add Photo</Text>
+                <Row>
+                  <View
+                    style={{
+                      width: '100%',
+                      gap: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Text>Upload Attachment </Text>
+                    <Button mode="elevated" onPress={pickImage}>
+                      Select File
+                    </Button>
+                  </View>
+                </Row>
               ) : (
-                <Text variant="bodyMedium">Change Photo</Text>
+                ''
               )}
             </View>
-          </Pressable>
+          </View>
+        </View>
+        <View
+          style={{
+            padding: 4,
+            borderWidth: 1,
+            borderColor: '#000',
+            marginHorizontal: 8,
+          }}>
+          <AddEvent />
         </View>
       </ScrollView>
     </View>
@@ -134,30 +182,25 @@ const styles = StyleSheet.create({
   secondView: {
     minHeight: 190,
     maxHeight: 800,
-    paddingBottom: 10,
-    // marginTop: 20,
+    borderWidth: 1,
+    borderColor: 'black',
   },
 
   thirdView: {
     alignItems: 'center',
-    marginBottom: 40,
+    paddingVertical: 12,
     minHeight: 90,
     maxHeight: 900,
-    // backgroundColor: "#5FBDFF",
     justifyContent: 'center',
-  },
-  imageUpload: {
-    flexDirection: 'row',
-    gap: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-    backgroundColor: 'rgb(237, 221, 246)',
-    padding: 10,
   },
   selectedImage: {
-    height: 150,
-    width: 150,
-    margin: 20,
+    height: 200,
+    width: 350,
+    marginTop: 12,
   },
+  // imageUpload: {
+  //   borderRadius: 20,
+  //   backgroundColor: "rgb(237, 221, 246)",
+  //   padding: 6,
+  // },
 });

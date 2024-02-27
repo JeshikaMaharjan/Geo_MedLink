@@ -1,19 +1,27 @@
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import {useCallback, useState} from 'react';
-import {Image, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
 import {DatePickerInput, TimePickerModal} from 'react-native-paper-dates';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useCreateEvent} from '../../hooks/event/useEventApi';
 import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
+import {Row} from '../../components';
 
 export const AddEvent = () => {
   const [eventName, setEventName] = useState('');
   const navigation = useNavigation<TabNavigationProps>();
   const [descriptionBox, setDescriptionBox] = useState(false);
   const [description, setEventDescription] = useState('');
-  const [inputDate, setInputDate] = useState(undefined);
+  const [inputDate, setInputDate] = useState<Date | undefined>(undefined);
   const [visible, setVisible] = useState(false);
   const [hour, setHour] = useState('12');
   const [minute, setMinutes] = useState('00');
@@ -21,11 +29,12 @@ export const AddEvent = () => {
   const [selectedImage, setSelectedImage] = useState('');
   const {mutate: CreateEvent} = useCreateEvent();
   const theme = useTheme();
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [16, 9],
       quality: 0.1,
       base64: true,
     });
@@ -34,18 +43,50 @@ export const AddEvent = () => {
       if (result.assets[0].base64) setSelectedImage(result.assets[0].base64);
     }
   };
+
+  const areAllFieldsFilled = () => {
+    return (
+      eventName.trim() !== '' &&
+      selectedImage.trim() !== '' &&
+      inputDate !== undefined
+    );
+  };
+
   const onCreateEvent = () => {
-    CreateEvent({
-      eventName,
-      description,
-      hour,
-      minute,
-      selectedImage,
-      date: inputDate,
-      longitude: '',
-      latitude: '',
-    });
-    navigation.navigate('EventList');
+    if (!areAllFieldsFilled()) {
+      Alert.alert('Error', 'Please fill in all the required fields.');
+    } else {
+      CreateEvent({
+        eventName,
+        description,
+        hour,
+        minute,
+        selectedImage,
+        date: inputDate,
+        longitude: '',
+        latitude: '',
+      });
+      setEventName('');
+      setEventDescription('');
+      setDescriptionBox(false);
+      setEventDescription('');
+      setInputDate(undefined);
+      setHour('12');
+      setMinutes('00');
+      setEventLocation('');
+      setSelectedImage('');
+      navigation.navigate('EventList');
+    }
+  };
+
+  const isCreateButtonEnabled = () => {
+    // Check if all required fields are not empty
+    return (
+      eventName.trim() !== '' &&
+      description.trim() !== '' &&
+      inputDate !== undefined &&
+      eventLocation.trim() !== ''
+    );
   };
 
   const onDismiss = useCallback(() => {
@@ -61,18 +102,34 @@ export const AddEvent = () => {
 
   const onConfirm = useCallback(
     ({hours, minutes}: any) => {
-      setVisible(false);
       setHour(hours);
       setMinutes(minutes);
-      console.log({hours, minutes});
+      setVisible(false);
     },
     [setVisible],
   );
 
   return (
-    <ScrollView
-      style={{paddingRight: 12, paddingLeft: 12, backgroundColor: 'white'}}>
+    <ScrollView style={{paddingHorizontal: 4, backgroundColor: 'white'}}>
       <View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', marginVertical: 8}}>
+            Create Event
+          </Text>
+          <Button
+            mode="contained"
+            style={{borderRadius: 8}}
+            onPress={onCreateEvent}
+            disabled={!areAllFieldsFilled()} // Disable the button if not all fields are filled
+          >
+            Create Event
+          </Button>
+        </View>
         <Text style={{fontSize: 14, padding: 4}}>Event Name</Text>
         <View
           style={{
@@ -116,7 +173,13 @@ export const AddEvent = () => {
             }}>
             <TextInput
               multiline={true}
-              style={{backgroundColor: 'transparent'}}
+              style={{
+                backgroundColor: 'transparent',
+                flex: 1,
+                minHeight: 20,
+                // maxHeight: 40,
+                justifyContent: 'center',
+              }}
               placeholder="Enter description for event"
               underlineColor="transparent"
               value={description}
@@ -137,8 +200,8 @@ export const AddEvent = () => {
           <View style={{width: '45%'}}>
             <Text>Date</Text>
             <DatePickerInput
-              locale="en"
-              label=""
+              locale="en-ES"
+              label={inputDate ? inputDate.toDateString() : ''}
               onChange={(d: any) => setInputDate(d)}
               inputMode={'end'}
               value={undefined}
@@ -199,11 +262,11 @@ export const AddEvent = () => {
           <TextInput
             underlineColor="transparent"
             style={{
+              backgroundColor: 'transparent',
               flex: 1,
-              height: 20,
-              padding: 0,
-              display: 'flex',
-              alignItems: 'baseline',
+              minHeight: 20,
+              maxHeight: 40,
+              justifyContent: 'center',
             }}
             value={eventLocation}
             onChangeText={text => setEventLocation(text)}
@@ -213,89 +276,48 @@ export const AddEvent = () => {
           </Button>
         </View>
       </View>
-      <View>
-        <Text>Upload Attachment</Text>
-        <View
-          style={{
-            backgroundColor: theme.colors.secondaryContainer,
-            width: '100%',
-            borderRadius: 8,
-          }}>
-          <View
-            style={{
-              padding: 8,
-            }}>
-            <Pressable onPress={pickImage}>
-              {!selectedImage ? (
-                <Button
-                  mode="elevated"
-                  // style={{
-                  //   width: "30%",
-                  // }}
-                >
-                  Select File
-                </Button>
-              ) : (
-                ''
-              )}
-            </Pressable>
+      <View style={styles.thirdView}>
+        {selectedImage && (
+          <View>
+            <Icon
+              style={{display: 'flex', alignSelf: 'flex-end'}}
+              onPress={() => {
+                setSelectedImage('');
+              }}
+              name="cross"
+              size={22}
+            />
+            <Image
+              source={{uri: `data:image/png;base64,${selectedImage}`}}
+              style={styles.selectedImage}
+            />
           </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              height: 'auto',
-            }}>
-            {selectedImage && (
+        )}
+        <View>
+          {!selectedImage ? (
+            <Row>
               <View
                 style={{
+                  width: '100%',
+                  gap: 10,
+                  display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  paddingHorizontal: 20,
+                  alignItems: 'center',
                 }}>
-                <View>
-                  <Icon
-                    onPress={() => setSelectedImage('')}
-                    name="circle-with-cross"
-                    size={18}
-                  />
-                </View>
+                <Text>Upload Attachment </Text>
+                <Button mode="elevated" onPress={pickImage}>
+                  Select File
+                </Button>
               </View>
-            )}
-            {selectedImage && (
-              <Image
-                source={{uri: `data:image/png;base64,${selectedImage}`}}
-                style={styles.selectedImage}
-              />
-            )}
-          </View>
+            </Row>
+          ) : (
+            ''
+          )}
         </View>
-      </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          paddingRight: 12,
-          paddingTop: 8,
-          marginBottom: 20,
-          gap: 20,
-        }}>
-        <Button mode="elevated" style={{borderRadius: 8}}>
-          Cancel
-        </Button>
-        <Button
-          mode="contained"
-          style={{borderRadius: 8}}
-          onPress={onCreateEvent}>
-          Create Event
-        </Button>
       </View>
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   firstView: {
     flexDirection: 'row',
@@ -316,14 +338,13 @@ const styles = StyleSheet.create({
     maxHeight: 800,
     paddingBottom: 10,
   },
-
-  thirdView: {
-    alignItems: 'center',
-    marginBottom: 40,
-    minHeight: 90,
-    maxHeight: 900,
-    justifyContent: 'center',
-  },
+  // thirdView: {
+  //   alignItems: "center",
+  //   marginBottom: 40,
+  //   minHeight: 90,
+  //   maxHeight: 900,
+  //   justifyContent: "center",
+  // },
   imageUpload: {
     flexDirection: 'row',
     gap: 5,
@@ -333,9 +354,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(237, 221, 246)',
     padding: 10,
   },
+  // selectedImage: {
+  //   height: 220,
+  //   width: 300,
+  //   margin: 20,
+  // },
+  //  thirdView: {
+  //   paddingVertical:12,
+  //   minHeight: 90,
+  //   maxHeight: 900,
+  //   justifyContent: "center",
+  // },
+  thirdView: {
+    alignItems: 'center',
+    paddingVertical: 12,
+    minHeight: 90,
+    maxHeight: 900,
+    justifyContent: 'center',
+  },
   selectedImage: {
-    height: 250,
-    width: '90%',
-    margin: 20,
+    height: 200,
+    width: 350,
+    marginTop: 12,
   },
 });

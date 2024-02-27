@@ -12,9 +12,10 @@ import {useFetchUser} from '../../hooks/user/useUserApi';
 import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
 import {RootStackNavigationProps} from '../../navigations/Root/root-stack.types';
 import {MaterialIcons} from '@expo/vector-icons';
+import {AddEvent} from '../Event/addEvent';
 
 export const UploadPost = () => {
-  const rootNavigation = useNavigation<RootStackNavigationProps>();
+  // const rootNavigation = useNavigation<RootStackNavigationProps>();
   const [selectedImage, setSelectedImage] = useState('');
   const [postText, setPostText] = useState('');
   const navigation = useNavigation<TabNavigationProps>();
@@ -70,57 +71,89 @@ export const UploadPost = () => {
             {data.user.userName}
           </Text>
         </View>
-
-        <Button mode="elevated" disabled={!canPost()} onPress={upload}>
-          Post
-        </Button>
       </Header>
       <ScrollView>
-        <TextInput
-          style={styles.secondView}
-          multiline={true}
-          mode="flat"
-          placeholder="What do you want to talk about"
-          value={postText}
-          onChangeText={text => setPostText(text)}
-        />
-        <View style={styles.thirdView}>
-          {selectedImage && (
-            <View>
-              <Icon
-                style={{display: 'flex', alignSelf: 'flex-end'}}
-                onPress={() => {
-                  setSelectedImage('');
-                }}
-                name="cross"
-                size={22}
-              />
-              <Image
-                source={{uri: `data:image/png;base64,${selectedImage}`}}
-                style={styles.selectedImage}
-              />
-            </View>
-          )}
-          <View>
-            {!selectedImage ? (
-              <Row style={{left: 120, gap: 10}}>
-                <MaterialIcons
-                  name="add-photo-alternate"
-                  size={24}
-                  color="black"
-                  onPress={pickImage}
-                />
-                <MaterialIcons
-                  name="event-note"
-                  size={24}
-                  color="black"
-                  onPress={() => rootNavigation.navigate('Event')}
-                />
-              </Row>
-            ) : (
-              ''
-            )}
+        <View
+          style={{
+            padding: 4,
+            borderWidth: 1,
+            borderColor: '#000',
+            marginHorizontal: 8,
+            marginBottom: 8,
+          }}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={{fontSize: 18, fontWeight: 'bold', marginVertical: 8}}>
+              Create Post
+            </Text>
+            <Button
+              mode="contained"
+              disabled={!canPost()}
+              onPress={upload}
+              style={{width: '25%', marginVertical: 4, borderRadius: 8}}>
+              Post
+            </Button>
           </View>
+          <TextInput
+            style={styles.secondView}
+            multiline={true}
+            mode="flat"
+            placeholder="What do you want to talk about"
+            value={postText}
+            onChangeText={text => setPostText(text)}
+          />
+          <View style={styles.thirdView}>
+            {selectedImage && (
+              <View>
+                <Icon
+                  style={{display: 'flex', alignSelf: 'flex-end'}}
+                  onPress={() => {
+                    setSelectedImage('');
+                  }}
+                  name="cross"
+                  size={22}
+                />
+                <Image
+                  source={{uri: `data:image/png;base64,${selectedImage}`}}
+                  style={styles.selectedImage}
+                />
+              </View>
+            )}
+            <View>
+              {!selectedImage ? (
+                <Row>
+                  <View
+                    style={{
+                      width: '100%',
+                      gap: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Text>Upload Attachment </Text>
+                    <Button mode="elevated" onPress={pickImage}>
+                      Select File
+                    </Button>
+                  </View>
+                </Row>
+              ) : (
+                ''
+              )}
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            padding: 4,
+            borderWidth: 1,
+            borderColor: '#000',
+            marginHorizontal: 8,
+          }}>
+          <AddEvent />
         </View>
       </ScrollView>
     </View>
@@ -149,25 +182,25 @@ const styles = StyleSheet.create({
   secondView: {
     minHeight: 190,
     maxHeight: 800,
+    borderWidth: 1,
+    borderColor: 'black',
   },
 
   thirdView: {
     alignItems: 'center',
-    marginBottom: 40,
     paddingVertical: 12,
     minHeight: 90,
     maxHeight: 900,
-    backgroundColor: 'lightblue',
     justifyContent: 'center',
-  },
-  imageUpload: {
-    borderRadius: 20,
-    backgroundColor: 'rgb(237, 221, 246)',
-    padding: 6,
   },
   selectedImage: {
     height: 200,
-    width: 380,
-    marginVertical: 12,
+    width: 350,
+    marginTop: 12,
   },
+  // imageUpload: {
+  //   borderRadius: 20,
+  //   backgroundColor: "rgb(237, 221, 246)",
+  //   padding: 6,
+  // },
 });

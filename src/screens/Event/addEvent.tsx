@@ -14,6 +14,7 @@ import {DatePickerInput, TimePickerModal} from 'react-native-paper-dates';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useCreateEvent} from '../../hooks/event/useEventApi';
 import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
+import {Row} from '../../components';
 
 export const AddEvent = () => {
   const [eventName, setEventName] = useState('');
@@ -46,7 +47,6 @@ export const AddEvent = () => {
   const areAllFieldsFilled = () => {
     return (
       eventName.trim() !== '' &&
-      description.trim() !== '' &&
       selectedImage.trim() !== '' &&
       inputDate !== undefined
     );
@@ -66,6 +66,15 @@ export const AddEvent = () => {
         longitude: '',
         latitude: '',
       });
+      setEventName('');
+      setEventDescription('');
+      setDescriptionBox(false);
+      setEventDescription('');
+      setInputDate(undefined);
+      setHour('12');
+      setMinutes('00');
+      setEventLocation('');
+      setSelectedImage('');
       navigation.navigate('EventList');
     }
   };
@@ -101,9 +110,26 @@ export const AddEvent = () => {
   );
 
   return (
-    <ScrollView
-      style={{paddingRight: 12, paddingLeft: 12, backgroundColor: 'white'}}>
+    <ScrollView style={{paddingHorizontal: 4, backgroundColor: 'white'}}>
       <View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', marginVertical: 8}}>
+            Create Event
+          </Text>
+          <Button
+            mode="contained"
+            style={{borderRadius: 8}}
+            onPress={onCreateEvent}
+            disabled={!areAllFieldsFilled()} // Disable the button if not all fields are filled
+          >
+            Create Event
+          </Button>
+        </View>
         <Text style={{fontSize: 14, padding: 4}}>Event Name</Text>
         <View
           style={{
@@ -147,7 +173,13 @@ export const AddEvent = () => {
             }}>
             <TextInput
               multiline={true}
-              style={{backgroundColor: 'transparent'}}
+              style={{
+                backgroundColor: 'transparent',
+                flex: 1,
+                minHeight: 20,
+                // maxHeight: 40,
+                justifyContent: 'center',
+              }}
               placeholder="Enter description for event"
               underlineColor="transparent"
               value={description}
@@ -230,11 +262,11 @@ export const AddEvent = () => {
           <TextInput
             underlineColor="transparent"
             style={{
+              backgroundColor: 'transparent',
               flex: 1,
-              height: 20,
-              padding: 0,
-              display: 'flex',
-              alignItems: 'baseline',
+              minHeight: 20,
+              maxHeight: 40,
+              justifyContent: 'center',
             }}
             value={eventLocation}
             onChangeText={text => setEventLocation(text)}
@@ -244,79 +276,44 @@ export const AddEvent = () => {
           </Button>
         </View>
       </View>
-      <View>
-        <Text>Upload Attachment</Text>
-        <View
-          style={{
-            backgroundColor: theme.colors.secondaryContainer,
-            width: '100%',
-            borderRadius: 8,
-          }}>
-          <View
-            style={{
-              padding: 8,
-            }}>
-            <Pressable onPress={pickImage}>
-              {!selectedImage ? (
-                <Button mode="elevated">Select File</Button>
-              ) : (
-                ''
-              )}
-            </Pressable>
+      <View style={styles.thirdView}>
+        {selectedImage && (
+          <View>
+            <Icon
+              style={{display: 'flex', alignSelf: 'flex-end'}}
+              onPress={() => {
+                setSelectedImage('');
+              }}
+              name="cross"
+              size={22}
+            />
+            <Image
+              source={{uri: `data:image/png;base64,${selectedImage}`}}
+              style={styles.selectedImage}
+            />
           </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              height: 'auto',
-            }}>
-            {selectedImage && (
+        )}
+        <View>
+          {!selectedImage ? (
+            <Row>
               <View
                 style={{
+                  width: '100%',
+                  gap: 10,
+                  display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  paddingHorizontal: 20,
+                  alignItems: 'center',
                 }}>
-                <View>
-                  <Icon
-                    onPress={() => setSelectedImage('')}
-                    name="circle-with-cross"
-                    size={18}
-                  />
-                </View>
+                <Text>Upload Attachment </Text>
+                <Button mode="elevated" onPress={pickImage}>
+                  Select File
+                </Button>
               </View>
-            )}
-            {selectedImage && (
-              <Image
-                source={{uri: `data:image/png;base64,${selectedImage}`}}
-                style={styles.selectedImage}
-              />
-            )}
-          </View>
+            </Row>
+          ) : (
+            ''
+          )}
         </View>
-      </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          paddingRight: 12,
-          paddingTop: 8,
-          marginBottom: 20,
-          gap: 20,
-        }}>
-        <Button mode="elevated" style={{borderRadius: 8}}>
-          Cancel
-        </Button>
-        <Button
-          mode="contained"
-          style={{borderRadius: 8}}
-          onPress={onCreateEvent}
-          disabled={!areAllFieldsFilled()} // Disable the button if not all fields are filled
-        >
-          Create Event
-        </Button>
       </View>
     </ScrollView>
   );
@@ -341,14 +338,13 @@ const styles = StyleSheet.create({
     maxHeight: 800,
     paddingBottom: 10,
   },
-
-  thirdView: {
-    alignItems: 'center',
-    marginBottom: 40,
-    minHeight: 90,
-    maxHeight: 900,
-    justifyContent: 'center',
-  },
+  // thirdView: {
+  //   alignItems: "center",
+  //   marginBottom: 40,
+  //   minHeight: 90,
+  //   maxHeight: 900,
+  //   justifyContent: "center",
+  // },
   imageUpload: {
     flexDirection: 'row',
     gap: 5,
@@ -358,9 +354,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(237, 221, 246)',
     padding: 10,
   },
+  // selectedImage: {
+  //   height: 220,
+  //   width: 300,
+  //   margin: 20,
+  // },
+  //  thirdView: {
+  //   paddingVertical:12,
+  //   minHeight: 90,
+  //   maxHeight: 900,
+  //   justifyContent: "center",
+  // },
+  thirdView: {
+    alignItems: 'center',
+    paddingVertical: 12,
+    minHeight: 90,
+    maxHeight: 900,
+    justifyContent: 'center',
+  },
   selectedImage: {
-    height: 250,
-    width: '90%',
-    margin: 20,
+    height: 200,
+    width: 350,
+    marginTop: 12,
   },
 });

@@ -3,25 +3,25 @@ import {Divider, Text} from 'react-native-paper';
 import {useFetchPost} from '../../hooks/post/usePostApi';
 import {useFetchEvent} from '../../hooks/event/useEventApi';
 import {Loader} from '../../helper/loader';
-import DispalyEvents from './showEvent';
+import DispalyEvents from '../Post/showEvent';
 
 export const EventList = () => {
   const {
-    data: postResponse,
-    isLoading: postIsLoading,
+    data: eventResponse,
+    isLoading: eventIsLoading,
     fetchNextPage,
-    isFetching: postIsFetching,
-    hasNextPage: postHasNextPage,
+    isFetching: eventIsFetching,
+    hasNextPage: eventHasNextPage,
     isStale: postIsStale,
-    refetch: postRefetch,
-  } = useFetchPost();
+    refetch: eventRefetch,
+  } = useFetchEvent();
 
-  const {data: eventResponse, isLoading: eventIsLoading} = useFetchEvent();
+  const eventData = eventResponse?.pages?.flatMap(
+    (item: any) => item.data.data,
+  );
+  // console.log({ eventData });
 
-  const eventData = eventResponse?.pages?.flatMap(item => item.data.data);
-  console.log({eventData});
-
-  if (postIsLoading || eventIsLoading) {
+  if (eventIsLoading) {
     return (
       <>
         <Loader />
@@ -37,13 +37,13 @@ export const EventList = () => {
         ItemSeparatorComponent={() => <Divider bold />}
         ListEmptyComponent={() => <Text>No Data</Text>}
         keyExtractor={item => item.id}
-        ListFooterComponent={() => postHasNextPage && <Loader />}
+        ListFooterComponent={() => eventHasNextPage && <Loader />}
         refreshing={!postIsStale}
         onRefresh={() => {
-          postRefetch();
+          eventRefetch();
         }}
         onEndReached={() => {
-          if (!postIsFetching) {
+          if (!eventIsFetching) {
             fetchNextPage();
           }
         }}

@@ -24,6 +24,7 @@ const useNotificationUtils = ({navigation}) => {
         latitude: item?.data?.latitude,
         longitude: item?.data?.longitude,
       },
+      confirmedUserName: item?.data?.userName,
     });
     navigate('Dashboard');
   };
@@ -60,7 +61,6 @@ const useNotificationUtils = ({navigation}) => {
       const res = await axios.post(apiUrl, data);
 
       if (!res) throw new Error();
-      console.log(res.data);
       const notificationId = uuid.v4();
       const sentTo = res?.data?.data?.sent_to;
 

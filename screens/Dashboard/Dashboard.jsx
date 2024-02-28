@@ -20,7 +20,7 @@ export default function Dashboard({navigation}) {
 
   useEffect(() => {
     const storeLocation = () => {
-      RealTimeLocationDb.ref(`RealTime/${userName}`)
+      RealTimeLocationDb.ref(`RealTime/Users/${userName}`)
         .update({
           latitude: `${location?.coords?.latitude}`,
           longitude: `${location?.coords?.longitude}`,
@@ -32,7 +32,7 @@ export default function Dashboard({navigation}) {
     if (fetchEnabled) {
       intervalId = setInterval(storeLocation, 5000);
     } else {
-      RealTimeLocationDb.ref(`RealTime/${userName}`).set(null);
+      RealTimeLocationDb.ref(`RealTime/Users/${userName}`).set(null);
     }
 
     return () => {
@@ -98,7 +98,6 @@ export default function Dashboard({navigation}) {
   }, [data]);
 
   console.log({fetchEnabled});
-  console.log({data});
 
   return (
     <>

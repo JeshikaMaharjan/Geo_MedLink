@@ -42,7 +42,6 @@ const useHelperFunctions = () => {
   async function getBloodDonorsLocation() {
     try {
       const res = await axios.get(`http://${baseURL}/api/active/bloodDonors`);
-      console.log(res.data.data);
       setBloodDonorsLocation(res.data.data);
       setMapView('donor');
     } catch (err) {
@@ -52,7 +51,6 @@ const useHelperFunctions = () => {
   async function getAmbulanceLocation() {
     try {
       const res = await axios.get(`http://${baseURL}/api/active/ambulance`);
-      console.log(res.data.data);
       setAmbulancesLocation(res.data.data);
       setMapView('ambulance');
     } catch (err) {

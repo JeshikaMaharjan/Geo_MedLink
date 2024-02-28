@@ -21,17 +21,61 @@ const routeProfiles = [
 ];
 const RouteBetweenUsers = ({navigation}) => {
   const [routeDirections, setRouteDirections] = useState(null);
-  const [{location, confirmedUserLocation}, {setMapView}] =
-    useContext(GlobalContext);
+  const [
+    {location, userName, confirmedUserLocation, FirebaseDb: RealTimeDb},
+    {setMapView},
+  ] = useContext(GlobalContext);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
   const [selectedRouteProfile, setselectedRouteProfile] = useState('walking');
-
+  const [data, setData] = useState();
+  const [realTimeData, setRealTimeData] = useState();
+  const confirmedUserName = confirmedUserLocation?.confirmedUserName;
   useEffect(() => {
     if (selectedRouteProfile !== null) {
       createRouterLine(location, selectedRouteProfile);
     }
   }, [selectedRouteProfile]);
+  useEffect(() => {
+    const onChildAdded = RealTimeDb.ref('RealTime').on(
+      'child_added',
+      snapshot => {
+        const newData = snapshot.val();
+        setData(newData);
+      },
+    );
+
+    const onChildChanged = RealTimeDb.ref('RealTime').on(
+      'child_changed',
+      snapshot => {
+        const newData = snapshot.val();
+        setData(newData);
+      },
+    );
+
+    const onChildRemoved = RealTimeDb.ref('RealTime').on(
+      'child_removed',
+      snapshot => {
+        const newData = snapshot.val();
+        setData(newData);
+      },
+    );
+
+    return () => {
+      RealTimeDb.ref('RealTime').off('child_added', onChildAdded);
+      RealTimeDb.ref('RealTime').off('child_changed', onChildChanged);
+      RealTimeDb.ref('RealTime').off('child_removed', onChildRemoved);
+    };
+  }, []);
+  useEffect(() => {
+    if (data) {
+      if (Object.keys(data).includes(confirmedUserName)) {
+        setRealTimeData(data);
+      } else {
+        setRealTimeData(null);
+      }
+    }
+  }, [data]);
 
   function makeRouterFeature(coordinates) {
     let routerFeature = {
@@ -60,7 +104,6 @@ const RouteBetweenUsers = ({navigation}) => {
       let response = res.data;
 
       response.routes.map(data => {
-        console.log(data);
         setDistance((data.distance / 1000).toFixed(2));
         setDuration((data.duration / 3600).toFixed(2));
       });
@@ -139,7 +182,19 @@ const RouteBetweenUsers = ({navigation}) => {
               confirmedUserLocation.coords.latitude,
             ]}>
             <View style={styles.destinationIcon}>
-              <Ionicons name="location-outline" size={30} color="#E1710A" />
+              <Ionicons name="location-sharp" size={30} color="#E1710A" />
+            </View>
+          </MapboxGL.PointAnnotation>
+        )}
+        {realTimeData && (
+          <MapboxGL.PointAnnotation
+            id="realTimeLocationPoint"
+            coordinate={[
+              realTimeData[`${confirmedUserName}`]['longitude'],
+              realTimeData[`${confirmedUserName}`]['latitude'],
+            ]}>
+            <View style={styles.destinationIcon}>
+              <Ionicons name="heart-circle" size={30} color="red" />
             </View>
           </MapboxGL.PointAnnotation>
         )}

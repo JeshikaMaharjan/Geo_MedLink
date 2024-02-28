@@ -27,7 +27,6 @@ export default function Map({navigation}) {
 
   useEffect(() => {
     getLocation();
-    console.log({mapView});
   }, []);
 
   return (

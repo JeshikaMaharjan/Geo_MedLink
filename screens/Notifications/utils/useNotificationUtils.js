@@ -24,6 +24,7 @@ const useNotificationUtils = ({navigation}) => {
         latitude: item?.data?.latitude,
         longitude: item?.data?.longitude,
       },
+      confirmedUserName: item?.data?.userName,
     });
     navigate('Dashboard');
   };
@@ -60,7 +61,6 @@ const useNotificationUtils = ({navigation}) => {
       const res = await axios.post(apiUrl, data);
 
       if (!res) throw new Error();
-      console.log(res.data);
       const notificationId = uuid.v4();
       const sentTo = res?.data?.data?.sent_to;
 
@@ -208,9 +208,9 @@ const useNotificationUtils = ({navigation}) => {
   };
   const handleFetchLiveLocation = item => {
     let currentStatus = item?.data?.disableTracking;
-    LocationFetchUsersDb.ref(`LocationFetchUsers/${item?.data?.userName}`).set(
-      !currentStatus,
-    );
+    LocationFetchUsersDb.ref(
+      `LocationFetchUsers/Users/${item?.data?.userName}`,
+    ).set(!currentStatus);
     handleClick(item);
     // Navigating to map screen after setting required states. Done by handleClick function.
   };
@@ -244,7 +244,7 @@ const useNotificationUtils = ({navigation}) => {
       });
   };
   const handleDisableLocationFetch = item => {
-    LocationFetchUsersDb.ref(`LocationFetchUsers/${userName}`).set(null);
+    LocationFetchUsersDb.ref(`LocationFetchUsers/Users/${userName}`).set(null);
     const confirmedRequestId = item?.data?.requestId;
     updateDisableTrackingStatus(item?.data?.userName, confirmedRequestId);
     updateDisableTrackingStatus(userName, confirmedRequestId);

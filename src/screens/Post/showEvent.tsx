@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {KeyboardAvoidingView, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Entypo';
+import {GlobalContext} from '../../../context/GlobalStates';
+import {useNavigation} from '@react-navigation/native';
+import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
 
 const DispalyEvents = (_value: any) => {
   const [displayDescription, setDisplayDescription] = useState(false);
@@ -10,90 +13,113 @@ const DispalyEvents = (_value: any) => {
   const amOrPm = incomingHour >= 12 ? 'PM' : 'AM';
   const displayedHour = incomingHour > 12 ? incomingHour - 12 : incomingHour;
   const displayedMinute = String(data.minute).padStart(2, '0'); // Ensure two digits for minutes
+  const [, {setMapView, setConfirmedUserLocation}] = useContext(GlobalContext);
+  const navigation = useNavigation<TabNavigationProps>();
+
+  const handleViewLocationPress = () => {
+    setMapView('confirmedUser');
+    setConfirmedUserLocation({
+      coords: {
+        latitude: data?.latitude,
+        longitude: data?.longitude,
+      },
+    });
+    navigation.navigate('Dashboard');
+  };
 
   return (
-    <>
-      <ScrollView contentContainerStyle={styles.PostContainer}>
-        <Card style={styles.Post}>
-          <View style={styles.ImageBox}>
-            {data.photo !== null && data.photo !== '' && (
-              <Card.Cover
-                source={{
-                  uri: `data:image/png;base64,${data.photo}`,
-                }}
-                style={{borderRadius: 0}}
-              />
-            )}
-          </View>
-          <View style={styles.basicInfo}>
-            <View
-              style={{
-                borderBottomColor: 'grey',
-                paddingBottom: 4,
-                borderBottomWidth: 0.5,
-              }}>
-              <Text style={styles.title}> {data.eventName}</Text>
-            </View>
-            <View style={styles.locationAndDateTime}>
-              <View style={styles.location}>
-                <Icon name="location-pin" size={20} />
-                <Text>Lalitpur Engineering College</Text>
-              </View>
-              <View style={styles.dateTime}>
-                <Icon name="calendar" size={20} />
-                <View>
-                  <Text>{new Date(data.date).toLocaleDateString()}</Text>
-                  <Text>
-                    {displayedHour}:{displayedMinute} {amOrPm}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          {!displayDescription && (
-            <View>
-              <Button
-                style={{
-                  width: '40%',
-                  marginTop: 30,
-                  backgroundColor: 'lightblue',
-                }}
-                onPress={() => setDisplayDescription(true)}>
-                <Text>Read more</Text>
-              </Button>
-            </View>
+    <ScrollView contentContainerStyle={styles.PostContainer}>
+      <Card style={styles.Post}>
+        <View style={styles.ImageBox}>
+          {data.photo !== null && data.photo !== '' && (
+            <Card.Cover
+              source={{
+                uri: `data:image/png;base64,${data.photo}`,
+              }}
+              style={{borderRadius: 0}}
+            />
           )}
-
-          {displayDescription && (
-            <View style={{marginTop: 12, paddingHorizontal: 8}}>
-              <View>
-                <Text
-                  // variant="bodyLarge"
-                  style={{
-                    // backgroundColor:'tan',
-                    fontSize: 14,
-                    // marginTop: 20,
-                    textAlign: 'justify',
+        </View>
+        <View style={styles.basicInfo}>
+          <View
+            style={{
+              borderBottomColor: 'grey',
+              paddingBottom: 4,
+              borderBottomWidth: 0.5,
+            }}>
+            <Text style={styles.title}> {data.eventName}</Text>
+          </View>
+          <View style={styles.locationAndDateTime}>
+            {data?.longitude && data?.latitude ? (
+              <View style={styles.location}>
+                <Icon name="location-pin" size={20} color="black" />
+                <Button
+                  onPress={() => {
+                    handleViewLocationPress();
                   }}>
-                  {data.description}
+                  View Location on map
+                </Button>
+              </View>
+            ) : (
+              <View style={styles.location}>
+                <Icon name="location-pin" size={20} color="black" />
+                <Text>No Location </Text>
+              </View>
+            )}
+            <View style={styles.dateTime}>
+              <Icon name="calendar" size={20} color="black" />
+              <View>
+                <Text>{new Date(data.date).toLocaleDateString()}</Text>
+                <Text>
+                  {displayedHour}:{displayedMinute} {amOrPm}
                 </Text>
               </View>
-              <Button
-                style={{
-                  width: '40%',
-                  marginTop: 30,
-                  backgroundColor: 'lightblue',
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                }}
-                onPress={() => setDisplayDescription(false)}>
-                <Text>Read less</Text>
-              </Button>
             </View>
-          )}
-        </Card>
-      </ScrollView>
-    </>
+          </View>
+        </View>
+        {!displayDescription && (
+          <View>
+            <Button
+              style={{
+                width: '40%',
+                marginTop: 30,
+                backgroundColor: 'lightblue',
+              }}
+              onPress={() => setDisplayDescription(true)}>
+              <Text>Read more</Text>
+            </Button>
+          </View>
+        )}
+
+        {displayDescription && (
+          <View style={{marginTop: 12, paddingHorizontal: 8}}>
+            <View>
+              <Text
+                // variant="bodyLarge"
+                style={{
+                  // backgroundColor:'tan',
+                  fontSize: 14,
+                  // marginTop: 20,
+                  textAlign: 'justify',
+                }}>
+                {data.description}
+              </Text>
+            </View>
+            <Button
+              style={{
+                width: '40%',
+                marginTop: 30,
+                backgroundColor: 'lightblue',
+                display: 'flex',
+                justifyContent: 'flex-start',
+              }}
+              onPress={() => setDisplayDescription(false)}>
+              <Text>Read less</Text>
+            </Button>
+          </View>
+        )}
+      </Card>
+    </ScrollView>
   );
 };
 

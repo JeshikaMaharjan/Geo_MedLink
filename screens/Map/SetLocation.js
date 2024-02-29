@@ -11,8 +11,10 @@ MapboxGL.setConnected(true);
 MapboxGL.setWellKnownTileServer('Mapbox');
 
 const SetLocation = ({navigation}) => {
-  const [{location}, {setLocation, setIsInteractionModalVisible, setMapView}] =
-    useContext(GlobalContext);
+  const [
+    {location, mapView},
+    {setLocation, setIsInteractionModalVisible, setMapView, setEventLocation},
+  ] = useContext(GlobalContext);
   const [isDialogVisible, setIsDialogVisible] = useState(true);
 
   const [markerCoord, setMarkerCoord] = useState({
@@ -26,11 +28,17 @@ const SetLocation = ({navigation}) => {
         longitude: markerCoord.longitude,
       },
     };
-    setLocation(locationData);
-    setIsInteractionModalVisible(true);
-    setMapView('default');
+    if (mapView !== 'setEventLocation') {
+      setLocation(locationData);
+      setIsInteractionModalVisible(true);
+      setMapView('default');
+    } else {
+      setEventLocation(locationData);
+      setMapView('default');
+      navigation.navigate('Upload');
+    }
   };
-
+  console.log(mapView);
   return (
     <>
       <Portal>

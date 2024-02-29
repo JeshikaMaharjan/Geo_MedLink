@@ -4,7 +4,7 @@ import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import {Avatar, Button, Divider, Text, TextInput} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Entypo';
 import {Loader} from '../../helper/loader';
 import {Header, Row} from '../../components';
 import {useAddPost} from '../../hooks/post/usePostApi';
@@ -91,13 +91,6 @@ export const UploadPost = () => {
             <Text style={{fontSize: 18, fontWeight: 'bold', marginVertical: 8}}>
               Create Post
             </Text>
-            <Button
-              mode="contained"
-              disabled={!canPost()}
-              onPress={upload}
-              style={{width: '25%', marginVertical: 4, borderRadius: 8}}>
-              Post
-            </Button>
           </View>
           <TextInput
             style={styles.secondView}
@@ -108,14 +101,38 @@ export const UploadPost = () => {
             onChangeText={text => setPostText(text)}
           />
           <View style={styles.thirdView}>
+            <View>
+              <Row>
+                <View
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    gap: 10,
+                  }}>
+                  {/* <Text>Upload Attachment </Text> */}
+                  <Button mode="elevated" onPress={pickImage}>
+                    Upload File
+                  </Button>
+                  <Button
+                    mode="elevated"
+                    disabled={!canPost()}
+                    onPress={upload}>
+                    Post
+                  </Button>
+                </View>
+              </Row>
+            </View>
             {selectedImage && (
               <View>
                 <Icon
-                  style={{display: 'flex', alignSelf: 'flex-end'}}
+                  style={{display: 'flex', alignSelf: 'flex-end', marginTop: 5}}
                   onPress={() => {
                     setSelectedImage('');
                   }}
-                  name="cross"
+                  color="black"
+                  name="squared-cross"
                   size={22}
                 />
                 <Image
@@ -124,25 +141,6 @@ export const UploadPost = () => {
                 />
               </View>
             )}
-            <View>
-              {!selectedImage && (
-                <Row>
-                  <View
-                    style={{
-                      width: '100%',
-                      gap: 10,
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <Text>Upload Attachment </Text>
-                    <Button mode="elevated" onPress={pickImage}>
-                      Select File
-                    </Button>
-                  </View>
-                </Row>
-              )}
-            </View>
           </View>
         </View>
         <Divider bold="true" />

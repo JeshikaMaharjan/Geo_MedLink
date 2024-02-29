@@ -79,47 +79,45 @@ const MapActions = () => {
             ))}
           </View>
         )}
-        <Text variant="titleMedium" style={{color: '#1E3050'}}>
-          View Nearby Location
+        <Text variant="titleMedium" style={{marginLeft: 10}}>
+          View Location
         </Text>
-        <View style={{flexDirection: 'row', gap: 15}}>
-          <View style={styles.nearbyContainer}>
-            <View>
-              <Card style={styles.iconContainer}>
-                <MaterialIcons
-                  name="bloodtype"
-                  size={40}
-                  color="#1E3050"
-                  onPress={() => {
-                    getBloodDonorsLocation();
-                  }}
-                />
-              </Card>
-              <Text>Blood donors</Text>
-            </View>
-            <View>
-              <Card style={styles.iconContainer}>
-                <FontAwesomeIcon
-                  name="ambulance"
-                  size={40}
-                  color="#1E3050"
-                  onPress={() => {
-                    getAmbulanceLocation();
-                  }}
-                />
-              </Card>
-              <Text>Ambulances</Text>
-            </View>
+        <View style={styles.nearbyContainer}>
+          <View>
+            <Card style={styles.iconContainer}>
+              <MaterialIcons
+                name="bloodtype"
+                size={40}
+                color="#1E3050"
+                onPress={() => {
+                  getBloodDonorsLocation();
+                }}
+              />
+            </Card>
+            <Text>Blood donors</Text>
           </View>
           <View>
-            <Card style={styles.buttonContainer}>
-              <Button
+            <Card style={styles.iconContainer}>
+              <FontAwesomeIcon
+                name="ambulance"
+                size={40}
+                color="#1E3050"
                 onPress={() => {
-                  setMapView('setLocation');
-                }}>
-                Send Request
-              </Button>
+                  getAmbulanceLocation();
+                }}
+              />
             </Card>
+            <Text>Ambulances</Text>
+          </View>
+          <View>
+            <Button
+              mode="elevated"
+              style={styles.buttonContainer}
+              onPress={() => {
+                setMapView('setLocation');
+              }}>
+              Send Request
+            </Button>
           </View>
         </View>
       </View>

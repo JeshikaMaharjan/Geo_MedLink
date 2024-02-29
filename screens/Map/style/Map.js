@@ -6,9 +6,10 @@ const Mapstyles = StyleSheet.create({
     backgroundColor: '#87CEEB',
   },
   container: {
-    height: 200,
+    // height: 200,
+    display: 'flex',
     width: '100%',
-    flex: 1,
+    height: '100%',
   },
   mapHeader: {
     display: 'flex',
@@ -20,7 +21,6 @@ const Mapstyles = StyleSheet.create({
   },
   map: {
     height: '67%',
-    backgroundColor: 'red',
   },
   loader: {
     alignSelf: 'center',
@@ -31,6 +31,7 @@ const Mapstyles = StyleSheet.create({
     width: 50,
   },
   bottomView: {
+    flex: 1,
     padding: 10,
     borderTopColor: 'black',
     borderTopWidth: 1,
@@ -41,19 +42,22 @@ const Mapstyles = StyleSheet.create({
     flexDirection: 'row',
     gap: 15,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    height: 50,
   },
   searchBox: {
-    width: 340,
-    height: 52,
+    display: 'flex',
+    flex: 1,
     borderColor: 'black',
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   nearbyContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
     flexDirection: 'row',
-    gap: 10,
+    gap: 15,
   },
   iconContainer: {
     width: 80,
@@ -64,7 +68,7 @@ const Mapstyles = StyleSheet.create({
     padding: 5,
   },
   buttonContainer: {
-    width: 180,
+    // width: 180,
     gap: 15,
     alignItems: 'center',
     borderColor: 'black',

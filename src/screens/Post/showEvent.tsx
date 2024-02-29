@@ -77,45 +77,46 @@ const DispalyEvents = (_value: any) => {
             </View>
           </View>
         </View>
-        {!displayDescription && (
+        {!data?.description && !displayDescription ? (
+          <Text>No Description provided</Text>
+        ) : (
           <View>
-            <Button
-              style={{
-                width: '40%',
-                marginTop: 30,
-                backgroundColor: 'lightblue',
-              }}
-              onPress={() => setDisplayDescription(true)}>
-              <Text>Read more</Text>
-            </Button>
-          </View>
-        )}
-
-        {displayDescription && (
-          <View style={{marginTop: 12, paddingHorizontal: 8}}>
-            <View>
-              <Text
-                // variant="bodyLarge"
+            {!displayDescription ? (
+              <Button
+                mode="elevated"
                 style={{
-                  // backgroundColor:'tan',
-                  fontSize: 14,
-                  // marginTop: 20,
-                  textAlign: 'justify',
-                }}>
-                {data.description}
-              </Text>
-            </View>
-            <Button
-              style={{
-                width: '40%',
-                marginTop: 30,
-                backgroundColor: 'lightblue',
-                display: 'flex',
-                justifyContent: 'flex-start',
-              }}
-              onPress={() => setDisplayDescription(false)}>
-              <Text>Read less</Text>
-            </Button>
+                  display: 'flex',
+                  alignSelf: 'flex-start',
+                  width: '100%',
+                }}
+                onPress={() => setDisplayDescription(true)}>
+                <Text variant="bodyMedium">View Details</Text>
+              </Button>
+            ) : (
+              <View style={{marginTop: 12, paddingHorizontal: 8}}>
+                <View>
+                  <Text
+                    // variant="bodyLarge"
+                    style={{
+                      // backgroundColor:'tan',
+                      fontSize: 14,
+                      // marginTop: 20,
+                      textAlign: 'justify',
+                    }}>
+                    {data.description}
+                  </Text>
+                </View>
+                <Button
+                  mode="elevated"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                  }}
+                  onPress={() => setDisplayDescription(false)}>
+                  <Text>Hide details</Text>
+                </Button>
+              </View>
+            )}
           </View>
         )}
       </Card>

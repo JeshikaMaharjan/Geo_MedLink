@@ -66,7 +66,7 @@ export const Post = (value: any) => {
                 }>
                 {data.user_photo === '' || data.user_photo === null ? (
                   <View style={styles.defaultPicture}>
-                    <Avatar.Image size={120} source={require('../mydp.png')} />
+                    <Avatar.Image size={40} source={require('../mydp.png')} />
                     {/* <Fontisto
                       name="doctor"
                       size={20}

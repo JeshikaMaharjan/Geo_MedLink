@@ -22,6 +22,7 @@ const useStatesAndActions = () => {
   const [confirmedUserLocation, setConfirmedUserLocation] = useState();
   const [fetchEnabled, setFetchEnabled] = useState(false);
   const [isThankYouVisible, setIsThankYouVisible] = useState(false);
+  const [eventLocation, setEventLocation] = useState();
   const state = {
     baseURL,
     userName,
@@ -37,6 +38,7 @@ const useStatesAndActions = () => {
     confirmedUserLocation,
     fetchEnabled,
     isThankYouVisible,
+    eventLocation,
   };
   const actions = {
     setuserName,
@@ -51,6 +53,7 @@ const useStatesAndActions = () => {
     setConfirmedUserLocation,
     setFetchEnabled,
     setIsThankYouVisible,
+    setEventLocation,
   };
   return [state, actions];
 };

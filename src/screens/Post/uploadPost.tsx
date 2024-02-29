@@ -3,7 +3,7 @@ import {Image, ScrollView, StyleSheet, View} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import {Avatar, Button, Text, TextInput} from 'react-native-paper';
+import {Avatar, Button, Divider, Text, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Loader} from '../../helper/loader';
 import {Header, Row} from '../../components';
@@ -76,10 +76,11 @@ export const UploadPost = () => {
         <View
           style={{
             padding: 4,
-            borderWidth: 1,
+            // borderWidth: 1,
             borderColor: '#000',
             marginHorizontal: 8,
             marginBottom: 8,
+            // backgroundColor: 'red',
           }}>
           <View
             style={{
@@ -124,7 +125,7 @@ export const UploadPost = () => {
               </View>
             )}
             <View>
-              {!selectedImage ? (
+              {!selectedImage && (
                 <Row>
                   <View
                     style={{
@@ -140,16 +141,16 @@ export const UploadPost = () => {
                     </Button>
                   </View>
                 </Row>
-              ) : (
-                ''
               )}
             </View>
           </View>
         </View>
+        <Divider bold="true" />
         <View
           style={{
+            marginTop: 5,
             padding: 4,
-            borderWidth: 1,
+            // borderWidth: 1,
             borderColor: '#000',
             marginHorizontal: 8,
           }}>

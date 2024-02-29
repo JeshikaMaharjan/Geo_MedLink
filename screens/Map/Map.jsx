@@ -78,17 +78,18 @@ export default function Map({navigation}) {
               <>
                 {mapView === 'confirmedUser' ? (
                   <RouteBetweenUsers />
-                ) : mapView === 'setLocation' ? (
-                  <SetLocation />
+                ) : mapView === 'setLocation' ||
+                  mapView === 'setEventLocation' ? (
+                  <SetLocation navigation={navigation} />
                 ) : (
                   <FindNearby />
                 )}
               </>
             )}
 
-            {mapView !== 'confirmedUser' && mapView !== 'setLocation' && (
-              <MapActions />
-            )}
+            {mapView !== 'confirmedUser' &&
+              mapView !== 'setLocation' &&
+              mapView !== 'setEventLocation' && <MapActions />}
             <Portal>
               <Modal
                 visible={isInteractionModalVisible}

@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {
   Alert,
   Image,
@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {useCreateEvent} from '../../hooks/event/useEventApi';
 import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
 import {Row} from '../../components';
+import {GlobalContext} from '../../../context/GlobalStates';
 
 export const AddEvent = () => {
   const [eventName, setEventName] = useState('');
@@ -25,10 +26,13 @@ export const AddEvent = () => {
   const [visible, setVisible] = useState(false);
   const [hour, setHour] = useState('12');
   const [minute, setMinutes] = useState('00');
-  const [eventLocation, setEventLocation] = useState('');
+  // const [eventLocation, setEventLocation] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
   const {mutate: CreateEvent} = useCreateEvent();
   const theme = useTheme();
+  const [{eventLocation}, {setMapView, setEventLocation}] =
+    useContext(GlobalContext);
+  console.log({eventLocation});
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -47,7 +51,7 @@ export const AddEvent = () => {
   const areAllFieldsFilled = () => {
     return (
       eventName.trim() !== '' &&
-      selectedImage.trim() !== '' &&
+      // selectedImage.trim() !== '' &&
       inputDate !== undefined
     );
   };
@@ -63,8 +67,8 @@ export const AddEvent = () => {
         minute,
         selectedImage,
         date: inputDate,
-        longitude: '',
-        latitude: '',
+        longitude: eventLocation?.coords?.longitude,
+        latitude: eventLocation?.coords?.latitude,
       });
       setEventName('');
       setEventDescription('');
@@ -73,7 +77,7 @@ export const AddEvent = () => {
       setInputDate(undefined);
       setHour('12');
       setMinutes('00');
-      setEventLocation('');
+      setEventLocation(null);
       setSelectedImage('');
       navigation.navigate('EventList');
     }
@@ -130,7 +134,7 @@ export const AddEvent = () => {
             Create Event
           </Button>
         </View>
-        <Text style={{fontSize: 14, padding: 4}}>Event Name</Text>
+        <Text style={{fontSize: 14, padding: 4}}>Event Name*</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -153,43 +157,43 @@ export const AddEvent = () => {
             value={eventName}
             onChangeText={text => setEventName(text)}
           />
-          {!descriptionBox && (
+          {/* {!descriptionBox && (
             <Button
               mode="elevated"
               style={{borderRadius: 8}}
               onPress={() => setDescriptionBox(true)}>
               Add description
             </Button>
-          )}
+          )} */}
         </View>
       </View>
-      {descriptionBox ? (
-        <>
-          <Text style={{fontSize: 14, padding: 4}}>Event Description</Text>
-          <View
+      {/* {descriptionBox ? ( */}
+      <>
+        <Text style={{fontSize: 14, padding: 4}}>Event Description</Text>
+        <View
+          style={{
+            backgroundColor: theme.colors.secondaryContainer,
+            borderRadius: 8,
+          }}>
+          <TextInput
+            multiline={true}
             style={{
-              backgroundColor: theme.colors.secondaryContainer,
-              borderRadius: 8,
-            }}>
-            <TextInput
-              multiline={true}
-              style={{
-                backgroundColor: 'transparent',
-                flex: 1,
-                minHeight: 20,
-                // maxHeight: 40,
-                justifyContent: 'center',
-              }}
-              placeholder="Enter description for event"
-              underlineColor="transparent"
-              value={description}
-              onChangeText={text => setEventDescription(text)}
-            />
-          </View>
-        </>
-      ) : (
+              backgroundColor: 'transparent',
+              flex: 1,
+              minHeight: 20,
+              // maxHeight: 40,
+              justifyContent: 'center',
+            }}
+            placeholder="Enter description "
+            underlineColor="transparent"
+            value={description}
+            onChangeText={text => setEventDescription(text)}
+          />
+        </View>
+      </>
+      {/* ) : (
         ''
-      )}
+      )} */}
       <View>
         <View
           style={{
@@ -198,7 +202,7 @@ export const AddEvent = () => {
             gap: 12,
           }}>
           <View style={{width: '45%'}}>
-            <Text>Date</Text>
+            <Text>Date*</Text>
             <DatePickerInput
               locale="en-ES"
               label={inputDate ? inputDate.toDateString() : ''}
@@ -249,8 +253,9 @@ export const AddEvent = () => {
         </View>
       </View>
       <View>
-        <Text>Event Location</Text>
-        <View
+        <Text>Event Location </Text>
+
+        {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -258,8 +263,8 @@ export const AddEvent = () => {
             backgroundColor: theme.colors.secondaryContainer,
             borderRadius: 4,
             gap: 8,
-          }}>
-          <TextInput
+          }}> */}
+        {/* <TextInput
             underlineColor="transparent"
             style={{
               backgroundColor: 'transparent',
@@ -270,11 +275,17 @@ export const AddEvent = () => {
             }}
             value={eventLocation}
             onChangeText={text => setEventLocation(text)}
-          />
-          <Button mode="elevated" style={{borderRadius: 8}}>
-            Set Location
-          </Button>
-        </View>
+          /> */}
+        {/* </View> */}
+        <Button
+          mode="elevated"
+          onPress={() => {
+            setMapView('setEventLocation');
+            navigation.navigate('Dashboard');
+          }}
+          style={{borderRadius: 8}}>
+          Set Location on Map
+        </Button>
       </View>
       <View style={styles.thirdView}>
         {selectedImage && (
@@ -339,11 +350,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   // thirdView: {
-  //   alignItems: "center",
+  //   alignItems: 'center',
   //   marginBottom: 40,
   //   minHeight: 90,
   //   maxHeight: 900,
-  //   justifyContent: "center",
+  //   justifyContent: 'center',
   // },
   imageUpload: {
     flexDirection: 'row',

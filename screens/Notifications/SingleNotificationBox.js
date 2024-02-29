@@ -1,10 +1,12 @@
 import React, {useContext} from 'react';
 import {View} from 'react-native';
-import {Button, Surface, Text, Chip} from 'react-native-paper';
+import {Button, Surface, Text, Chip, IconButton} from 'react-native-paper';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {NotificationStyle as styles} from './style';
 import useNotificationUtils from './utils/useNotificationUtils';
 import {GlobalContext} from '../../context/GlobalStates';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {FontAwesome5} from '@expo/vector-icons';
 
 const SingleNotificationBox = ({index, item, navigation}) => {
   const {
@@ -24,18 +26,24 @@ const SingleNotificationBox = ({index, item, navigation}) => {
   return (
     <Surface key={index} elevation={5} style={styles.surface}>
       <View style={styles.notificationInnerContainer}>
-        <View>
+        <View style={styles.notificationBodyBox}>
           <Text variant="titleLarge">{item?.notification?.title}</Text>
           <Text>{item?.notification?.body}</Text>
         </View>
-        <Button
-          mode="elevated"
-          style={styles.button}
+        <IconButton
+          mode="contained-tonal"
+          icon={() => (
+            <FontAwesome5
+              name={visibleDetail[index] ? 'eye-slash' : 'eye'}
+              size={18}
+              color="black"
+            />
+          )}
           onPress={() => {
             toggleDetails(index);
-          }}>
-          {visibleDetail[index] ? 'Hide Details' : 'View Details'}
-        </Button>
+          }}
+          style={styles.button}
+        />
       </View>
       {visibleDetail[index] && (
         <View style={styles.detailBox}>
@@ -134,8 +142,8 @@ const SingleNotificationBox = ({index, item, navigation}) => {
         item?.data?.status === 'Closed' &&
         !disableTracking && (
           <View style={styles.actionBox}>
-            <Text>
-              Your location is being tracked. Have you reached destination?
+            <Text style={{flexWrap: 'wrap'}}>
+              Have you reached destination?
             </Text>
             <Button
               mode="elevated"

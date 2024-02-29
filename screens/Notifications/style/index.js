@@ -1,3 +1,5 @@
+import {theme} from '../../../constants/Theme';
+
 const {StyleSheet} = require('react-native');
 
 const NotificationStyle = StyleSheet.create({
@@ -17,6 +19,11 @@ const NotificationStyle = StyleSheet.create({
     // alignItems: 'center',
     // height: 80,
   },
+  notificationBodyBox: {
+    display: 'flex',
+    flex: 1,
+    flexWrap: '    wrap',
+  },
   notificationInnerContainer: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -25,6 +32,9 @@ const NotificationStyle = StyleSheet.create({
   button: {
     display: 'flex',
     alignSelf: 'flex-start',
+    width: '20%',
+    padding: 0,
+    backgroundColor: 'white',
   },
   detailBox: {
     borderWidth: 1,
@@ -51,6 +61,7 @@ const NotificationStyle = StyleSheet.create({
     marginTop: 5,
     justifyContent: 'space-around',
     alignItems: 'center',
+    gap: 5,
   },
   userDetailBox: {
     display: 'flex',

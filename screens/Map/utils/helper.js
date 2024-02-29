@@ -38,11 +38,17 @@ const useHelperFunctions = () => {
       }
     });
   };
+  // const data = [
+  //   {id: 4, user: {latitude: 27.67414, longitude: 85.32109}},
+  //   {id: 7, user: {latitude: 27.6954, longitude: 85.3039}},
+  //   {id: 11, user: {latitude: 27.695, longitude: 85.3149}},
+  // ];
 
   async function getBloodDonorsLocation() {
     try {
       const res = await axios.get(`http://${baseURL}/api/active/bloodDonors`);
       setBloodDonorsLocation(res.data.data);
+      // setBloodDonorsLocation(data);
       setMapView('donor');
     } catch (err) {
       console.log(err);

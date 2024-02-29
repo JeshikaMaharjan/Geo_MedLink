@@ -127,7 +127,7 @@ export const AddEvent = () => {
           </Text>
           <Button
             mode="contained"
-            style={{borderRadius: 8}}
+            // style={{borderRadius: 8}}
             onPress={onCreateEvent}
             disabled={!areAllFieldsFilled()} // Disable the button if not all fields are filled
           >
@@ -252,10 +252,10 @@ export const AddEvent = () => {
           </View>
         </View>
       </View>
-      <View>
-        <Text>Event Location </Text>
+      {/* <View> */}
+      {/* <Text>Event Location </Text> */}
 
-        {/* <View
+      {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -264,7 +264,7 @@ export const AddEvent = () => {
             borderRadius: 4,
             gap: 8,
           }}> */}
-        {/* <TextInput
+      {/* <TextInput
             underlineColor="transparent"
             style={{
               backgroundColor: 'transparent',
@@ -276,26 +276,44 @@ export const AddEvent = () => {
             value={eventLocation}
             onChangeText={text => setEventLocation(text)}
           /> */}
-        {/* </View> */}
-        <Button
-          mode="elevated"
-          onPress={() => {
-            setMapView('setEventLocation');
-            navigation.navigate('Dashboard');
-          }}
-          style={{borderRadius: 8}}>
-          Set Location on Map
-        </Button>
-      </View>
+      {/* </View> */}
+
+      {/* </View> */}
       <View style={styles.thirdView}>
+        <View>
+          <Row>
+            <View
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              {/* <Text>Upload Attachment </Text> */}
+              <Button mode="elevated" onPress={pickImage}>
+                Upload File
+              </Button>
+              <Button
+                mode="elevated"
+                style={{flex: 1}}
+                onPress={() => {
+                  setMapView('setEventLocation');
+                  navigation.navigate('Dashboard');
+                }}>
+                Set Event Location
+              </Button>
+            </View>
+          </Row>
+        </View>
         {selectedImage && (
           <View>
             <Icon
-              style={{display: 'flex', alignSelf: 'flex-end'}}
+              style={{display: 'flex', alignSelf: 'flex-end', marginTop: 5}}
               onPress={() => {
                 setSelectedImage('');
               }}
-              name="cross"
+              name="squared-cross"
+              color="black"
               size={22}
             />
             <Image
@@ -304,27 +322,6 @@ export const AddEvent = () => {
             />
           </View>
         )}
-        <View>
-          {!selectedImage ? (
-            <Row>
-              <View
-                style={{
-                  width: '100%',
-                  gap: 10,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Text>Upload Attachment </Text>
-                <Button mode="elevated" onPress={pickImage}>
-                  Select File
-                </Button>
-              </View>
-            </Row>
-          ) : (
-            ''
-          )}
-        </View>
       </View>
     </ScrollView>
   );

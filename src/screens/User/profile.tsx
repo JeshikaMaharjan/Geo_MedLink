@@ -38,8 +38,8 @@ export const Profile = ({route}: ProfileProps | ProfileStackProps) => {
   // if (!data) return <Text> No data</Text>;
 
   return (
-    <View style={{backgroundColor: '#80BCBD', flex: 1}}>
-      <Header style={{backgroundColor: '#80BCBD'}}>
+    <View style={{backgroundColor: '#87CEEB', flex: 1}}>
+      <Header style={{backgroundColor: '#87CEEB'}}>
         <Text style={{fontSize: 25, fontWeight: 'bold', color: 'white'}}>
           Profile
         </Text>

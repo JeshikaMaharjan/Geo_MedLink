@@ -31,7 +31,8 @@ export const NewsFeed = () => {
     <>
       <Header
         style={{
-          backgroundColor: theme.colors.secondary,
+          // backgroundColor: '#d4e2ff',
+          backgroundColor: '#87CEEB',
           flexWrap: 'wrap',
         }}>
         <View

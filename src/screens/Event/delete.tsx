@@ -3,23 +3,24 @@ import React from 'react';
 type DeleteParams = {
   isVisible: any;
   toggleIsVisible: () => void;
-  postId: number;
+  eventId: number;
 };
 
 import {View} from 'react-native';
 import {Button, Dialog, Text} from 'react-native-paper';
 import {useDeletePost} from '../../hooks/post/useDeleteApi';
+import {useDeleteEvent} from '../../hooks/event/useEventDelete';
 
 export const Delete = ({
   isVisible,
   toggleIsVisible: toggleIsVisible,
-  postId,
+  eventId,
 }: DeleteParams) => {
-  console.log({postId});
-  const {mutate: deletePost, error} = useDeletePost();
+  console.log({eventId});
+  const {mutate: deleteEvent, error} = useDeleteEvent();
   const onPressYes = () => {
     toggleIsVisible();
-    deletePost(postId);
+    deleteEvent(eventId);
   };
   const onPressNo = () => {
     toggleIsVisible();
@@ -28,11 +29,11 @@ export const Delete = ({
     <View>
       <Dialog.Title
         style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>
-        Delete Post
+        Delete Event
       </Dialog.Title>
       <Dialog.Content>
         <Text variant="bodyMedium" style={{textAlign: 'center'}}>
-          Are you sure you want to delete this post?
+          Are you sure you want to delete this event?
         </Text>
       </Dialog.Content>
       <Dialog.Actions style={{justifyContent: 'space-between'}}>

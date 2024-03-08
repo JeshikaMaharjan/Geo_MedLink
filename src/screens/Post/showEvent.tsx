@@ -1,10 +1,19 @@
 import React, {useContext, useState} from 'react';
 import {KeyboardAvoidingView, ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Card, Text} from 'react-native-paper';
+import {
+  Button,
+  Card,
+  Dialog,
+  IconButton,
+  Portal,
+  Text,
+} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Entypo';
 import {GlobalContext} from '../../../context/GlobalStates';
 import {useNavigation} from '@react-navigation/native';
 import {TabNavigationProps} from '../../navigations/Bottom/bottom-stack.types';
+import {Delete} from '../Event/delete';
+import Iconll from 'react-native-vector-icons/AntDesign';
 
 const DispalyEvents = (_value: any) => {
   const [displayDescription, setDisplayDescription] = useState(false);
@@ -15,7 +24,11 @@ const DispalyEvents = (_value: any) => {
   const displayedMinute = String(data.minute).padStart(2, '0'); // Ensure two digits for minutes
   const [, {setMapView, setConfirmedUserLocation}] = useContext(GlobalContext);
   const navigation = useNavigation<TabNavigationProps>();
+  const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
 
+  const toggleIsDeleteDialogVisible = () => {
+    setIsDeleteDialogVisible(!isDeleteDialogVisible);
+  };
   const handleViewLocationPress = () => {
     setMapView('confirmedUser');
     setConfirmedUserLocation({
@@ -28,99 +41,121 @@ const DispalyEvents = (_value: any) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.PostContainer}>
-      <Card style={styles.Post}>
-        <View style={styles.ImageBox}>
-          {data.photo !== null && data.photo !== '' && (
-            <Card.Cover
-              source={{
-                uri: `data:image/png;base64,${data.photo}`,
-              }}
-              style={{borderRadius: 0}}
-            />
-          )}
-        </View>
-        <View style={styles.basicInfo}>
-          <View
-            style={{
-              borderBottomColor: 'grey',
-              paddingBottom: 4,
-              borderBottomWidth: 0.5,
-            }}>
-            <Text style={styles.title}> {data.eventName}</Text>
-          </View>
-          <View style={styles.locationAndDateTime}>
-            {data?.longitude && data?.latitude ? (
-              <View style={styles.location}>
-                <Icon name="location-pin" size={20} color="black" />
-                <Button
-                  onPress={() => {
-                    handleViewLocationPress();
-                  }}>
-                  View Location on map
-                </Button>
-              </View>
-            ) : (
-              <View style={styles.location}>
-                <Icon name="location-pin" size={20} color="black" />
-                <Text>No Location </Text>
-              </View>
+    <>
+      <ScrollView contentContainerStyle={styles.PostContainer}>
+        <Card style={styles.Post}>
+          <View style={styles.ImageBox}>
+            {data.photo !== null && data.photo !== '' && (
+              <Card.Cover
+                source={{
+                  uri: `data:image/png;base64,${data.photo}`,
+                }}
+                style={{borderRadius: 0}}
+              />
             )}
-            <View style={styles.dateTime}>
-              <Icon name="calendar" size={20} color="black" />
-              <View>
-                <Text>{new Date(data.date).toLocaleDateString()}</Text>
-                <Text>
-                  {displayedHour}:{displayedMinute} {amOrPm}
-                </Text>
+          </View>
+          <View style={styles.basicInfo}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                padding: 4,
+                // borderBottomColor: 'grey',
+                // paddingBottom: 4,
+                // borderBottomWidth: 0.5,
+              }}>
+              <Text style={styles.title}> {data.eventName}</Text>
+
+              <IconButton
+                icon={() => <Iconll name="delete" size={20} color="black" />}
+                style={{margin: 0}}
+                onPress={() => toggleIsDeleteDialogVisible()}
+              />
+            </View>
+            <View style={styles.locationAndDateTime}>
+              {data?.longitude && data?.latitude ? (
+                <View style={styles.location}>
+                  <Icon name="location-pin" size={20} color="black" />
+                  <Button
+                    onPress={() => {
+                      handleViewLocationPress();
+                    }}>
+                    View Location on map
+                  </Button>
+                </View>
+              ) : (
+                <View style={styles.location}>
+                  <Icon name="location-pin" size={20} color="black" />
+                  <Text>No Location </Text>
+                </View>
+              )}
+              <View style={styles.dateTime}>
+                <Icon name="calendar" size={20} color="black" />
+                <View>
+                  <Text>{new Date(data.date).toLocaleDateString()}</Text>
+                  <Text>
+                    {displayedHour}:{displayedMinute} {amOrPm}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        {!data?.description && !displayDescription ? (
-          <Text>No Description provided</Text>
-        ) : (
-          <View>
-            {!displayDescription ? (
-              <Button
-                mode="elevated"
-                style={{
-                  display: 'flex',
-                  alignSelf: 'flex-start',
-                  width: '100%',
-                }}
-                onPress={() => setDisplayDescription(true)}>
-                <Text variant="bodyMedium">View Details</Text>
-              </Button>
-            ) : (
-              <View style={{marginTop: 12, paddingHorizontal: 8}}>
-                <View>
-                  <Text
-                    // variant="bodyLarge"
-                    style={{
-                      // backgroundColor:'tan',
-                      fontSize: 14,
-                      // marginTop: 20,
-                      textAlign: 'justify',
-                    }}>
-                    {data.description}
-                  </Text>
-                </View>
+          {!data?.description && !displayDescription ? (
+            <Text>No Description provided</Text>
+          ) : (
+            <View>
+              {!displayDescription ? (
                 <Button
                   mode="elevated"
                   style={{
                     display: 'flex',
-                    justifyContent: 'flex-start',
+                    alignSelf: 'flex-start',
+                    width: '100%',
                   }}
-                  onPress={() => setDisplayDescription(false)}>
-                  <Text>Hide details</Text>
+                  onPress={() => setDisplayDescription(true)}>
+                  <Text variant="bodyMedium">View Details</Text>
                 </Button>
-              </View>
-            )}
-          </View>
-        )}
-      </Card>
-    </ScrollView>
+              ) : (
+                <View style={{marginTop: 12, paddingHorizontal: 8}}>
+                  <View>
+                    <Text
+                      // variant="bodyLarge"
+                      style={{
+                        // backgroundColor:'tan',
+                        fontSize: 14,
+                        // marginTop: 20,
+                        textAlign: 'justify',
+                      }}>
+                      {data.description}
+                    </Text>
+                  </View>
+                  <Button
+                    mode="elevated"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                    }}
+                    onPress={() => setDisplayDescription(false)}>
+                    <Text>Hide details</Text>
+                  </Button>
+                </View>
+              )}
+            </View>
+          )}
+        </Card>
+      </ScrollView>
+      <Portal>
+        <Dialog
+          visible={isDeleteDialogVisible}
+          onDismiss={toggleIsDeleteDialogVisible}>
+          <Delete
+            isVisible={isDeleteDialogVisible}
+            toggleIsVisible={toggleIsDeleteDialogVisible}
+            eventId={data.id}
+          />
+        </Dialog>
+      </Portal>
+    </>
   );
 };
 

@@ -37,7 +37,7 @@ export const AddComment = ({postId}: AddCommentProps) => {
           multiline={true}
           value={comment}
           onChangeText={comment => setComment(comment)}
-          autoFocus
+          // autoFocus
         />
       </View>
       {/* <View style={styles.CommentAction}> */}

@@ -59,7 +59,7 @@ export const useFetchComment = (postId: number) => {
         );
         return response.data;
       } catch (error) {
-        cosole.log(error);
+        console.log(error);
       }
     },
     initialPageParam: 0,

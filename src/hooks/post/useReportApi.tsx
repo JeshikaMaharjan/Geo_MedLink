@@ -8,7 +8,7 @@ export const useReportPost = () => {
       try {
         const response = await axios.put(
           `http://${BASEURL}/api/post/report/${postId}`,
-          null,
+
           {
             headers: {'Content-Type': 'application/json'},
           },

@@ -106,7 +106,7 @@ export const Search = () => {
         )}
         {error && (
           <View>
-            <Text>{error.message}</Text>
+            <Text>.</Text>
           </View>
         )}
       </View>

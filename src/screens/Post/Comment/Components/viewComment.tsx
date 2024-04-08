@@ -1,4 +1,4 @@
-import {Feather} from '@expo/vector-icons';
+import {Foundation} from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import {StyleSheet, View} from 'react-native';
 import {Avatar, Text} from 'react-native-paper';
@@ -6,9 +6,6 @@ import {Row} from '../../../../components';
 
 export const ViewComment = (value: any) => {
   const data = value.value;
-  console.log({data});
-
-  // console.log("Data testing", data);
   return (
     <View style={styles.comment}>
       {!data.user_photo ? (
@@ -26,21 +23,23 @@ export const ViewComment = (value: any) => {
       )}
 
       <View style={styles.viewCommentContent}>
-        <View style={{display: 'flex', flexDirection: 'row', gap: 10}}>
-          <Text style={styles.userName}>{data.userName}</Text>
-          <Text style={styles.date}>
-            {dayjs(data.date).format('MMM D, YYYY')}
+        <Row style={{justifyContent: 'space-between'}}>
+          <View style={{display: 'flex', flexDirection: 'row', gap: 10}}>
+            <Text style={styles.userName}>{data.userName}</Text>
+            <Text style={styles.date}>
+              {dayjs(data.date).format('MMM D, YYYY')}
+            </Text>
+          </View>
+          <Text>
+            {data.is_spam === 1 && (
+              <Foundation name="alert" size={24} color="yellow" />
+            )}
           </Text>
-        </View>
+        </Row>
         <View style={styles.commentAndLikeWrapper}>
           <View style={styles.actualCommentBox}>
-            <Row style={{justifyContent: 'space-between'}}>
+            <Row style={{justifyContent: 'space-between', marginRight: 10}}>
               <Text style={styles.actualCommentBoxText}>{data.comment}</Text>
-              <Text>
-                {data.is_spam === 1 && (
-                  <Feather name="alert-octagon" size={24} color="red" />
-                )}
-              </Text>
             </Row>
           </View>
         </View>

@@ -7,7 +7,7 @@ export const useReportPost = () => {
     mutationFn: async (postId: number) => {
       try {
         const response = await axios.put(
-          `http://${BASEURL}/api/post/report/${postId}`,
+          `${BASEURL}/post/report/${postId}`,
 
           {
             headers: {'Content-Type': 'application/json'},

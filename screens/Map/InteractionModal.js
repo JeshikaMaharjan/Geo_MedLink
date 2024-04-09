@@ -35,7 +35,7 @@ const InteractionModal = ({navigation}) => {
     setModalNumber(1);
     try {
       const res = await axios.post(
-        `http://${baseURL}/api/send/notifications/request/blood`,
+        `${baseURL}/send/notifications/request/blood`,
         data,
       );
 
@@ -79,7 +79,7 @@ const InteractionModal = ({navigation}) => {
     setModalNumber(1);
     try {
       const res = await axios.post(
-        `http://${baseURL}/api/send/notifications/request/ambulance`,
+        `${baseURL}/send/notifications/request/ambulance`,
         data,
       );
 

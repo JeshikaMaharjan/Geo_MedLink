@@ -55,8 +55,8 @@ const useNotificationUtils = ({navigation}) => {
     try {
       const apiUrl =
         item?.data?.requestType === 'blood'
-          ? `http://${baseURL}/api/send/notifications/blood/respond`
-          : `http://${baseURL}/api/send/notifications/ambulance/respond`;
+          ? `${baseURL}/send/notifications/blood/respond`
+          : `${baseURL}/send/notifications/ambulance/respond`;
 
       const res = await axios.post(apiUrl, data);
 
@@ -135,8 +135,8 @@ const useNotificationUtils = ({navigation}) => {
     try {
       const apiUrl =
         item?.data?.requestType === 'blood'
-          ? `http://${baseURL}/api/send/notifications/blood/confirm`
-          : `http://${baseURL}/api/send/notifications/ambulance/confirm`;
+          ? `${baseURL}/send/notifications/blood/confirm`
+          : `${baseURL}/send/notifications/ambulance/confirm`;
       const res = await axios.post(apiUrl, data);
 
       if (!res) throw new Error();

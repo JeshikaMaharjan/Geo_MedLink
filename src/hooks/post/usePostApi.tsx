@@ -19,7 +19,7 @@ export const useFetchPost = () => {
     queryFn: async ({pageParam}) => {
       try {
         const response = await axios.get(
-          `http://${BASEURL}/api/post/all?pageNumber=${pageParam}`,
+          `${BASEURL}/post/all?pageNumber=${pageParam}`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const useFetchUserPost = (username: string) => {
     queryFn: async ({pageParam}) => {
       try {
         const response = await axios.get(
-          `http://${BASEURL}/api/post/${username}?pageNumber=${pageParam}?take=${take}`,
+          `${BASEURL}/post/${username}?pageNumber=${pageParam}?take=${take}`,
           {
             headers: {'Content-Type': 'application/json'},
           },
@@ -84,7 +84,7 @@ export const useAddPost = () => {
   return useMutation({
     mutationFn: async ({post, photo}: PostParams) => {
       try {
-        const response = await axios.post(`http://${BASEURL}/api/post/create`, {
+        const response = await axios.post(`${BASEURL}/post/create`, {
           post,
           photo,
           userName: username,
@@ -109,12 +109,9 @@ export const useFetchPostById = (postId: number) => {
     queryFn: async () => {
       console.log('getting api');
       try {
-        const response = await axios.get(
-          `http://${BASEURL}/api/post/get/${id}`,
-          {
-            headers: {'Content-Type': 'application/json'},
-          },
-        );
+        const response = await axios.get(`${BASEURL}/post/get/${id}`, {
+          headers: {'Content-Type': 'application/json'},
+        });
         return response.data;
       } catch (error) {
         console.log(error);

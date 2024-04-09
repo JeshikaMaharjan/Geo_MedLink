@@ -20,7 +20,7 @@ export const useChangePassword = () => {
     }: ChangePasswordParams) => {
       try {
         const response = await axios.post(
-          `http://${BASEURL}/api/change/password`,
+          `${BASEURL}/change/password`,
           {
             currentPassword,
             newPassword,

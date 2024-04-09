@@ -16,7 +16,7 @@ export const useUpdateBloodDonor = () => {
     mutationFn: async ({is_donor, blood_Group}: BloodTypeParam) => {
       try {
         const response = await axios.put(
-          `${BASEURL}/api/donor/${username}`,
+          `${BASEURL}/donor/${username}`,
           {
             is_donor,
             blood_Group,

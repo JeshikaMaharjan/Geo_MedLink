@@ -9,9 +9,8 @@ export const useToggleLike = () => {
   return useMutation({
     mutationFn: async (postId: number) => {
       try {
-        console.log(`http://${BASEURL}/api/post/like/${postId}/${username}`);
         const response = await axios.put(
-          `http://${BASEURL}/api/post/like/${postId}/${username}`,
+          `${BASEURL}/post/like/${postId}/${username}`,
           // null,
           {
             headers: {'Content-Type': 'application/json'},

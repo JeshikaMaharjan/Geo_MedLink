@@ -23,7 +23,7 @@ export const usePostComment = () => {
     mutationFn: async ({comment, postId}: PostCommentParams) => {
       try {
         const response = await axios.post(
-          `http://${BASEURL}/api/comment`,
+          `${BASEURL}/comment`,
           {
             comment,
             userName: username,
@@ -52,7 +52,7 @@ export const useFetchComment = (postId: number) => {
     queryFn: async ({pageParam}) => {
       try {
         const response = await axios.get(
-          `http://${BASEURL}/api/comment/${postId}?pageNumber=${pageParam}`,
+          `${BASEURL}/comment/${postId}?pageNumber=${pageParam}`,
           {
             headers: {'Content-Type': 'application/json'},
           },

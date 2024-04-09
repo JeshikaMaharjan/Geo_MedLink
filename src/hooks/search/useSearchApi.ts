@@ -8,12 +8,9 @@ export const useSearchFetch = (value: string) => {
     queryFn: async () => {
       console.log(`i am searching${value}`);
       try {
-        const response = await axios.get(
-          `http://${BASEURL}/api/search/${value}`,
-          {
-            headers: {'Content-Type': 'application/json'},
-          },
-        );
+        const response = await axios.get(`${BASEURL}/search/${value}`, {
+          headers: {'Content-Type': 'application/json'},
+        });
         console.log({response: response?.data?.take});
         return response.data;
       } catch (error) {

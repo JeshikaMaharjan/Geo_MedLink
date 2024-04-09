@@ -11,7 +11,7 @@ export const useDeletePost = () => {
       console.log({postId});
       try {
         const response = await axios.delete(
-          `http://${BASEURL}/api/post/delete/${postId}`,
+          `${BASEURL}/post/delete/${postId}`,
           {
             headers: {'Content-Type': 'application/json'},
           },

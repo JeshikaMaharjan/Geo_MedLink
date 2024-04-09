@@ -23,7 +23,7 @@ const useStatesAndActions = () => {
   const [fetchEnabled, setFetchEnabled] = useState(false);
   const [isThankYouVisible, setIsThankYouVisible] = useState(false);
   const [eventLocation, setEventLocation] = useState();
-  const [distance, setDistance] = useState(100000000000000);
+  const [distance, setDistance] = useState(10);
   const [timer, setTimer] = useState(false);
   const state = {
     baseURL,

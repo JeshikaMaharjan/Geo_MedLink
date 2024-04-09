@@ -37,7 +37,7 @@ export default function Login({navigation}) {
     };
     console.log({data});
     try {
-      const res = await axios.post(`http://${BASEURL}/api/login`, data);
+      const res = await axios.post(`${BASEURL}/login`, data);
       console.log(res?.data);
       setuserName(res?.data?.data?.username);
       setContextUsername(res?.data?.data?.username);

@@ -32,7 +32,7 @@ export const useCreateEvent = () => {
     }: CreateEvent) => {
       try {
         const response = await axios.post(
-          `http://${BASEURL}/api/event/create`,
+          `${BASEURL}/event/create`,
           {
             eventName,
             description,
@@ -65,7 +65,7 @@ export const useFetchEvent = () => {
     queryFn: async ({pageParam}) => {
       try {
         const response = await axios.get(
-          `http://${BASEURL}/api/event/all?pageNumber=${pageParam}`,
+          `${BASEURL}/event/all?pageNumber=${pageParam}`,
           {
             headers: {'Content-Type': 'application/json'},
           },

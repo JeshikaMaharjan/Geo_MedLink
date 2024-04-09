@@ -55,7 +55,7 @@ function UserRegistration({navigation}) {
     };
     console.log({data});
     try {
-      const res = await axios.post(`http://${baseURL}/api/user`, data);
+      const res = await axios.post(`${baseURL}/user`, data);
 
       if (!res) throw new Error();
       setuserName(userName);

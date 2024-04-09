@@ -53,7 +53,7 @@ export default function OrgRegistration({navigation}) {
       image: image,
     };
     try {
-      const res = await axios.post(`http://${baseURL}/api/user`, data);
+      const res = await axios.post(`${baseURL}/user`, data);
       if (!res) throw new Error();
       setAddress('');
       setEmail('');

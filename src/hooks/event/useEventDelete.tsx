@@ -11,7 +11,7 @@ export const useDeleteEvent = () => {
       console.log({eventId});
       try {
         const response = await axios.delete(
-          `http://${BASEURL}/api/event/delete/${eventId}`,
+          `${BASEURL}/event/delete/${eventId}`,
           {
             headers: {'Content-Type': 'application/json'},
           },

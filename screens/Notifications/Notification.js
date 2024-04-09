@@ -95,7 +95,7 @@ const Notification = ({route, navigation}) => {
     try {
       console.log(baseURL);
       const res = await axios.post(
-        `http://${baseURL}/api/send/notifications/request/blood`,
+        `${baseURL}/send/notifications/request/blood`,
         data,
       );
 

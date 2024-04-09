@@ -14,12 +14,9 @@ export const useFetchUser = (usernameParam?: string | undefined) => {
     queryKey: ['user', username],
     queryFn: async () => {
       try {
-        const response = await axios.get(
-          `http://${BASEURL}/api/user/${username}`,
-          {
-            headers: {'Content-Type': 'application/json'},
-          },
-        );
+        const response = await axios.get(`${BASEURL}/user/${username}`, {
+          headers: {'Content-Type': 'application/json'},
+        });
         return response.data;
       } catch (error) {
         console.log(error);

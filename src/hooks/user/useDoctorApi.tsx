@@ -10,12 +10,9 @@ export const useFetchDoctor = () => {
     queryKey: ['doctor', username],
     queryFn: async () => {
       try {
-        const response = await axios.get(
-          `http://${BASEURL}/api/get/doctor/${username}`,
-          {
-            headers: {'Content-Type': 'application/json'},
-          },
-        );
+        const response = await axios.get(`${BASEURL}/get/doctor/${username}`, {
+          headers: {'Content-Type': 'application/json'},
+        });
         return response.data;
       } catch (error) {
         console.log(error);
@@ -37,7 +34,7 @@ export const useDoctor = () => {
     mutationFn: async ({NMC, degree}: DoctorParams) => {
       try {
         const response = await axios.put(
-          `http://${BASEURL}/api/doctor/update`,
+          `${BASEURL}/doctor/update`,
           {
             userName: username,
             NMC: parseInt(NMC!),

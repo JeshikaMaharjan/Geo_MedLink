@@ -77,8 +77,7 @@ export default function ModalView({navigation}) {
             mode="elevated"
             onPress={() => {
               axios
-                .put(`http://${baseURL}/api/donor/activate/${userName}`, {
-                  // .put(`http://${baseURL}/api/donor/activate/Jjjjjgff`, {
+                .put(`${baseURL}/donor/activate/${userName}`, {
                   blood_Group: bloodGroup,
                 })
                 .then(res => {
@@ -142,7 +141,7 @@ export default function ModalView({navigation}) {
             mode="elevated"
             onPress={() => {
               axios
-                .post(`http://${baseURL}/api/register/doctor`, {
+                .post(`${baseURL}/register/doctor`, {
                   userName: userName,
                   degree: degree,
                   NMC: parseInt(NMC),

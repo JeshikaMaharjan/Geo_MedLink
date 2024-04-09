@@ -18,10 +18,7 @@ export default function ForgotPassword({navigation}) {
     };
     console.log({data});
     try {
-      const res = await axios.post(
-        `http://${BASEURL}/api/forget/password`,
-        data,
-      );
+      const res = await axios.post(`${BASEURL}/forget/password`, data);
       console.log(res?.data);
       setEmail('');
       setUsername('');

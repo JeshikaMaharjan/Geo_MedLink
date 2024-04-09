@@ -8,8 +8,8 @@ import axios from 'axios';
 
 const InteractionModal = ({navigation}) => {
   const [
-    {userName, location, baseURL, FirebaseDb: NotificationDb},
-    {setIsInteractionModalVisible},
+    {userName, location, baseURL, FirebaseDb: NotificationDb, distance},
+    {setIsInteractionModalVisible, setTimer},
   ] = useContext(GlobalContext);
   const [modalNumber, setModalNumber] = useState(0);
   const [bloodGroup, setBloodGroup] = useState();
@@ -27,7 +27,8 @@ const InteractionModal = ({navigation}) => {
       requestType: 'blood',
       type: 'request',
       status: 'Active',
-      // userName: 'Jen1',
+      distance: distance,
+      userName: userName,
     };
     console.log(data);
 
@@ -39,6 +40,7 @@ const InteractionModal = ({navigation}) => {
       );
 
       if (!res) throw new Error();
+      setTimer(true);
       const notificationId = uuid.v4();
       const sentTo = res?.data?.data?.sent_to;
 
@@ -160,7 +162,7 @@ const InteractionModal = ({navigation}) => {
           <Button
             mode="elevated"
             onPress={() => {
-              navigate('Notification');
+              navigate('Notification', {bloodGroup: bloodGroup});
               setIsInteractionModalVisible(false);
             }}>
             Okay

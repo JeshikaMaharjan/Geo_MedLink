@@ -23,6 +23,8 @@ const useStatesAndActions = () => {
   const [fetchEnabled, setFetchEnabled] = useState(false);
   const [isThankYouVisible, setIsThankYouVisible] = useState(false);
   const [eventLocation, setEventLocation] = useState();
+  const [distance, setDistance] = useState(100000000000000);
+  const [timer, setTimer] = useState(false);
   const state = {
     baseURL,
     userName,
@@ -39,6 +41,8 @@ const useStatesAndActions = () => {
     fetchEnabled,
     isThankYouVisible,
     eventLocation,
+    distance,
+    timer,
   };
   const actions = {
     setuserName,
@@ -54,6 +58,8 @@ const useStatesAndActions = () => {
     setFetchEnabled,
     setIsThankYouVisible,
     setEventLocation,
+    setDistance,
+    setTimer,
   };
   return [state, actions];
 };

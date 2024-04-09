@@ -11,15 +11,27 @@ import {
 } from 'react-native-paper';
 import SingleNotificationBox from './SingleNotificationBox';
 import useNotificationUtils from './utils/useNotificationUtils';
-
-const Notification = ({navigation}) => {
+import uuid from 'react-native-uuid';
+import axios from 'axios';
+const Notification = ({route, navigation}) => {
   const [
-    {FirebaseDb: NotificationDb, requestId, userName, isThankYouVisible},
-    {setMapView, setLocation, setIsThankYouVisible},
+    {
+      FirebaseDb: NotificationDb,
+      requestId,
+      userName,
+      isThankYouVisible,
+      distance,
+      timer,
+      location,
+      baseURL,
+    },
+    {setMapView, setLocation, setIsThankYouVisible, setDistance},
   ] = useContext(GlobalContext);
   const {content, setContent, setVisibleDetail} = useNotificationUtils({
     navigation,
   });
+
+  const {bloodGroup} = route?.params || {bloodGroup: undefined};
 
   useEffect(() => {
     const onChildAdded = NotificationDb.ref(`Notification/${userName}`).on(
@@ -64,6 +76,59 @@ const Notification = ({navigation}) => {
       );
     };
   }, []);
+
+  async function postBloodData() {
+    const data = {
+      requestId: uuid.v4(),
+      bloodGroup: bloodGroup,
+      latitude: `${location?.coords?.latitude}`,
+      longitude: `${location?.coords?.longitude}`,
+      userName: userName,
+      requestType: 'blood',
+      type: 'request',
+      status: 'Active',
+      distance: distance,
+      userName: userName,
+    };
+    console.log(data);
+
+    try {
+      console.log(baseURL);
+      const res = await axios.post(
+        `http://${baseURL}/api/send/notifications/request/blood`,
+        data,
+      );
+
+      if (!res) throw new Error();
+      const notificationId = uuid.v4();
+      const sentTo = res?.data?.data?.sent_to;
+
+      if (sentTo) {
+        const sentToList = sentTo.split(',');
+        sentToList.forEach(item => {
+          NotificationDb.ref(`Notification/${item}/${notificationId}`)
+            .set({
+              requestId: `${res?.data?.data?.requestId}`,
+              notification: res?.data?.data?.notification,
+              data: res?.data?.data,
+            })
+            .then(() => console.log('Data updated.'))
+            .catch(error => console.error('Error updating data:', error));
+        });
+      }
+    } catch (error) {
+      console.log('err', error);
+      console.log(error?.response?.data);
+    }
+  }
+  useEffect(() => {
+    if (timer) {
+      setTimeout(() => {
+        setDistance(distance + 5);
+        postBloodData();
+      }, 300000);
+    }
+  }, [timer, distance]);
 
   return (
     <View style={styles.container}>

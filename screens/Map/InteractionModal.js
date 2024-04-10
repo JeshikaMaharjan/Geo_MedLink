@@ -9,7 +9,7 @@ import axios from 'axios';
 const InteractionModal = ({navigation}) => {
   const [
     {userName, location, baseURL, FirebaseDb: NotificationDb, distance},
-    {setIsInteractionModalVisible, setTimer},
+    {setIsInteractionModalVisible, setTimer, setAmbTimer},
   ] = useContext(GlobalContext);
   const [modalNumber, setModalNumber] = useState(0);
   const [bloodGroup, setBloodGroup] = useState();
@@ -73,6 +73,7 @@ const InteractionModal = ({navigation}) => {
       requestType: 'ambulance',
       type: 'request',
       status: 'Active',
+      distance: distance,
     };
     console.log(data);
 
@@ -84,6 +85,7 @@ const InteractionModal = ({navigation}) => {
       );
 
       if (!res) throw new Error();
+      setAmbTimer(true);
       console.log(res.data);
       const notificationId = uuid.v4();
       const sentTo = res?.data?.data?.sent_to;

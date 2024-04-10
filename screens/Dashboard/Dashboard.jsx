@@ -13,7 +13,7 @@ export default function Dashboard({navigation}) {
       fetchEnabled,
       userName,
     },
-    {setFetchEnabled, setTimer},
+    {setFetchEnabled, setTimer, setAmbTimer},
   ] = useContext(GlobalContext);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [data, setData] = useState(null);
@@ -44,6 +44,7 @@ export default function Dashboard({navigation}) {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       setIsDialogVisible(true);
       setTimer(false);
+      setAmbTimer(false);
     });
 
     return unsubscribe;

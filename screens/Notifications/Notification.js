@@ -22,6 +22,7 @@ const Notification = ({route, navigation}) => {
       isThankYouVisible,
       distance,
       timer,
+      ambTimer,
       location,
       baseURL,
     },
@@ -121,6 +122,49 @@ const Notification = ({route, navigation}) => {
       console.log(error?.response?.data);
     }
   }
+  async function postAmbulanceData() {
+    const data = {
+      requestId: uuid.v4(),
+      latitude: `${location?.coords?.latitude}`,
+      longitude: `${location?.coords?.longitude}`,
+      userName: userName,
+      requestType: 'ambulance',
+      type: 'request',
+      status: 'Active',
+      distance: distance,
+    };
+    console.log(data);
+
+    try {
+      const res = await axios.post(
+        `${baseURL}/send/notifications/request/ambulance`,
+        data,
+      );
+
+      if (!res) throw new Error();
+      console.log(res.data);
+      const notificationId = uuid.v4();
+      const sentTo = res?.data?.data?.sent_to;
+
+      if (sentTo) {
+        const sentToList = sentTo.split(',');
+        sentToList.forEach(item => {
+          NotificationDb.ref(`Notification/${item}/${notificationId}`)
+            .set({
+              requestId: `${res?.data?.data?.requestId}`,
+              notification: res?.data?.data?.notification,
+              data: res?.data?.data,
+            })
+            .then(() => console.log('Data updated.'))
+            .catch(error => console.error('Error updating data:', error));
+        });
+      }
+    } catch (error) {
+      console.log('err', error);
+      console.log(error?.response?.data);
+    }
+  }
+
   useEffect(() => {
     if (timer) {
       setTimeout(() => {
@@ -128,7 +172,13 @@ const Notification = ({route, navigation}) => {
         postBloodData();
       }, 300000);
     }
-  }, [timer, distance]);
+    if (ambTimer) {
+      setTimeout(() => {
+        setDistance(distance + 5);
+        postAmbulanceData();
+      }, 300000);
+    }
+  }, [timer, ambTimer, distance]);
 
   return (
     <View style={styles.container}>

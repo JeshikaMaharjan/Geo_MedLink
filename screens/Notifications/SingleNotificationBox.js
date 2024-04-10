@@ -17,6 +17,7 @@ const SingleNotificationBox = ({index, item, navigation}) => {
     handleConfirmClick,
     handleFetchLiveLocation,
     handleDisableLocationFetch,
+    handleInservice,
   } = useNotificationUtils({
     navigation,
   });
@@ -150,6 +151,7 @@ const SingleNotificationBox = ({index, item, navigation}) => {
               onPress={() => {
                 handleDisableLocationFetch(item);
                 setIsThankYouVisible(true);
+                handleInservice();
               }}>
               Yes
             </Button>

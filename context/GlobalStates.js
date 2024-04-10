@@ -25,6 +25,7 @@ const useStatesAndActions = () => {
   const [eventLocation, setEventLocation] = useState();
   const [distance, setDistance] = useState(10);
   const [timer, setTimer] = useState(false);
+  const [ambTimer, setAmbTimer] = useState(false);
   const state = {
     baseURL,
     userName,
@@ -43,6 +44,7 @@ const useStatesAndActions = () => {
     eventLocation,
     distance,
     timer,
+    ambTimer,
   };
   const actions = {
     setuserName,
@@ -60,6 +62,7 @@ const useStatesAndActions = () => {
     setEventLocation,
     setDistance,
     setTimer,
+    setAmbTimer,
   };
   return [state, actions];
 };

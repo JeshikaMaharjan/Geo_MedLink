@@ -249,6 +249,16 @@ const useNotificationUtils = ({navigation}) => {
     updateDisableTrackingStatus(item?.data?.userName, confirmedRequestId);
     updateDisableTrackingStatus(userName, confirmedRequestId);
   };
+  const handleInservice = () => {
+    try {
+      console.log(userName);
+      const res = axios.put(`${baseURL}/completed`, {username: userName});
+      console.log('put');
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return {
     content,
@@ -261,6 +271,7 @@ const useNotificationUtils = ({navigation}) => {
     handleConfirmClick,
     handleFetchLiveLocation,
     handleDisableLocationFetch,
+    handleInservice,
   };
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import {ImageBackground, KeyboardAvoidingView, View} from 'react-native';
+import {ImageBackground, KeyboardAvoidingView, Modal, View} from 'react-native';
 import {useContext, useEffect, useState} from 'react';
-import {Text, TextInput, Button} from 'react-native-paper';
+import {Text, TextInput, Button, Portal, Card} from 'react-native-paper';
 import {Loginstyles as styles} from './style/Login';
 import axios from 'axios';
 import {GlobalContext} from '../../context/GlobalStates';
@@ -14,6 +14,8 @@ export default function Login({navigation}) {
   const [{deviceToken}, {setuserName, setDeviceToken}] =
     useContext(GlobalContext);
   const {getLocation} = useHelperFunctions();
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = navigation.navigate;
   const [username, setUsername] = useState(null);
@@ -46,9 +48,12 @@ export default function Login({navigation}) {
     } catch (error) {
       console.log({error});
       console.log(error?.response?.data?.error?.message);
+      setIsError(true);
+      setErrorMessage(error?.response?.data?.error?.message);
     }
   }
   const handleClick = () => {
+    setIsError(false);
     postData();
   };
   return (
@@ -101,6 +106,17 @@ export default function Login({navigation}) {
               }}>
               Forgot password?
             </Button>
+            {isError && (
+              <View
+                style={{
+                  marginTop: 10,
+                  padding: 8,
+                  borderRadius: 8,
+                  backgroundColor: 'red',
+                }}>
+                <Text>{errorMessage}</Text>
+              </View>
+            )}
           </View>
         </View>
       </View>

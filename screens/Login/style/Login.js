@@ -28,5 +28,12 @@ const Loginstyles = StyleSheet.create({
     height: '100%',
     flex: 1,
   },
+  modalContainer: {
+    backgroundColor: 'red',
+    padding: 20,
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 30,
+  },
 });
 export {Loginstyles};
